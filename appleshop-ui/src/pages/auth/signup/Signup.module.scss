@@ -1,0 +1,154 @@
+@import '../../../components/GlobalStyles/variables';
+.signup {
+    background-image: url('../../../assets/image/bg-login.png');
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: cover;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.wrapper {
+    background-color: $praimery;
+    width: 800px;
+    height: 60vh;
+    border-radius: 26px;
+    display: flex;
+}
+.left {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    .apple-lg {
+        margin: 20px;
+        width: 40px;
+    }
+    .title {
+        margin-left: 20px;
+        font-size: 36px;
+        font-weight: 800;
+        color: #fff;
+    }
+    .signup-img {
+        width: 550px;
+        z-index: 1;
+        transform: translateX(-100px);
+    }
+}
+.right {
+    background-color: black;
+    border-radius: 26px;
+    color: $graye;
+    font-size: 14px;
+    flex: 1;
+    .head-form {
+        padding-right: 16px;
+        text-align: right;
+        color: $praimery;
+    }
+    .form {
+        position: relative;
+        margin-top: 56px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 3;
+    }
+    .input-signup {
+        height: 36px;
+        border: none;
+        border-bottom: 2px solid #fff;
+        background-color: transparent;
+        color: $graye;
+        padding-bottom: 2px;
+        margin-bottom: 4px;
+        color: #fff;
+        outline: none;
+        width: 80%;
+    }
+    .confirm-box {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .iagree {
+            font-size: 12px;
+            margin-left: 4px;
+            white-space: nowrap;
+        }
+        .agreed {
+            cursor: pointer;
+        }
+    }
+    .btn-signup {
+        margin-top: 12px;
+        font-family: 'Roboto';
+        width: 65%;
+        height: 36px;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 300;
+        background-color: $praimery;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-signup:hover {
+        opacity: 0.8;
+    }
+    .or {
+        color: #fff;
+        margin-top: 8px;
+    }
+    .other {
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        width: 55%;
+        .signup {
+            &-gg {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+            &-fb {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+        .sg-text {
+            margin-left: 4px;
+            font-size: 12px;
+            font-weight: 300;
+        }
+    }
+}
+.question {
+    margin-top: 64px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+        font-size: 12px;
+    }
+    .had-account {
+        text-decoration: none;
+        margin-left: 4px;
+        background-color: transparent;
+        color: $praimery;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+    }
+    .had-account:hover {
+        opacity: 0.8;
+    }
+}
+.errors {
+    border-bottom: 1px solid red !important;
+}

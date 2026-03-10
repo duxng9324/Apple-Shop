@@ -1,0 +1,68 @@
+@import '../../components/GlobalStyles/variables';
+
+.product {
+    background-color: $bg-box;
+    margin: 24px auto;
+    padding: 20px 16px;
+    border-radius: 12px;
+    .wrap-table {
+        background-color: #fff;
+        border-radius: 6px;
+        padding: 12px 8px;
+    }
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 8px 12px;
+        justify-content: space-between;
+        p {
+            color: $text-hd-tb;
+            font-size: 24px;
+            font-weight: 500;
+        }
+    }
+    .body {
+        .table-product {
+            width: 100%;
+            border-collapse: collapse;
+            td,
+            th {
+                border: 1px solid $bg-box;
+                padding: 4px 8px;
+                word-break: break-word;
+            }
+            tbody {
+                th {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #000;
+                }
+                tr {
+                    .name,
+                    .code,
+                    .color,
+                    .category {
+                        max-width: 80px;
+                    }
+                    .description {
+                        max-width: 200px;
+                    }
+                    .image_link {
+                        .thimage {
+                            display: flex;
+                            flex-direction: column;
+                            max-width: 200px;
+                            p {
+                                width: 100%;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

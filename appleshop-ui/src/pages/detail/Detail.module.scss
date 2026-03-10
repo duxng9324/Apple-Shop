@@ -1,0 +1,340 @@
+@import '../../components/GlobalStyles/variables';
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px;
+    .description {
+        background-color: #fff;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 24px;
+        border-radius: 6px;
+    }
+}
+.detail {
+    display: flex;
+    .right {
+        flex: 1;
+        padding: 0 12px;
+        .price {
+            margin-top: 12px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            .real_price {
+                font-size: 32px;
+                color: $red-delete;
+                font-weight: 500;
+                margin-right: 4px;
+            }
+            .installment {
+                font-size: 12px;
+            }
+        }
+        .name {
+            font-size: 32px;
+            line-height: 32px;
+            font-weight: 500;
+            color: $gray-800;
+        }
+        .memoryAndPrice {
+            margin-top: 12px;
+            width: 100%;
+            display: flex;
+            background: #edeeef;
+            border-radius: 6px;
+            border: 2px solid #fff;
+            .active {
+                border: 2px solid $blue-eye;
+                border-radius: 4px;
+            }
+            .item {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-content: center;
+                padding: 4px 12px;
+                cursor: pointer;
+                &-pl {
+                    display: flex;
+                    align-items: center;
+                    .icon {
+                        color: $gray-800;
+                        margin-right: 4px;
+                    }
+                }
+                p {
+                    text-align: center;
+                    font-size: 14px;
+                    color: $gray-800;
+                }
+            }
+            .item:hover {
+                border: 2px solid $blue-eye;
+                border-radius: 4px;
+            }
+        }
+        .listColor {
+            margin-top: 24px;
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            flex-wrap: wrap;
+            .item {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                border: 2px solid $gray-200;
+                border-radius: 6px;
+                max-width: 120px;
+                width: 100%;
+                padding-top: 12px;
+                .color {
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                }
+            }
+            .active {
+                border: 2px solid $blue-eye;
+                .color_name {
+                    font-weight: 500;
+                }
+            }
+        }
+        .btn-buynow {
+            width: 100%;
+            margin-top: 48px;
+            padding: 8px 12px;
+            text-align: center;
+            background: $blue-eye;
+            color: #fff;
+            border-radius: 6px;
+        }
+        .contact {
+            text-align: center;
+            font-size: 14px;
+            line-height: 14px;
+            margin-top: 8px;
+            a {
+                color: $red-delete;
+                text-decoration: none;
+                font-weight: 500;
+            }
+        }
+    }
+}
+.box-review {
+    .rating {
+        margin: 24px 0;
+        padding: 12px;
+        background-color: #fff;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &_avg {
+            font-size: 44px;
+            line-height: 44px;
+            color: #cb1c22;
+        }
+        .count {
+            color: #939ca3;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
+        }
+        ul {
+            li {
+                font-size: 24px;
+            }
+        }
+    }
+    .comment {
+        background-color: #fff;
+        border-radius: 6px;
+        padding: 12px;
+        &_item {
+            margin-top: 12px;
+            .comment_user {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                .avartar {
+                    width: 60px;
+                    height: 56px;
+                    background-image: url('../../assets/image/nouser.png');
+                    background-position: top center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    border-radius: 50%;
+                    border: 2px solid $link-500;
+                }
+                .comment_user-content {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                    .head {
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                        .username {
+                            font-size: 18px;
+                            line-height: 24px;
+                            color: #32373d;
+                            font-weight: 500;
+                            margin-right: 4px;
+                        }
+                        .checked {
+                            display: flex;
+                            align-items: center;
+                            gap: 2px;
+                            font-size: 14px;
+                            line-height: 20px;
+                            color: #2f855a;
+                        }
+                    }
+                    .content {
+                        border: none;
+                        outline: none;
+                        font-size: 16px;
+                        color: #444b52;
+                        font-weight: 400;
+                        width: 100%;
+                        background-color: #fff;
+                    }
+                }
+                .feature_user {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    .time {
+                        font-size: 14px;
+                        line-height: 20px;
+                        color: #444b52;
+                        font-weight: 400;
+                    }
+                    .ft {
+                        color: #0664f9;
+                        font-size: 14px;
+                        line-height: 14px;
+                        cursor: pointer;
+                        &:hover {
+                            color: #939ca3;
+                        }
+                    }
+                }
+                .feature_admin {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    .time {
+                        font-size: 14px;
+                        line-height: 20px;
+                        color: #444b52;
+                        font-weight: 400;
+                    }
+                    .ft {
+                        color: #0664f9;
+                        font-size: 14px;
+                        line-height: 14px;
+                        cursor: pointer;
+                        &:hover {
+                            color: #939ca3;
+                        }
+                    }
+                }
+            }
+            .comment_admin {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                margin-top: 12px;
+                margin-left: 60px;
+                .avartar_admin {
+                    width: 60px;
+                    height: 56px;
+                    background-image: url('../../assets/image/apple-logo.png');
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    border-radius: 50%;
+                    border: 2px solid #000;
+                }
+                .comment_admin-content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                    border: 1px solid $gray-200;
+                    width: 100%;
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    .username {
+                        font-size: 18px;
+                        line-height: 24px;
+                        color: #32373d;
+                        font-weight: 500;
+                        margin-right: 4px;
+                        display: flex;
+                        gap: 4px;
+                        .role {
+                            font-size: 14px;
+                            padding: 0 4px;
+                            background: #939ca3;
+                            color: #fff;
+                            border-radius: 6px;
+                        }
+                    }
+                }
+                .content {
+                    border: none;
+                    outline: none;
+                    font-size: 16px;
+                    color: #444b52;
+                    font-weight: 400;
+                    width: 100%;
+                    background-color: #fff;
+                }
+            }
+            .feature_admin {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                .time {
+                    font-size: 14px;
+                    line-height: 20px;
+                    color: #444b52;
+                    font-weight: 400;
+                }
+                .ft {
+                    color: #0664f9;
+                    font-size: 14px;
+                    line-height: 14px;
+                    cursor: pointer;
+                    &:hover {
+                        color: #939ca3;
+                    }
+                }
+            }
+            .type_rep {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                .admin_rep {
+                    border: 1px solid $gray-200;
+                    padding: 4px;
+                    border-radius: 4px;
+                    margin-left: 60px;
+                }
+                .send {
+                    color: $blue-eye;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

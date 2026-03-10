@@ -1,0 +1,103 @@
+.product {
+    // max-width: 345px;
+    height: 534px;
+    border-radius: 12px;
+    padding: 24px 12px 32px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: solid 1px #edeeef;
+    position: relative;
+    // flex-basis: 33.33%;
+    background-color: #fff;
+    // flex-shrink: 33.33333%;
+    // flex: 1;
+    width: calc(33.333333333% - 16px);
+    &__img {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 240px;
+        height: 240px;
+        transform: scale(1);
+        transition: transform 0.3s ease;
+    }
+    &__img:hover {
+        transform: scale(1.05);
+    }
+    &__color {
+        margin-top: 12px;
+        display: flex;
+        gap: 12px;
+        &-item {
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+        }
+    }
+    &__name {
+        margin-top: 16px;
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 500;
+        display: inline;
+        color: #32373d;
+    }
+    &__memory {
+        margin-top: 12px;
+        display: flex;
+        background-color: #edeeef;
+        border-radius: 4px;
+        max-width: 276px;
+        width: 100%;
+        &-item {
+            flex: 1;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
+            padding: 4px 4px;
+            border-radius: 4px;
+        }
+        &-item:hover {
+            background-color: #444b52;
+            color: #edeeef;
+        }
+    }
+    &__price {
+        display: flex;
+        align-items: flex-end;
+        margin-top: 12px;
+        justify-content: space-between;
+        width: 100%;
+        .text {
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+        }
+        .price {
+            white-space: nowrap;
+            font-size: 20px;
+            line-height: 28px;
+            font-weight: 500;
+            color: #cb1c22;
+        }
+        strike {
+            color: #939ca3;
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 400;
+        }
+    }
+    .btn_view {
+        margin-top: 24px;
+        padding: 8px 24px;
+        color: #6a737a;
+        border: 1px solid #cbd1d6;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+    .btn_view:hover {
+        background-color: #6a737a;
+        color: #edeeef;
+    }
+}

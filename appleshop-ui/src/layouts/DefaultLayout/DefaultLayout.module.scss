@@ -1,0 +1,8 @@
+.defaultLayout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    .flex1 {
+        flex: 1;
+    }
+}

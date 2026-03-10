@@ -1,0 +1,8 @@
+@import '../../components/GlobalStyles/variables';
+input {
+    outline: none;
+    border: none;
+    background: transparent;
+    color: $gray500;
+    width: 100%;
+}

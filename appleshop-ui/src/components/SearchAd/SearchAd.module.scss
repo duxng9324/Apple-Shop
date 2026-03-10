@@ -1,0 +1,15 @@
+@import '../GlobalStyles/variables';
+
+.search {
+    margin-right: 12px;
+    border-radius: 4px;
+    background-color: $bg-input;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    max-width: 350px;
+    width: 100%;
+}
+.faSearch {
+    margin-right: 4px;
+}

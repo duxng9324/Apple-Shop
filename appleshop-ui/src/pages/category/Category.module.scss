@@ -1,0 +1,39 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 12px;
+}
+.category {
+    margin-bottom: 32px;
+    .title {
+        margin: 24px 0;
+        width: 100%;
+        text-align: center;
+        span {
+            text-align: center;
+            font-size: 36px;
+            line-height: 36px;
+            font-weight: 500;
+        }
+    }
+    .filter {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 12px;
+        gap: 4px;
+        select {
+            outline: none;
+            border-radius: 4px;
+        }
+    }
+    .list-item {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 16px;
+    }
+}
+body {
+    background-color: #f8f9fa;
+}

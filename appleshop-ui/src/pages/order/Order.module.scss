@@ -1,0 +1,147 @@
+@import '../../components/GlobalStyles/variables';
+
+.body {
+    background-color: $gray-200;
+}
+.container {
+    margin: 0 auto;
+    max-width: 1176px;
+}
+.order {
+    display: flex;
+    flex-direction: column;
+
+    .head {
+        padding: 8px 24px;
+        color: $gray-800;
+        font-weight: 600;
+        background-color: $gray-300;
+    }
+    .thank {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img {
+            width: 106px;
+        }
+        .talk {
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 24px;
+        }
+        .tel {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            a {
+                color: $gray-800;
+                text-decoration: none;
+                margin-left: 4px;
+                font-weight: 600;
+                font-size: 16px;
+            }
+        }
+    }
+    .infor {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .item {
+            transform: scale(1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            margin: 24px;
+            padding: 48px 0;
+            width: 80%;
+            background-color: #fff;
+            border-radius: 8px;
+            .person {
+                tr {
+                    width: 100%;
+                    box-shadow: inset 0px 1px 0px #e9ecef;
+                    th {
+                        text-align: left;
+                        width: 320px;
+                    }
+                    th,
+                    td {
+                        padding: 4px 8px;
+                    }
+                }
+            }
+            .text-detail {
+                padding: 4px 8px;
+                text-align: center;
+                font-weight: 600;
+            }
+            .products {
+                .headerTable {
+                    background-color: $gray-100;
+                    color: $gray-800;
+                }
+                .product {
+                    .detail {
+                        display: flex;
+                        align-items: center;
+                        img {
+                            max-width: 120px;
+                        }
+                    }
+                    td {
+                        text-align: center;
+                        padding: 4px 8px;
+                    }
+                    .money {
+                        font-weight: 600;
+                        color: $red-delete;
+                        font-size: 16px;
+                    }
+                }
+                .footer {
+                    .total_price {
+                        padding: 4px 8px;
+                        color: $red-delete;
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+                    .status {
+                        margin: 0 8px;
+                        div {
+                            color: $green-ship;
+                            display: flex;
+                            gap: 4px;
+                            align-items: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.note {
+    background-color: $gray-300 !important;
+    transform: scale(1.05) !important;
+}
+.backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s, transform 0.3s;
+    opacity: 0.5;
+
+    &:hover {
+        opacity: 1;
+    }
+}

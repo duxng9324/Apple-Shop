@@ -1,0 +1,174 @@
+@import '../../components/GlobalStyles/variables';
+
+.container {
+    max-width: 1176px;
+    width: 100%;
+    margin: 0 auto;
+}
+.return {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    color: $blue-eye;
+    width: 100%;
+    a {
+        max-width: 120px;
+        color: $blue-eye;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+        position: relative;
+    }
+    a::after {
+        color: $blue-eye;
+        content: '';
+        display: block;
+        height: 1px;
+        width: 0;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        background-color: $blue-eye;
+        transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    }
+    a:hover::after {
+        width: 100%;
+        left: 0;
+    }
+}
+.cart {
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(10, 10, 10, 0.15);
+    margin-bottom: 48px;
+    .count {
+        box-shadow: inset 0 -1px 0 0 #edeeef;
+        font-weight: 500;
+        padding: 10px 24px;
+        color: #212529;
+        margin-bottom: 0;
+        font-size: 24px;
+        line-height: 32px;
+    }
+    .product-list {
+        display: flex;
+        flex-direction: column;
+    }
+    .totalprice {
+        box-shadow: inset 0 -1px 0 0 #edeeef;
+        padding: 16px 24px;
+        display: flex;
+        justify-content: flex-end;
+        .wrap {
+            max-width: 276px;
+            width: 100%;
+        }
+        &-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            span,
+            strong {
+                color: $gray-800;
+                font-size: 16px;
+                line-height: 20px;
+            }
+            .text-price-l {
+                font-size: 20px;
+                color: $red-delete;
+            }
+        }
+    }
+    form {
+        padding: 10px 24px;
+        box-shadow: inset 0 -1px 0 0 #edeeef;
+        .sex {
+            display: flex;
+            margin-bottom: 8px;
+            color: $gray-500;
+            input {
+                width: 20px;
+                margin-right: 4px;
+            }
+            label + input {
+                margin-left: 16px;
+            }
+        }
+        .line {
+            display: flex;
+            width: 100%;
+            input {
+                height: 24px;
+                border: 1px solid $gray-400;
+                margin-bottom: 4px;
+                border-radius: 4px;
+                padding: 4px;
+            }
+            input + input {
+                margin-left: 4px;
+            }
+            input::placeholder {
+                color: $gray-800;
+            }
+        }
+    }
+    .address {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 16px;
+        select {
+            width: 400px;
+            border: 1px solid $gray-400;
+            color: $gray-500;
+            height: 32px;
+            border-radius: 4px;
+            padding: 4px;
+        }
+        input {
+            height: 48px;
+            border: 1px solid $gray-400;
+            border-radius: 4px;
+            padding: 4px;
+        }
+    }
+    .footer {
+        padding: 10px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .btn-order {
+            padding: 8px 20px;
+            background-color: $link-500;
+            color: #edeeef;
+            font-size: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .btn-order:hover {
+            opacity: 0.8;
+        }
+        .confirm {
+            p {
+                font-size: 12px;
+                margin-top: 4px;
+            }
+        }
+    }
+}
+.errors {
+    font-size: 10px;
+    color: red;
+}
+.no-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+        max-width: 300px;
+        width: 100%;
+    }
+    p {
+        font-weight: 500;
+        font-size: 18px;
+    }
+}

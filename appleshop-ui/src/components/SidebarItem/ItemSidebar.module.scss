@@ -1,0 +1,30 @@
+@import '../../components/GlobalStyles/variables';
+.itemSidebar {
+    width: 100%;
+    padding: 8px 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    height: 42px;
+    position: relative;
+    color: white;
+    text-decoration: none;
+    .icon-left {
+        margin-right: 16px;
+        font-size: 20px;
+    }
+    .icon-right {
+        position: absolute;
+        right: 8px;
+        padding: 4px;
+        font-size: 24px;
+    }
+    border-radius: 6px;
+}
+.itemSidebar:hover {
+    background-image: linear-gradient(to right, $praimery, $white-15);
+    color: $graye;
+}
+.active {
+    background-image: linear-gradient(to right, $praimery, $white-15);
+}

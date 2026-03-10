@@ -1,0 +1,162 @@
+@import '../../../../components/GlobalStyles/variables';
+.wrap_popup {
+    position: fixed;
+    inset: 0;
+    background-color: rgba($color: #000000, $alpha: 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    .popup {
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        border-radius: 4px;
+        max-width: 500px;
+        width: 100%;
+        height: 600px;
+        overflow-y: auto;
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 8px;
+            border-bottom: 1px solid $text-color;
+            span {
+                color: $text-color;
+                font-size: 32px;
+            }
+            .faTime {
+                cursor: pointer;
+            }
+            .faTime:hover {
+                opacity: 0.8;
+            }
+        }
+        .body {
+            padding: 8px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            .select {
+                font-size: 14px;
+                font-weight: 600;
+                margin-bottom: -12px;
+                color: $text-color;
+            }
+            button {
+                margin: 12px auto;
+                width: 65%;
+            }
+        }
+    }
+    .popup::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background-color: #f5f5f5;
+    }
+    .popup::-webkit-scrollbar-thumb {
+        background-color: #aaa;
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+}
+.colorSelect {
+    .item-color {
+        width: 50%;
+        display: inline-block;
+        vertical-align: middle;
+        p,
+        input {
+            width: 50%;
+            display: inline-block;
+        }
+    }
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #444b52;
+        margin-right: 10px;
+        display: block;
+    }
+}
+.imageSelect {
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #444b52;
+    }
+    .item-image {
+        display: flex;
+        input {
+            outline: 1px solid $gray-400;
+            padding: 2px;
+            margin-right: 8px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+        }
+    }
+    .button-add {
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        background-color: #000;
+        padding: 4px 16px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 200;
+        cursor: pointer;
+    }
+    .button-add:hover {
+        opacity: 0.8;
+    }
+}
+.memoryPrice {
+    display: flex;
+    flex-direction: column;
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #444b52;
+    }
+    .body {
+        display: flex;
+        .item {
+            display: flex;
+            justify-content: space-around;
+            gap: 24px;
+            .memory {
+                display: flex;
+            }
+            span {
+                white-space: nowrap;
+                font-size: 14px;
+                font-weight: 600;
+                color: #444b52;
+                margin-right: 4px;
+            }
+            .price {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+    .button-add {
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        background-color: #000;
+        padding: 4px 16px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 200;
+        cursor: pointer;
+    }
+    .button-add:hover {
+        opacity: 0.8;
+    }
+}

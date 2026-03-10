@@ -1,0 +1,50 @@
+@import '../../components/GlobalStyles/variables';
+
+.color {
+    background-color: $bg-box;
+    margin: 24px auto;
+    padding: 20px 16px;
+    border-radius: 12px;
+    .wrap-table {
+        background-color: #fff;
+        border-radius: 6px;
+        padding: 12px 8px;
+    }
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 8px 12px;
+        justify-content: space-between;
+        p {
+            color: $text-hd-tb;
+            font-size: 24px;
+            font-weight: 500;
+        }
+    }
+    .body {
+        .table-color {
+            width: 100%;
+            border-collapse: collapse;
+            th {
+                border: 1px solid $bg-box;
+                padding: 4px 8px;
+            }
+            tbody {
+                th {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #000;
+                }
+                tr {
+                    th:nth-child(3) {
+                        text-align: center;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+    }
+}

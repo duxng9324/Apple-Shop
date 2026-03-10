@@ -1,0 +1,169 @@
+@import '../../../components/GlobalStyles/variables';
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 12px;
+}
+
+.footer {
+    .key-selling {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        background-color: $text-color;
+        padding: 20px;
+        .container {
+            display: flex;
+            justify-content: space-around;
+            gap: 48px;
+        }
+        .icon {
+            display: flex;
+            align-items: center;
+            font-size: 40px;
+        }
+        &-item {
+            display: flex;
+            .wrap-content {
+                margin-left: 8px;
+                display: flex;
+                flex-direction: column;
+                .title {
+                    color: #fff;
+                    font-size: 16px;
+                    line-height: 24px;
+                    font-weight: 500;
+                    white-space: nowrap;
+                }
+                .desc {
+                    color: $gray-300;
+                    font-size: 14px;
+                    line-height: 20px;
+                    font-weight: 400;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+    &-middle {
+        background-color: $gray-800;
+    }
+    &-content {
+        display: flex;
+        padding: 24px 0;
+    }
+    &-info {
+        display: flex;
+        flex-direction: column;
+        max-width: 376px;
+        width: 100%;
+        .hotline {
+            display: flex;
+            gap: 16px;
+            .item {
+                .text {
+                    color: $gray-300;
+                    margin-bottom: 4px;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+                .phone {
+                    color: #fff;
+                    font-size: 24px;
+                    font-weight: 500;
+                    line-height: 100%;
+                    text-decoration: none;
+                    background-color: transparent;
+                }
+            }
+        }
+        .service {
+            margin-top: 12px;
+            .text {
+                color: $gray-200;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+            ul {
+                list-style: none;
+                li {
+                    display: flex;
+                    color: $gray-300;
+                    margin-bottom: 4px;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+                li::before {
+                    content: '';
+                    background: #939ca3;
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
+                    position: relative;
+                    display: inline-flex;
+                    margin-right: 4px;
+                    top: 8px;
+                }
+            }
+        }
+        img {
+            margin-top: 12px;
+            max-width: 146px;
+        }
+    }
+    &-category {
+        display: flex;
+        gap: 24px;
+        flex: 1;
+        justify-content: space-between;
+        margin-left: 124px;
+        .category-item {
+            .title {
+                color: $gray-200;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 500;
+                margin-bottom: 8px;
+            }
+            ul {
+                list-style: none;
+            }
+            li:not(:last-child) {
+                margin-bottom: 8px;
+            }
+            a {
+                color: $gray-400;
+                cursor: pointer;
+                text-decoration: none;
+                font-size: 13px;
+                position: relative;
+            }
+            a::after {
+                color: $gray-200;
+                content: '';
+                display: block;
+                height: 1px;
+                width: 0;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                background-color: #fff;
+                transition: width 0.3s ease 0s, left 0.3s ease 0s;
+            }
+
+            a:hover::after {
+                width: 100%;
+                left: 0;
+            }
+        }
+    }
+    &-bottom {
+        background-color: $text-color;
+        color: $gray-400;
+        text-align: center;
+        font-size: 10px;
+    }
+}
