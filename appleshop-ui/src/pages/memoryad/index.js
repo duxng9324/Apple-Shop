@@ -1,87 +1,98 @@
-import classNames from 'classnames/bind';
-import styles from './Memory.module.scss';
-import { useEffect, useState } from 'react';
-import { MemoryService } from '~/service/memoryService';
-import Action from '~/components/Action';
-import Button from '~/components/Button';
-import { AddPopup, DeletePopup, EditPopup } from './components';
-
-const cx = classNames.bind(styles);
+import { Table, Button, Space } from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { MemoryService } from "~/service/memoryService";
+import AddMemoryModal from "./components/AddMemory";
+import EditMemoryModal from "./components/EditMemory";
+import { confirmDeleteMemory } from "./components/DeleteMemory";
 
 function MemoryAd() {
-    const [memories, setMemories] = useState([]);
-    const [rowMemory, setRowMemory] = useState();
-    const [rowDelete, setRowDelete] = useState();
+  const [memories, setMemories] = useState([]);
+  const [rowMemory, setRowMemory] = useState(null);
+  const [visibleAdd, setVisibleAdd] = useState(false);
 
-    const [visibleAdd, setVisibleAdd] = useState(false);
-    const visibleEdit = rowMemory ? rowMemory : null;
-    const visibleDelete = rowDelete ? rowDelete : null;
+  const memoryService = new MemoryService();
 
-    //popupEdit
-    const handleOpenPopup = (memory) => {
-        setRowMemory(memory);
-    };
+  const fetchData = async () => {
+    const res = await memoryService.view();
+    setMemories(res);
+  };
 
-    //Popup Delete
-    const handleOpenPopupDelete = (category) => {
-        setRowDelete(category);
-    };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-    //popup add
-    const handleOpenAddPopup = () => {
-        setVisibleAdd(!visibleAdd);
-    };
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      width: 80,
+    },
+    {
+      title: "Memory Type",
+      dataIndex: "type",
+    },
+    {
+      title: "Action",
+      width: 150,
+      render: (_, record) => (
+        <Space>
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => setRowMemory(record)}
+          />
 
-    useEffect(() => {
-        const memroryService = new MemoryService();
-        const fetchData = async function () {
-            const res = await memroryService.view();
-            setMemories(res);
-        };
-        fetchData();
-    }, [rowMemory, rowDelete, visibleAdd]);
+          <Button
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => confirmDeleteMemory(record, fetchData)}
+          />
+        </Space>
+      ),
+    },
+  ];
 
-    const memoriesTb = memories.map((memory, index) => {
-        return (
-            <tr key={index}>
-                <th>{memory.id}</th>
-                <th>{memory.type}</th>
-                <th>
-                    <Action edit={() => handleOpenPopup(memory)} remove={() => handleOpenPopupDelete(memory)} />
-                </th>
-            </tr>
-        );
-    });
+  return (
+    <>
+      <Space
+        style={{
+          marginBottom: 16,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <h3>Memory Management</h3>
 
-    return (
-        <div className={cx('memory')}>
-            <div className={cx('wrap-table')}>
-                {visibleDelete && <DeletePopup data={visibleDelete} onclick={() => handleOpenPopupDelete(null)} />}
-                {visibleEdit && <EditPopup data={visibleEdit} onclick={() => handleOpenPopup(null)} />}
-                {visibleAdd && <AddPopup handleOpenAddPopup={handleOpenAddPopup} />}
-                <div className={cx('header')}>
-                    <p className={'content'}>
-                        Table <b>Memory</b>
-                    </p>
-                    <Button color="blue" onclick={handleOpenAddPopup}>
-                        Add Memory
-                    </Button>
-                </div>
-                <div className={cx('body')}>
-                    <table className={cx('table-memory')}>
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>Type</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>{memoriesTb}</tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    );
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => setVisibleAdd(true)}
+        >
+          Add Memory
+        </Button>
+      </Space>
+
+      <Table
+        columns={columns}
+        dataSource={memories}
+        rowKey="id"
+        bordered
+      />
+
+      <AddMemoryModal
+        open={visibleAdd}
+        onClose={() => setVisibleAdd(false)}
+        refresh={fetchData}
+      />
+
+      <EditMemoryModal
+        open={!!rowMemory}
+        onClose={() => setRowMemory(null)}
+        data={rowMemory}
+        refresh={fetchData}
+      />
+    </>
+  );
 }
 
 export default MemoryAd;

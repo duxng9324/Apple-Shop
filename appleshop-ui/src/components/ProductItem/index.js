@@ -9,7 +9,7 @@ function ProductItem(data) {
     const { imgLinks, colorDTOs, name, list, code } = data.data || {};
     const prices = list.map((item) => item.price);
     const types = list.map((item) => item.type);
-    const imageArr = imgLinks.split(' ');
+    const imageArr = imgLinks;
 
     const navigate = useNavigate();
     const handleViewDetail = () => {

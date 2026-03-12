@@ -1,77 +1,63 @@
-import classNames from 'classnames/bind';
-import styles from './Add.module.scss';
+import { Modal, Form, Input, Button } from "antd";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { ColorService } from "~/service/colorService";
 
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import FormGroup from '~/components/FormGroup';
-import { FaTimes } from 'react-icons/fa';
-import Button from '~/components/Button';
-import { createPortal } from 'react-dom';
-import { ColorService } from '~/service/colorService';
-const cx = classNames.bind(styles);
+const schema = yup.object({
+  color: yup.string().required("Please enter color name"),
+  code: yup.string().required("Please enter color code"),
+});
 
-function AddPopup(props) {
-    const { handleOpenAddPopup } = props;
+function AddColorModal({ open, onClose, refresh }) {
+  const colorService = new ColorService();
 
-    const schema = yup.object().shape({
-        color: yup.string().required('Hãy nhập thêm màu sản phẩm'),
-        code: yup.string().required('Hãy nhập mã màu sản phẩm'),
-    });
-    const {
-        register,
-        handleSubmit,
-        // formState: { errors },
-    } = useForm({ resolver: yupResolver(schema) });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    const fields = [
-        {
-            type: 'text',
-            name: 'color',
-            placeholder: 'Hãy thêm màu sản phẩm',
-        },
-        {
-            type: 'text',
-            name: 'code',
-            placeholder: 'Hãy thêm mã màu sản phẩm',
-        },
-    ];
+  const onSubmit = async (data) => {
+    await colorService.add(data);
+    refresh();
+    reset();
+    onClose();
+  };
 
-    const InputField = () => {
-        return fields.map((field, index) => {
-            return <FormGroup field={field} register={register} key={index} />;
-        });
-    };
+  return (
+    <Modal
+      open={open}
+      title="Add Color"
+      footer={null}
+      onCancel={onClose}
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Item
+          label="Color"
+          validateStatus={errors.color && "error"}
+          help={errors.color?.message}
+        >
+          <Input placeholder="Enter color name" {...register("color")} />
+        </Form.Item>
 
-    const handleClick = (e) => {
-        e.stopPropagation();
-    };
-    const colorService = new ColorService();
-    const onAdd = async (data) => {
-        try {
-            await colorService.add(data);
-            handleOpenAddPopup();
-        } catch (error) {}
-    };
-    return createPortal(
-        <>
-            <div className={cx('wrap_popup')} onClick={handleOpenAddPopup}>
-                <div className={cx('add_popup')} onClick={(e) => handleClick(e)}>
-                    <div className={cx('header')}>
-                        <span>Add Color</span>
-                        <FaTimes className={cx('faTime')} onClick={handleOpenAddPopup} />
-                    </div>
-                    <form className={cx('body')} onSubmit={handleSubmit(onAdd)}>
-                        <InputField />
-                        <Button className={cx('test')} type="submit" size="" color="blue">
-                            Add
-                        </Button>
-                    </form>
-                </div>
-            </div>
-        </>,
-        document.body,
-    );
+        <Form.Item
+          label="Color Code"
+          validateStatus={errors.code && "error"}
+          help={errors.code?.message}
+        >
+          <Input placeholder="#000000" {...register("code")} />
+        </Form.Item>
+
+        <Button type="primary" htmlType="submit" block>
+          Add Color
+        </Button>
+      </form>
+    </Modal>
+  );
 }
 
-export default AddPopup;
+export default AddColorModal;

@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	  protected AuthenticationManager authenticationManager() throws Exception {
 	    return super.authenticationManager();
 	  }
+	  @Override
 	  protected void configure(HttpSecurity http) throws Exception {
 	    // Disable crsf cho đường dẫn /rest/**
 	    http.csrf().ignoringAntMatchers("/api/**");

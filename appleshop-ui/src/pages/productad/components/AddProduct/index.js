@@ -1,291 +1,204 @@
-import classNames from 'classnames/bind';
-import styles from './Addproduct.module.scss';
-import { FaPlusCircle, FaTimes, FaTrashRestoreAlt } from 'react-icons/fa';
-import Button from '~/components/Button';
-import { createPortal } from 'react-dom';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import FormGroup from '~/components/FormGroup';
-import { ProductService } from '~/service/productService';
-import { useState } from 'react';
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Checkbox,
+  Button,
+  Space,
+  InputNumber
+} from "antd";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { ProductService } from "~/service/productService";
 
-const cx = classNames.bind(styles);
+function AddProductModal({
+  open,
+  onClose,
+  categories,
+  colors,
+  memories,
+  refresh
+}) {
+  const [form] = Form.useForm();
+  const productService = new ProductService();
 
-function isMissingKey(objects, key) {
-    if (!Array.isArray(objects)) {
-        return false;
-    }
-    return objects.some((obj) => !(key in obj && obj[key] !== ''));
-}
-function AddPopup(props) {
-    const { handleOpenAddPopup, categories, colors, memories } = props;
-
-    const handleClick = (e) => {
-        e.stopPropagation();
+  const onFinish = async (values) => {
+    const payload = {
+      ...values,
+      imgLinks: values.imgLinks,
+      list: values.list
     };
 
-    const schema = yup.object().shape({
-        name: yup.string().required('Hãy điền đầy đủ trường này'),
-        code: yup.string().required('Hãy điền đầy đủ trường này'),
-        description: yup.string().required('Hãy điền đầy đủ trường này'),
-        categoryCode: yup.string().required('Hãy điền đầy đủ trường này'),
-        colors: yup.array().min(1).required(),
-    });
-    const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
+    await productService.add(payload);
 
-    const fields = [
-        {
-            type: 'text',
-            name: 'name',
-            placeholder: 'Nhập tên sản phẩm',
-        },
-        {
-            type: 'text',
-            name: 'code',
-            placeholder: 'Nhập mã sản phẩm',
-        },
-        {
-            type: 'text',
-            name: 'description',
-            placeholder: 'Nhập mô tả của sản phẩm',
-        },
-    ];
-    const InputField = fields.map((field, index) => {
-        return <FormGroup field={field} register={register} key={index} />;
-    });
-    //Category
-    const Select = () => {
-        return (
-            <select {...register('categoryCode')}>
-                {categories.map((category, index) => {
-                    return (
-                        <option value={category.code} key={index}>
-                            {category.name}
-                        </option>
-                    );
-                })}
-            </select>
-        );
-    };
+    refresh();
+    onClose();
+    form.resetFields();
+  };
 
-    //Color
-    const ColorSelect = () => {
-        return (
-            <div className={cx('colorSelect')}>
-                <span className={cx('title')}> Select list color for your product</span>
-                {colors.map((color, index) => {
-                    return (
-                        <div className={cx('item-color')} id={index} key={index}>
-                            <p>{color.color}</p>
-                            <input type="checkbox" name="color" {...register('colors')} value={color.id} />
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    };
+  return (
+    <Modal
+      open={open}
+      title="Add Product"
+      footer={null}
+      width={800}
+      onCancel={onClose}
+    >
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+      >
+        <Form.Item
+          label="Product Name"
+          name="name"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
 
-    //Linkimage
-    let images = [];
-    const getLinkImg = (a) => {
-        images = a.join(' ');
-    };
-    const ListImage = () => {
-        const [val, setVal] = useState([]);
+        <Form.Item
+          label="Code"
+          name="code"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
 
-        const handleAdd = () => {
-            const newVal = [...val];
-            newVal.push('');
-            setVal(newVal);
-        };
+        <Form.Item
+          label="Description"
+          name="description"
+          rules={[{ required: true }]}
+        >
+          <Input.TextArea />
+        </Form.Item>
 
-        const handleChange = (onchangeValue, i) => {
-            const inputData = [...val];
-            inputData[i] = onchangeValue.target.value;
-            setVal(inputData);
-        };
-        const handleDelete = (i) => {
-            const defaultVal = [...val];
-            defaultVal.splice(i, 1);
-            setVal(defaultVal);
-        };
-        getLinkImg(val);
-        return (
-            <div className={cx('imageSelect')}>
-                <span className={cx('title')}>Type link image for product</span>
-                {val.map((data, index) => {
-                    return (
-                        <div className={cx('item-image')} key={index}>
-                            <input
-                                value={data}
-                                type="text"
-                                name={`imgLinks-${index}`}
-                                placeholder="type link image for product"
-                                onChange={(e) => handleChange(e, index)}
-                            />
-                            <FaTrashRestoreAlt color="red" onClick={() => handleDelete(index)} />
-                        </div>
-                    );
-                })}
-                <div className={cx('button-add')} onClick={() => handleAdd()}>
-                    <span>add image</span>
-                    <FaPlusCircle color="white" />
-                </div>
-            </div>
-        );
-    };
+        <Form.Item
+          label="Category"
+          name="categoryCode"
+          rules={[{ required: true }]}
+        >
+          <Select>
+            {categories.map((c) => (
+              <Select.Option
+                key={c.code}
+                value={c.code}
+              >
+                {c.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
 
-    const SelectMemoryPrice = () => {
-        const [val, setVal] = useState([]);
-        const [memoried, setMemoried] = useState([]);
+        <Form.Item
+          label="Colors"
+          name="colors"
+          rules={[{ required: true }]}
+        >
+          <Checkbox.Group>
+            <Space wrap>
+              {colors.map((c) => (
+                <Checkbox key={c.id} value={c.id}>
+                  {c.color}
+                </Checkbox>
+              ))}
+            </Space>
+          </Checkbox.Group>
+        </Form.Item>
 
-        const handleMemoryChange = (e, index) => {
-            const selectedMemoryType = e.target.value;
+        {/* Images */}
+        <Form.List name="imgLinks">
+          {(fields, { add, remove }) => (
+            <>
+              <label>Images</label>
 
-            // Check if the selected memory type is not already used in other items
-            const isMemoryTypeAvailable =
-                !memoried.includes(selectedMemoryType) || (memoried[index] && selectedMemoryType === memoried[index]);
+              {fields.map((field) => (
+                <Space key={field.key}>
+                  <Form.Item
+                    {...field}
+                    rules={[{ required: true }]}
+                  >
+                    <Input placeholder="Image link" />
+                  </Form.Item>
 
-            if (isMemoryTypeAvailable) {
-                setMemoried((prevMemoried) => {
-                    const newMemoried = [...prevMemoried];
-                    newMemoried[index] = selectedMemoryType;
-                    return newMemoried;
-                });
+                  <MinusCircleOutlined
+                    onClick={() => remove(field.name)}
+                  />
+                </Space>
+              ))}
 
-                setVal((prevVal) => {
-                    const newVals = [...prevVal];
-                    newVals[index].type = selectedMemoryType;
-                    return newVals;
-                });
-            } else {
-                alert('This memory type is already used in another item!');
-            }
-        };
+              <Button
+                icon={<PlusOutlined />}
+                onClick={() => add()}
+              >
+                Add Image
+              </Button>
+            </>
+          )}
+        </Form.List>
 
-        const handleAdd = () => {
-            // Get all available memory types
-            const availableMemories = memories.filter((memory) => !memoried.includes(memory.type));
+        {/* Memory Price */}
+        <Form.List name="list">
+          {(fields, { add, remove }) => (
+            <>
+              <label>Memory - Price</label>
 
-            // Check if there are available memory types
-            if (availableMemories.length > 0) {
-                // Create a new item with the first available memory type
-                const newItem = {
-                    type: availableMemories[0].type,
-                    price: '',
-                };
+              {fields.map((field) => (
+                <Space key={field.key}>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, "type"]}
+                    rules={[{ required: true }]}
+                  >
+                    <Select placeholder="Memory">
+                      {memories.map((m) => (
+                        <Select.Option
+                          key={m.id}
+                          value={m.type}
+                        >
+                          {m.type}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
 
-                // Update the state with the new item
-                setVal((prevVal) => [...prevVal, newItem]);
+                  <Form.Item
+                    {...field}
+                    name={[field.name, "price"]}
+                    rules={[{ required: true }]}
+                  >
+                    <InputNumber
+                      placeholder="Price"
+                      min={0}
+                    />
+                  </Form.Item>
 
-                // Update the memoried array with the new memory type
-                setMemoried((prevMemoried) => [...prevMemoried, newItem.type]);
-            } else {
-                alert('Tất cả phiên bản bộ nhớ của sản phẩm đã được thêm');
-            }
-        };
-        const handleDelete = (i) => {
-            setMemoried((prevMemoried) => {
-                const newMemoried = [...prevMemoried];
-                newMemoried.splice(i, 1);
-                return newMemoried;
-            });
-            setVal((prevVal) => prevVal.filter((item, index) => index !== i));
-        };
-        const handlePriceChange = (e, index) => {
-            const value = e.target.value;
-            setVal((prevVal) => {
-                const newVal = [...prevVal];
-                newVal[index].price = value;
-                return newVal;
-            });
-        };
+                  <MinusCircleOutlined
+                    onClick={() => remove(field.name)}
+                  />
+                </Space>
+              ))}
 
-        getList(val);
+              <Button
+                icon={<PlusOutlined />}
+                onClick={() => add()}
+              >
+                Add Memory
+              </Button>
+            </>
+          )}
+        </Form.List>
 
-        return (
-            <div className={cx('memoryPrice')}>
-                <span className={cx('title')}>Price with Memory</span>
-                <div className={cx('body')}>
-                    {val.map((item, index) => (
-                        <div className={cx('item')} key={item.type}>
-                            <div className={cx('memory')}>
-                                <span>Memory :</span>
-                                <select value={item.type} onChange={(e) => handleMemoryChange(e, index)}>
-                                    {memories.map((memory, i) => (
-                                        <option
-                                            value={memory.type}
-                                            key={i}
-                                            disabled={memoried.includes(memory.type) && memoried[index] !== memory.type}
-                                        >
-                                            {memory.type}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className={cx('price')}>
-                                <span>Price :</span>
-                                <input
-                                    defaultValue={item.price}
-                                    type="number"
-                                    placeholder="type price for product"
-                                    onChange={(e) => handlePriceChange(e, index)}
-                                />
-                            </div>
-                            <FaTrashRestoreAlt color="red" onClick={() => handleDelete(index)} />
-                        </div>
-                    ))}
-                    <div className={cx('button-add')} onClick={() => handleAdd()}>
-                        <span>add price and memory</span>
-                        <FaPlusCircle color="white" />
-                    </div>
-                </div>
-            </div>
-        );
-    };
-    let check;
-    const getList = (a) => {
-        check = a;
-    };
-    const productService = new ProductService();
-    const onAdd = async (data) => {
-        if (isMissingKey(check, 'price') === false) {
-            data.imgLinks = images;
-            data.list = check;
-            try {
-                await productService.add(data);
-                handleOpenAddPopup();
-            } catch (error) {}
-        } else {
-            alert('Vui lòng điền đầy đủ giá tiền');
-        }
-    };
-
-    return createPortal(
-        <>
-            <div className={cx('wrap_popup')} onClick={handleOpenAddPopup}>
-                <div className={cx('add_popup')} onClick={(e) => handleClick(e)}>
-                    <div className={cx('header')}>
-                        <span>Add Information Product</span>
-                        <FaTimes className={cx('faTime')} onClick={handleOpenAddPopup} />
-                    </div>
-                    <form className={cx('body')} onSubmit={handleSubmit(onAdd)}>
-                        {InputField}
-                        <p className={cx('select')}>Select a category for your product</p>
-                        <Select />
-                        <ColorSelect />
-                        <ListImage />
-                        <SelectMemoryPrice />
-                        <Button className={cx('test')} type="submit" size="" color="blue">
-                            Add
-                        </Button>
-                    </form>
-                </div>
-            </div>
-        </>,
-        document.body,
-    );
+        <Button
+          type="primary"
+          htmlType="submit"
+          block
+        >
+          Add Product
+        </Button>
+      </Form>
+    </Modal>
+  );
 }
 
-export default AddPopup;
+export default AddProductModal;

@@ -22,8 +22,8 @@ public class ProductEntity extends BaseEntity {
 	@Column(name = "product_code")
 	private String code;
 	
-	@Column(name = "image_link")
-	private String imgLink;
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductImageEntity> images = new ArrayList<>();
 
 	@Column(name = "description")
 	private String description;
@@ -97,13 +97,13 @@ public class ProductEntity extends BaseEntity {
 	}
 
 
-	public String getImgLink() {
-		return imgLink;
-	}
+	public List<ProductImageEntity> getImages() {
+    return images;
+}
 
-	public void setImgLink(String imgLink) {
-		this.imgLink = imgLink;
-	}
+public void setImages(List<ProductImageEntity> images) {
+    this.images = images;
+}
 
 	public List<ColorEntity> getColors() {
 		return colors;

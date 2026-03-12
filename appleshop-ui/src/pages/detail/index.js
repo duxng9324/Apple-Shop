@@ -52,7 +52,7 @@ function Detail() {
         fetchData();
     }, [productCode, isLoading]);
     const { imgLinks, name, list, colorDTOs, commentDTOs } = product;
-    const imageArray = imgLinks ? imgLinks.split(' ') : '';
+    const imageArray = imgLinks || [];
 
     const commentService = new CommentService();
     const deleteComment = async (id) => {

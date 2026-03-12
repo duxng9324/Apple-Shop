@@ -1,64 +1,65 @@
-import { createPortal } from 'react-dom';
-import classNames from 'classnames/bind';
-import styles from './Edit.module.scss';
-import * as yup from 'yup';
-import FormGroup from '../../../../components/FormGroup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FaTimes } from 'react-icons/fa';
-import { MemoryService } from '~/service/memoryService';
-import Button from '~/components/Button';
+import { Modal, Form, Input, Button, message } from "antd";
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { MemoryService } from "~/service/memoryService";
 
-const cx = classNames.bind(styles);
+function EditMemoryModal({ open, onClose, data, refresh }) {
+  const memoryService = new MemoryService();
 
-function EditPopup(data) {
-    const schema = yup.object().shape({
-        type: yup.string().required('Hãy điền đầy đủ trường này'),
-    });
-    const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      type: "",
+    },
+  });
 
-    const memory = data.data;
-    const handleOpenPopup = data.onclick;
-    const field = {
-        type: 'text',
-        name: 'type',
-        placeholder: 'Chỉnh sửa thông tin bộ nhớ',
-        value: memory.type,
-    };
-    const InputField = () => {
-        return <FormGroup field={field} register={register} />;
+  useEffect(() => {
+    if (data) {
+      reset({
+        type: data.type,
+      });
+    }
+  }, [data, reset]);
+
+  const onSubmit = async (formData) => {
+    const payload = {
+      ...formData,
+      id: data.id,
     };
 
-    const handleClick = (e) => {
-        e.stopPropagation();
-    };
-    const memoryservice = new MemoryService();
-    const onEdit = async (variableEdit) => {
-        variableEdit.id = memory.id;
-        try {
-            await memoryservice.edit(variableEdit);
-            handleOpenPopup();
-        } catch (error) {}
-    };
-    return createPortal(
-        <>
-            <div className={cx('wrap_popup')} onClick={handleOpenPopup}>
-                <div className={cx('popup')} onClick={(e) => handleClick(e)}>
-                    <div className={cx('header')}>
-                        <span>Edit Memory</span>
-                        <FaTimes className={cx('faTime')} onClick={handleOpenPopup} />
-                    </div>
-                    <form className={cx('body')} onSubmit={handleSubmit(onEdit)}>
-                        <InputField />
-                        <Button type="submit" size="" color="green">
-                            Edit
-                        </Button>
-                    </form>
-                </div>
-            </div>
-        </>,
-        document.body,
-    );
+    try {
+      await memoryService.edit(payload);
+      message.success("Memory updated successfully");
+      refresh();
+      onClose();
+    } catch (error) {
+      message.error("Update failed");
+    }
+  };
+
+  return (
+    <Modal
+      open={open}
+      title="Edit Memory"
+      footer={null}
+      onCancel={onClose}
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Item label="Memory Type">
+          <Controller
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <Input {...field} />
+            )}
+          />
+        </Form.Item>
+
+        <Button type="primary" htmlType="submit" block>
+          Update Memory
+        </Button>
+      </form>
+    </Modal>
+  );
 }
 
-export default EditPopup;
+export default EditMemoryModal;

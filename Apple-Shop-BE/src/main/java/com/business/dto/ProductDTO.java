@@ -7,7 +7,7 @@ public class ProductDTO extends AbstractDTO {
 	private String code;
 	private String categoryCode;
 	private String description;
-	private String imgLinks;
+	private List<String> imgLinks; 
 	private List<Long> colors;
 	private List<TypeDTO> list;
 	
@@ -46,10 +46,10 @@ public class ProductDTO extends AbstractDTO {
 	public void setColors(List<Long> colors) {
 		this.colors = colors;
 	}
-	public String getImgLinks() {
+	public List<String> getImgLinks() {
 		return imgLinks;
 	}
-	public void setImgLinks(String imgLinks) {
+	public void setImgLinks(List<String> imgLinks) {
 		this.imgLinks = imgLinks;
 	}
 	public List<TypeDTO> getList() {

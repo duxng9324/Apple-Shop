@@ -1,90 +1,105 @@
-import classNames from 'classnames/bind';
-import styles from './CategoryAd.module.scss';
-import { CategoryService } from '~/service/categoryService';
-import Action from '~/components/Action';
-import Button from '~/components/Button';
-import { AddPopup, DeletePopup, EditCategoryPopup } from './components';
-
-import { useEffect, useState } from 'react';
-
-const cx = classNames.bind(styles);
+import { Table, Button, Space, Popconfirm } from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { CategoryService } from "~/service/categoryService";
+import AddCategoryModal from "./components/AddPopup";
+import EditCategoryModal from "./components/EditCategoryPopup";
 
 function CategoryAd() {
-    const [categories, setCategories] = useState([]);
-    const [rowCategory, setRowCategory] = useState(); // select row edit
-    const [rowDelete, setRowDelete] = useState();
+  const [categories, setCategories] = useState([]);
+  const [visibleAdd, setVisibleAdd] = useState(false);
+  const [rowCategory, setRowCategory] = useState(null);
 
-    const [visibleAdd, setVisibleAdd] = useState(false);
-    const visibleDelete = rowDelete ? rowDelete : null;
-    const visibleEdit = rowCategory ? rowCategory : null;
+  const categoryService = new CategoryService();
 
-    //popupEdit
-    const handleOpenPopup = (category) => {
-        setRowCategory(category);
-    };
+  const fetchData = async () => {
+    const res = await categoryService.view();
+    setCategories(res);
+  };
 
-    //Popup Delete
-    const handleOpenPopupDelete = (category) => {
-        setRowDelete(category);
-    };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-    //popup add
-    const handleOpenAddPopup = () => {
-        setVisibleAdd(!visibleAdd);
-    };
+  const handleDelete = async (id) => {
+    await categoryService.remove({id});
+    fetchData();
+  };
 
-    useEffect(() => {
-        const categoryService = new CategoryService();
-        const fetchData = async function () {
-            const res = await categoryService.view();
-            setCategories(res);
-        };
-        fetchData();
-    }, [rowCategory, rowDelete, visibleAdd]);
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id"
+    },
+    {
+      title: "Category",
+      dataIndex: "name"
+    },
+    {
+      title: "Code",
+      dataIndex: "code"
+    },
+    {
+      title: "Action",
+      render: (_, record) => (
+        <Space>
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => setRowCategory(record)}
+          />
 
-    const categoriesTb = categories.map((category, index) => {
-        return (
-            <tr key={index}>
-                <th>{category.id}</th>
-                <th>{category.name}</th>
-                <th>{category.code}</th>
-                <th>
-                    <Action edit={() => handleOpenPopup(category)} remove={() => handleOpenPopupDelete(category)} />
-                </th>
-            </tr>
-        );
-    });
+          <Popconfirm
+            title="Delete category?"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <Button danger icon={<DeleteOutlined />} />
+          </Popconfirm>
+        </Space>
+      )
+    }
+  ];
 
-    return (
-        <div className={cx('category')}>
-            <div className={cx('wrap-table')}>
-                {visibleDelete && <DeletePopup data={visibleDelete} onclick={() => handleOpenPopupDelete(null)} />}
-                {visibleEdit && <EditCategoryPopup data={visibleEdit} onclick={() => handleOpenPopup(null)} />}
-                {visibleAdd && <AddPopup handleOpenAddPopup={handleOpenAddPopup} />}
-                <div className={cx('header')}>
-                    <p className={'content'}>
-                        Table <b>Categories</b>
-                    </p>
-                    <Button color="blue" onclick={handleOpenAddPopup}>
-                        Add Category
-                    </Button>
-                </div>
-                <div className={cx('body')}>
-                    <table className={cx('table-category')}>
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>Category</th>
-                                <th>Category Code</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>{categoriesTb}</tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <>
+      <Space
+        style={{
+          marginBottom: 16,
+          display: "flex",
+          justifyContent: "space-between"
+        }}
+      >
+        <h3>Categories</h3>
+
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => setVisibleAdd(true)}
+        >
+          Add Category
+        </Button>
+      </Space>
+
+      <Table
+        columns={columns}
+        dataSource={categories}
+        rowKey="id"
+        bordered
+      />
+
+      <AddCategoryModal
+        open={visibleAdd}
+        onClose={() => setVisibleAdd(false)}
+        reload={fetchData}
+      />
+
+      <EditCategoryModal
+        open={!!rowCategory}
+        data={rowCategory}
+        onClose={() => setRowCategory(null)}
+        reload={fetchData}
+      />
+    </>
+  );
 }
 
 export default CategoryAd;

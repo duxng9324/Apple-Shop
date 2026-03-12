@@ -21,6 +21,7 @@ C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\enti
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\rest\CustomAccessDeniedHandler.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\dto\ColorDTO.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\entity\CartEntity.java
+C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\entity\ProductImageEntity.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\repository\CartRepository.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\dto\OrderDTO.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\service\IProductService.java

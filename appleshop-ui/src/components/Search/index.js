@@ -62,7 +62,7 @@ function Search() {
                     >
                         {searchResults.map((product) => {
                             const { name, code, categoryCode, imgLinks } = product;
-                            const imageLinks = imgLinks.split(' ')[0];
+                            const imageLinks = imgLinks[0];
                             const url = `/${encodeURIComponent(categoryCode)}/${encodeURIComponent(code)}`;
 
                             return (

@@ -15,6 +15,7 @@ import com.business.dto.TypeDTO;
 import com.business.entity.ColorEntity;
 import com.business.entity.CommentEntity;
 import com.business.entity.ProductEntity;
+import com.business.entity.ProductImageEntity;
 import com.business.entity.ProductMemoryEntity;
 
 @Component
@@ -34,7 +35,17 @@ public class ProductConverter {
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setCode(dto.getCode());
-		entity.setImgLink(dto.getImgLinks());
+		// Map imgLinks (List<String>) to images (List<ProductImageEntity>)
+		if (dto.getImgLinks() != null) {
+			List<ProductImageEntity> images = new ArrayList<>();
+			for (String link : dto.getImgLinks()) {
+				ProductImageEntity image = new ProductImageEntity();
+				image.setImageLink(link);
+				image.setProduct(entity);
+				images.add(image);
+			}
+			entity.setImages(images);
+		}
 		return entity;
 	}
 	public ProductDTO toDTO(ProductEntity entity) {
@@ -45,7 +56,14 @@ public class ProductConverter {
 		dto.setName(entity.getName());
 		dto.setDescription(entity.getDescription());
 		dto.setCode(entity.getCode());
-		dto.setImgLinks(entity.getImgLink());
+		// Map images (List<ProductImageEntity>) to imgLinks (List<String>)
+		if (entity.getImages() != null) {
+			List<String> imgLinks = new ArrayList<>();
+			for (ProductImageEntity image : entity.getImages()) {
+				imgLinks.add(image.getImageLink());
+			}
+			dto.setImgLinks(imgLinks);
+		}
 		dto.setCategoryCode(entity.getCategory().getCode());
 		dto.setCategoryDTO(categoryConverter.toDTO(entity.getCategory()));
 		
@@ -81,7 +99,17 @@ public class ProductConverter {
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setCode(dto.getCode());
-		entity.setImgLink(dto.getImgLinks());
+		// Update images
+		if (dto.getImgLinks() != null) {
+			List<ProductImageEntity> images = new ArrayList<>();
+			for (String link : dto.getImgLinks()) {
+				ProductImageEntity image = new ProductImageEntity();
+				image.setImageLink(link);
+				image.setProduct(entity);
+				images.add(image);
+			}
+			entity.setImages(images);
+		}
 		return entity;
 	}
 }

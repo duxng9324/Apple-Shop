@@ -1,76 +1,52 @@
-import classNames from 'classnames/bind';
-import styles from './Add.module.scss';
+import { Modal, Form, Input, Button, message } from "antd";
+import { CategoryService } from "~/service/categoryService";
 
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import FormGroup from '~/components/FormGroup';
-import { FaTimes } from 'react-icons/fa';
-import Button from '~/components/Button';
-import { createPortal } from 'react-dom';
-import { CategoryService } from '~/service/categoryService';
-const cx = classNames.bind(styles);
+function AddCategoryModal({ open, onClose, reload }) {
+  const [form] = Form.useForm();
+  const categoryService = new CategoryService();
 
-function AddPopup(props) {
-    const { handleOpenAddPopup } = props;
+  const handleSubmit = async (values) => {
+    try {
+      await categoryService.add(values);
+      message.success("Category added");
+      form.resetFields();
+      onClose();
+      reload();
+    } catch (error) {
+      message.error("Add failed");
+    }
+  };
 
-    const schema = yup.object().shape({
-        name: yup.string().required('Hãy nhập tên thể loại'),
-        code: yup.string().required('Hãy nhập mã thể loại'),
-    });
-    const {
-        register,
-        handleSubmit,
-        // formState: { errors },
-    } = useForm({ resolver: yupResolver(schema) });
+  return (
+    <Modal
+      open={open}
+      title="Add Category"
+      onCancel={onClose}
+      footer={null}
+    >
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <Form.Item
+          label="Category Name"
+          name="name"
+          rules={[{ required: true, message: "Please enter name" }]}
+        >
+          <Input placeholder="Enter category name" />
+        </Form.Item>
 
-    const fields = [
-        {
-            type: 'text',
-            name: 'name',
-            placeholder: 'Hãy thêm tên thể loại sản phẩm',
-        },
-        {
-            type: 'text',
-            name: 'code',
-            placeholder: 'Hãy thêm mã thể loại sản phẩm',
-        },
-    ];
+        <Form.Item
+          label="Category Code"
+          name="code"
+          rules={[{ required: true, message: "Please enter code" }]}
+        >
+          <Input placeholder="Enter category code" />
+        </Form.Item>
 
-    const InputField = fields.map((field, index) => {
-        return <FormGroup field={field} register={register} key={index} />;
-    });
-
-    const handleClick = (e) => {
-        e.stopPropagation();
-    };
-    const categoryService = new CategoryService();
-    const onAdd = async (data) => {
-        try {
-            await categoryService.add(data);
-            handleOpenAddPopup();
-        } catch (error) {}
-    };
-    return createPortal(
-        <>
-            <div className={cx('wrap_popup')} onClick={handleOpenAddPopup}>
-                <div className={cx('add_popup')} onClick={(e) => handleClick(e)}>
-                    <div className={cx('header')}>
-                        <span>Add Category</span>
-                        <FaTimes className={cx('faTime')} onClick={handleOpenAddPopup} />
-                    </div>
-                    <form className={cx('body')} onSubmit={handleSubmit(onAdd)}>
-                        {InputField}
-
-                        <Button className={cx('test')} type="submit" size="" color="blue">
-                            Add
-                        </Button>
-                    </form>
-                </div>
-            </div>
-        </>,
-        document.body,
-    );
+        <Button type="primary" htmlType="submit" block>
+          Add
+        </Button>
+      </Form>
+    </Modal>
+  );
 }
 
-export default AddPopup;
+export default AddCategoryModal;

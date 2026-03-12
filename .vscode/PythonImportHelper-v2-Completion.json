@@ -1,0 +1,83 @@
+[
+    {
+        "label": "mysql.connector",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "mysql.connector",
+        "description": "mysql.connector",
+        "detail": "mysql.connector",
+        "documentation": {}
+    },
+    {
+        "label": "insert_data",
+        "kind": 2,
+        "importPath": "generate_apple_data",
+        "description": "generate_apple_data",
+        "peekOfCode": "def insert_data():\n    conn = mysql.connector.connect(**db_config)\n    cursor = conn.cursor()\n    # Insert categories\n    for c in categories:\n        cursor.execute(\n            \"INSERT IGNORE INTO category (id, name, category_code) VALUES (%s, %s, %s)\",\n            (c[\"id\"], c[\"name\"], c[\"category_code\"])\n        )\n    # Insert products",
+        "detail": "generate_apple_data",
+        "documentation": {}
+    },
+    {
+        "label": "db_config",
+        "kind": 5,
+        "importPath": "generate_apple_data",
+        "description": "generate_apple_data",
+        "peekOfCode": "db_config = {\n    \"host\": \"localhost\",\n    \"user\": \"root\",           # Thay bằng user thật\n    \"password\": \"123456\", # Thay bằng mật khẩu thật\n    \"database\": \"store\"      # Thay bằng tên database thật\n}\ncategories = [\n    {\"id\": 1, \"name\": \"iPhone\", \"category_code\": \"IPHONE\"},\n    {\"id\": 2, \"name\": \"iPad\", \"category_code\": \"IPAD\"},\n    {\"id\": 3, \"name\": \"MacBook\", \"category_code\": \"MACBOOK\"},",
+        "detail": "generate_apple_data",
+        "documentation": {}
+    },
+    {
+        "label": "categories",
+        "kind": 5,
+        "importPath": "generate_apple_data",
+        "description": "generate_apple_data",
+        "peekOfCode": "categories = [\n    {\"id\": 1, \"name\": \"iPhone\", \"category_code\": \"IPHONE\"},\n    {\"id\": 2, \"name\": \"iPad\", \"category_code\": \"IPAD\"},\n    {\"id\": 3, \"name\": \"MacBook\", \"category_code\": \"MACBOOK\"},\n    {\"id\": 4, \"name\": \"Apple Watch\", \"category_code\": \"WATCH\"},\n    {\"id\": 5, \"name\": \"AirPods\", \"category_code\": \"AIRPODS\"},\n    {\"id\": 6, \"name\": \"Phụ kiện\", \"category_code\": \"ACCESSORY\"},\n]\nproducts = [\n    {",
+        "detail": "generate_apple_data",
+        "documentation": {}
+    },
+    {
+        "label": "products",
+        "kind": 5,
+        "importPath": "generate_apple_data",
+        "description": "generate_apple_data",
+        "peekOfCode": "products = [\n    {\n        \"id\": 1,\n        \"name\": \"iPhone 15 Pro Max\",\n        \"product_code\": \"IP15PM\",\n        \"image_link\": \"https://www.apple.com/v/iphone-15-pro/a/images/overview/hero/hero_iphone15pro__i70z9oz3hj2i_large.jpg\",\n        \"description\": \"iPhone 15 Pro Max 256GB\",\n        \"category_id\": 1\n    },\n    {",
+        "detail": "generate_apple_data",
+        "documentation": {}
+    },
+    {
+        "label": "colors",
+        "kind": 5,
+        "importPath": "generate_apple_data",
+        "description": "generate_apple_data",
+        "peekOfCode": "colors = [\n    {\"id\": 1, \"color\": \"Đen\", \"code\": \"BLACK\"},\n    {\"id\": 2, \"color\": \"Trắng\", \"code\": \"WHITE\"},\n    {\"id\": 3, \"color\": \"Xanh\", \"code\": \"BLUE\"},\n    {\"id\": 4, \"color\": \"Vàng\", \"code\": \"YELLOW\"},\n    {\"id\": 5, \"color\": \"Tím\", \"code\": \"PURPLE\"},\n]\nmemories = [\n    {\"id\": 1, \"type\": \"128GB\"},\n    {\"id\": 2, \"type\": \"256GB\"},",
+        "detail": "generate_apple_data",
+        "documentation": {}
+    },
+    {
+        "label": "memories",
+        "kind": 5,
+        "importPath": "generate_apple_data",
+        "description": "generate_apple_data",
+        "peekOfCode": "memories = [\n    {\"id\": 1, \"type\": \"128GB\"},\n    {\"id\": 2, \"type\": \"256GB\"},\n    {\"id\": 3, \"type\": \"512GB\"},\n    {\"id\": 4, \"type\": \"1TB\"},\n]\nproduct_colors = [\n    {\"product_id\": 1, \"color_id\": 1},\n    {\"product_id\": 1, \"color_id\": 2},\n    {\"product_id\": 1, \"color_id\": 3},",
+        "detail": "generate_apple_data",
+        "documentation": {}
+    },
+    {
+        "label": "product_colors",
+        "kind": 5,
+        "importPath": "generate_apple_data",
+        "description": "generate_apple_data",
+        "peekOfCode": "product_colors = [\n    {\"product_id\": 1, \"color_id\": 1},\n    {\"product_id\": 1, \"color_id\": 2},\n    {\"product_id\": 1, \"color_id\": 3},\n    {\"product_id\": 2, \"color_id\": 2},\n    {\"product_id\": 2, \"color_id\": 3},\n    {\"product_id\": 3, \"color_id\": 1},\n    {\"product_id\": 3, \"color_id\": 2},\n    {\"product_id\": 4, \"color_id\": 1},\n    {\"product_id\": 4, \"color_id\": 4},",
+        "detail": "generate_apple_data",
+        "documentation": {}
+    },
+    {
+        "label": "product_memories",
+        "kind": 5,
+        "importPath": "generate_apple_data",
+        "description": "generate_apple_data",
+        "peekOfCode": "product_memories = [\n    {\"id\": 1, \"price\": 34990000, \"memory_id\": 2, \"product_id\": 1},\n    {\"id\": 2, \"price\": 39990000, \"memory_id\": 3, \"product_id\": 1},\n    {\"id\": 3, \"price\": 29990000, \"memory_id\": 2, \"product_id\": 2},\n    {\"id\": 4, \"price\": 35990000, \"memory_id\": 3, \"product_id\": 2},\n    {\"id\": 5, \"price\": 25990000, \"memory_id\": 2, \"product_id\": 3},\n    {\"id\": 6, \"price\": 31990000, \"memory_id\": 3, \"product_id\": 3},\n]\ndef insert_data():\n    conn = mysql.connector.connect(**db_config)",
+        "detail": "generate_apple_data",
+        "documentation": {}
+    }
+]

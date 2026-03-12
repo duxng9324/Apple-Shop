@@ -1,21 +1,37 @@
-import classNames from 'classnames/bind';
-import styles from './Admin.module.scss';
+import { Row, Col, Card } from 'antd';
 import CategoryAd from '../categoryad';
 import ProductAd from '../productad';
 import MemoryAd from '../memoryad';
 import ColorAd from '../colorAd';
 
-const cx = classNames.bind(styles);
-
 function Admin() {
     return (
-        <div className={cx('adminpage')}>
-            <div className={cx('row')}>
-                <CategoryAd />
-                <MemoryAd />
-                <ColorAd />
-            </div>
-            <ProductAd />
+        <div>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} md={8}>
+                    <Card bordered={false}>
+                        <CategoryAd />
+                    </Card>
+                </Col>
+
+                <Col xs={24} md={8}>
+                    <Card  bordered={false}>
+                        <MemoryAd />
+                    </Card>
+                </Col>
+
+                <Col xs={24} md={8}>
+                    <Card bordered={false}>
+                        <ColorAd />
+                    </Card>
+                </Col>
+
+                <Col span={24}>
+                    <Card bordered={false}>
+                        <ProductAd />
+                    </Card>
+                </Col>
+            </Row>
         </div>
     );
 }

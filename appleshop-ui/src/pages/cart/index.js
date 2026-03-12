@@ -92,7 +92,7 @@ function Cart() {
         items.forEach((item) => {
             const { productDTO, memory, color, quantity } = item;
             const orderItem = {
-                image: productDTO.imgLinks.split(' ')[0],
+                image: productDTO.imgLinks[0],
                 name: productDTO.name,
                 quantity: quantity,
                 price: productDTO.list.find((item) => item.type === memory).price,

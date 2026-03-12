@@ -1,188 +1,180 @@
-import classNames from 'classnames/bind';
-import styles from './Order.module.scss';
-import { OrderService } from '~/service/orderService';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { Card, Table, Select, Tag, Typography, Image, Space } from "antd";
+import { FilterOutlined } from "@ant-design/icons";
+import { OrderService } from "~/service/orderService";
 
-import { FaFilter, FaShippingFast } from 'react-icons/fa';
-const cx = classNames.bind(styles);
+const { Title, Text } = Typography;
+
+const statusOptions = [
+  "Chờ xác nhận",
+  "Đã xác nhận",
+  "Đang vận chuyển",
+  "Đang giao hàng",
+  "Giao hàng thành công",
+  "Đơn hàng đã được hoàn thành",
+  "Hủy đơn hàng",
+];
+
 function OrderAd() {
-    const [orders, setOrders] = useState();
-    const [filterValue, setFilterValue] = useState('all');
-    const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-        const orderService = new OrderService();
-        const fetchData = async function () {
-            const res = await orderService.viewAll();
-            setOrders(res);
-            return res;
-        };
-        fetchData();
-    }, []);
+  const [orders, setOrders] = useState([]);
+  const [filterValue, setFilterValue] = useState("all");
+  const orderService = new OrderService();
 
-    const handleChangeStatus = (e, order) => {
-        const orderCopy = order;
-        orderCopy.status = e.target.value;
-        const orderService = new OrderService();
-        const fetchData = async function () {
-            const res = await orderService.changeStatus(orderCopy);
-            setIsLoading(!isLoading);
-            return res;
-        };
-        fetchData();
-    };
+  const fetchOrders = async () => {
+    const res = await orderService.viewAll();
+    setOrders(res || []);
+  };
 
-    const handleFilter = (e) => {
-        setFilterValue(e.target.value);
-    };
-    const filteredOrders = filterValue !== 'all' ? orders.filter((order) => order.status === filterValue) : orders;
-    return (
-        <div className={cx('container')}>
-            <div className={cx('order')}>
-                <div className={cx('head')}>
-                    <div className={cx('head-left')}>QUẢN LÝ ĐƠN HÀNG</div>
-                    <div className={cx('head-right')}>
-                        <FaFilter />
-                        <select defaultValue={filterValue} onChange={(e) => handleFilter(e)}>
-                            <option value="all">Tất cả</option>
-                            <option value="Chờ xác nhận">Chờ xác nhận</option>
-                            <option value="Đã xác nhận">Đã xác nhận</option>
-                            <option value="Đang vận chuyển">Đang vận chuyển</option>
-                            <option value="Đang giao hàng">Đang giao hàng</option>
-                            <option value="Giao hàng thành công">Giao hàng thành công</option>
-                            <option value="Đơn hàng đã được hoàn thành">Đơn hàng đã được hoàn thành</option>
-                            <option value="Hủy đơn hàng">Hủy đơn hàng</option>
-                        </select>
-                    </div>
-                </div>
-                <div className={cx('infor')}>
-                    {orders &&
-                        filteredOrders.map((order, index) => {
-                            const { sku, fullName, orderPhone, email, orderAddress, orderItemDTOs, totalPrice } = order;
-                            const orderTime = new Date(order.orderTime);
-                            const formattedDate = orderTime.toLocaleString();
-                            return (
-                                <div className={cx('item')} key={index}>
-                                    <table className={cx('person')}>
-                                        <tbody>
-                                            <tr>
-                                                <th>Mã số đơn hàng</th>
-                                                <td>{sku}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Họ và tên</th>
-                                                <td>{fullName}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Số điện thoại</th>
-                                                <td>{orderPhone}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Email</th>
-                                                <td>{email}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Hình thức thanh toán</th>
-                                                <td>Thanh toán khi nhận được hàng</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Giao hàng đến</th>
-                                                <td>{orderAddress}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Thời gian nhận đơn</th>
-                                                <td>{formattedDate}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Thời gian dự kiến</th>
-                                                <td>3 - 7 ngày sau khi xác nhận đơn hàng</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Ghi chú yêu cầu</th>
-                                                <td>Giao hàng tất cả các ngày trong tuần</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <p className={cx('text-detail')}>Chi tiết đơn hàng</p>
-                                    <table className={cx('products')}>
-                                        <tbody>
-                                            <tr className={cx('headerTable')}>
-                                                <th>Thông tin đơn hàng</th>
-                                                <th>Số lượng</th>
-                                                <th>Thành tiền</th>
-                                            </tr>
-                                            {orderItemDTOs.map((product, index) => {
-                                                const { quantity, memory, color, image, name, price } = product;
-                                                return (
-                                                    <tr key={index} className={cx('product')}>
-                                                        <td>
-                                                            <div className={cx('detail')}>
-                                                                <img src={image} alt="Hình ảnh của sản phẩm"></img>
-                                                                <span>{name + ' ' + memory + ' ' + color}</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>{quantity}</td>
-                                                        <td>
-                                                            <p className={cx('money')}>
-                                                                {(price * quantity).toLocaleString('vi-VN') + 'đ'}
-                                                            </p>
-                                                            <strike>
-                                                                {(price * 1.2 * quantity).toLocaleString('vi-VN') + 'đ'}
-                                                            </strike>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-                                            <tr className={cx('footer')}>
-                                                <td colSpan={2}>
-                                                    <div className={cx('status')}>
-                                                        <div>
-                                                            <FaShippingFast />
-                                                            <select
-                                                                className={cx('select')}
-                                                                style={{ color: 'green' }}
-                                                                onChange={(e) => handleChangeStatus(e, order)}
-                                                                value={order.status}
-                                                            >
-                                                                <option
-                                                                    disabled
-                                                                    style={{ display: 'none' }}
-                                                                    value="Chờ xác nhận"
-                                                                >
-                                                                    Chờ xác nhận
-                                                                </option>
-                                                                <option value="Đã xác nhận">Đã xác nhận</option>
-                                                                <option value="Đang vận chuyển">Đang vận chuyển</option>
-                                                                <option value="Đang giao hàng">Đang giao hàng</option>
-                                                                <option value="Giao hàng thành công">
-                                                                    Giao hàng thành công
-                                                                </option>
-                                                                <option
-                                                                    style={{ display: 'none' }}
-                                                                    value="Đơn hàng đã được hoàn thành"
-                                                                >
-                                                                    Đơn hàng đã được hoàn thành
-                                                                </option>
-                                                                <option value="Hủy đơn hàng">Hủy đơn hàng</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <span>Tổng: </span>
-                                                    <span className={cx('total_price')}>
-                                                        {totalPrice.toLocaleString('vi-VN') + 'đ'}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            );
-                        })}
-                </div>
-            </div>
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const handleChangeStatus = async (value, order) => {
+    const updated = { ...order, status: value };
+    await orderService.changeStatus(updated);
+    fetchOrders();
+  };
+
+  const filteredOrders =
+    filterValue === "all"
+      ? orders
+      : orders.filter((o) => o.status === filterValue);
+
+  const productColumns = [
+    {
+      title: "Sản phẩm",
+      render: (_, item) => (
+        <Space>
+          <Image width={60} src={item.image} />
+          <Text>
+            {item.name} {item.memory} {item.color}
+          </Text>
+        </Space>
+      ),
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "quantity",
+    },
+    {
+      title: "Thành tiền",
+      render: (_, item) => (
+        <div>
+          <Text strong>
+            {(item.price * item.quantity).toLocaleString("vi-VN")}đ
+          </Text>
+          <br />
+          <Text delete type="secondary">
+            {(item.price * 1.2 * item.quantity).toLocaleString("vi-VN")}đ
+          </Text>
         </div>
-    );
+      ),
+    },
+  ];
+
+  return (
+    <div style={{ padding: 24 }}>
+      <Card>
+        <Space
+          style={{
+            width: "100%",
+            justifyContent: "space-between",
+            marginBottom: 20,
+          }}
+        >
+          <Title level={3}>Quản lý đơn hàng</Title>
+
+          <Space>
+            <FilterOutlined />
+            <Select
+              value={filterValue}
+              style={{ width: 220 }}
+              onChange={setFilterValue}
+              options={[
+                { value: "all", label: "Tất cả" },
+                ...statusOptions.map((s) => ({ value: s, label: s })),
+              ]}
+            />
+          </Space>
+        </Space>
+
+        {filteredOrders.map((order) => {
+          const orderTime = new Date(order.orderTime).toLocaleString();
+
+          return (
+            <Card
+              key={order.sku}
+              type="inner"
+              title={
+                <Space>
+                  <Text strong>Mã đơn:</Text>
+                  <Tag color="blue">{order.sku}</Tag>
+                </Space>
+              }
+              style={{ marginBottom: 24 }}
+            >
+              <Space direction="vertical" style={{ width: "100%" }}>
+                <div>
+                  <Text strong>Khách hàng:</Text> {order.fullName}
+                </div>
+
+                <div>
+                  <Text strong>Điện thoại:</Text> {order.orderPhone}
+                </div>
+
+                <div>
+                  <Text strong>Email:</Text> {order.email}
+                </div>
+
+                <div>
+                  <Text strong>Địa chỉ:</Text> {order.orderAddress}
+                </div>
+
+                <div>
+                  <Text strong>Thời gian đặt:</Text> {orderTime}
+                </div>
+
+                <Table
+                  columns={productColumns}
+                  dataSource={order.orderItemDTOs}
+                  pagination={false}
+                  rowKey={(r, i) => i}
+                />
+
+                <Space
+                  style={{
+                    width: "100%",
+                    justifyContent: "space-between",
+                    marginTop: 16,
+                  }}
+                >
+                  <Space>
+                    <Text strong>Trạng thái:</Text>
+
+                    <Select
+                      value={order.status}
+                      style={{ width: 220 }}
+                      onChange={(value) =>
+                        handleChangeStatus(value, order)
+                      }
+                      options={statusOptions.map((s) => ({
+                        value: s,
+                        label: s,
+                      }))}
+                    />
+                  </Space>
+
+                  <Text strong style={{ fontSize: 16 }}>
+                    Tổng: {order.totalPrice.toLocaleString("vi-VN")}đ
+                  </Text>
+                </Space>
+              </Space>
+            </Card>
+          );
+        })}
+      </Card>
+    </div>
+  );
 }
 
 export default OrderAd;

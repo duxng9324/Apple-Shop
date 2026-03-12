@@ -10,7 +10,7 @@ function ProductCartItem(props) {
     const { setItems, index, id, onRemove } = props;
     const { productDTO, color, quantity, memory } = props.props;
     const { colorDTOs, imgLinks, list } = productDTO;
-    const link = imgLinks.split(' ');
+    const link = imgLinks;
     const priceReal = list.find((item) => item.type === memory).price;
 
     const [quantityItem, setQuantityItem] = useState(quantity);
