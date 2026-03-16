@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="efa7fb0a-cbfc-44ea-91c5-a786520b4f2f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/business/service/impl/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/business/service/impl/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/Application.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/CartAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/CartAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/CategoryAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/CategoryAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/ColorAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/ColorAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/CommentAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/CommentAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/ImageAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/ImageAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/MemoryAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/MemoryAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/OrderAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/OrderAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/ProductAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/ProductAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/TestAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/TestAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/api/UserAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/api/UserAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/config/FileUploadConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/config/FileUploadConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/CartConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/CartConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/CategoryConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/CategoryConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/ColorConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/ColorConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/CommentConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/CommentConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/MemoryConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/MemoryConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/OrderConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/OrderConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/OrderItemConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/OrderItemConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/ProductConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/ProductConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/converter/UserConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/converter/UserConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/AbstractDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/AbstractDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/CartDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/CartDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/CategoryDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/CategoryDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/ColorDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/ColorDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/CommentDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/CommentDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/ImageDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/ImageDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/MemoryDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/MemoryDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/OrderDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/OrderDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/OrderItemDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/OrderItemDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/ProductDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/ProductDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/TypeDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/TypeDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/dto/UserDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/dto/UserDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/BaseEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/BaseEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/CartEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/CartEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/CartItemEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/CartItemEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/CategoryEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/CategoryEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/ColorEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/ColorEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/CommentEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/CommentEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/ImageEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/ImageEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/MemoryEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/MemoryEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/OrderEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/OrderEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/OrderItemEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/OrderItemEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/ProductEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/ProductEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/ProductImageEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/ProductImageEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/ProductMemoryEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/ProductMemoryEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/entity/UserEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/entity/UserEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/CartRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/CartRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/CategoryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/CategoryRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/ColorRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/ColorRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/CommentRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/CommentRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/ImageRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/ImageRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/MemoryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/MemoryRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/OrderItemRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/OrderItemRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/OrderRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/OrderRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/ProductMemoryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/ProductMemoryRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/ProductRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/ProductRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/repository/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/repository/UserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/rest/CustomAccessDeniedHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/rest/CustomAccessDeniedHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/rest/JwtAuthenticationTokenFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/rest/JwtAuthenticationTokenFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/rest/RestAuthenticationEntryPoint.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/rest/RestAuthenticationEntryPoint.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/ICartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/ICartService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/ICategoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/ICategoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/IColorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/IColorService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/ICommentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/ICommentService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/IImageService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/IImageService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/IMemoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/IMemoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/IOrderService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/IOrderService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/IProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/IProductService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/IUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/IUserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/CartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/CartService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/CategoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/CategoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/ColorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/ColorService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/CommentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/CommentService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/ImageService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/ImageService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/JwtService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/JwtService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/MemoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/MemoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/OrderService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/OrderService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/ProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/ProductService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/service/impl/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/service/impl/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/business/util/ImageUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/business/util/ImageUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../appleshop-ui/src/Routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../appleshop-ui/src/Routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../appleshop-ui/src/components/ProductItem/ProductItem.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../appleshop-ui/src/components/ProductItem/ProductItem.module.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../appleshop-ui/src/components/ProductItem/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../appleshop-ui/src/components/ProductItem/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../appleshop-ui/src/pages/category/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../appleshop-ui/src/pages/category/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../appleshop-ui/src/pages/detail/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../appleshop-ui/src/pages/detail/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../appleshop-ui/src/service/productService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../appleshop-ui/src/service/productService.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="3Avb4iqV7KN1KjZDfZMTOn4Q50y" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/ongdu/Documents/AppleShop/Apple-Shop-BE",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="Apple-Shop-BE" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="efa7fb0a-cbfc-44ea-91c5-a786520b4f2f" name="Changes" comment="" />
+      <created>1773475803463</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1773475803463</updated>
+      <workItem from="1773475804570" duration="34000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.security:spring-security-core" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.xml.ws:jakarta.xml.ws-api" />
+  </component>
+</project>

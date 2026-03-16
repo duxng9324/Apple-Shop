@@ -1,65 +1,80 @@
 import React from 'react';
+import { Card, Button, Tag, Space, Carousel, Image } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import classNames from 'classnames/bind';
 import styles from './ProductItem.module.scss';
 
-const cx = classNames.bind(styles);
+const { Meta } = Card;
 
-function ProductItem(data) {
-    const { imgLinks, colorDTOs, name, list, code } = data.data || {};
+function ProductItem({ data }) {
+    const navigate = useNavigate();
+
+    const { imgLinks = [], colorDTOs = [], name = '', list = [], code = '' } = data || {};
+
     const prices = list.map((item) => item.price);
     const types = list.map((item) => item.type);
-    const imageArr = imgLinks;
 
-    const navigate = useNavigate();
+    const images = imgLinks.length > 0 ? imgLinks : ['https://via.placeholder.com/400x300?text=No+Image'];
+
     const handleViewDetail = () => {
         const token = localStorage.getItem('token');
-        if (token) {
-            navigate(encodeURIComponent(code));
-        } else {
+
+        if (!token) {
             navigate('/login');
+            return;
         }
+
+        navigate(`/${encodeURIComponent(code)}`);
     };
 
     return (
-        <div className={cx('product')}>
-            <div
-                className={cx('product__img')}
-                style={{
-                    backgroundImage: `url("${imageArr[0]}")`,
-                }}
-            ></div>
-            <div className={cx('product__color')}>
-                {colorDTOs.map((color, index) => {
-                    return (
-                        <div key={index} className={cx('product__color-item')} style={{ backgroundColor: color.code }}>
-                            <span> </span>
+        <Card
+            className={styles.productItem}
+            hoverable
+            cover={
+                <Carousel autoplay className={styles.carousel}>
+                    {images.map((img, index) => (
+                        <div key={index} className={styles.slide}>
+                            <Image src={img} alt={name} preview={false} className={styles.image} />
                         </div>
-                    );
-                })}
-            </div>
-            <div className={cx('product__name')}>
-                <span>{name}</span>
-            </div>
-            <div className={cx('product__memory')}>
-                {types.map((type, index) => {
-                    return (
-                        <div key={index} className={cx('product__memory-item')}>
-                            <strong>{type}</strong>
-                        </div>
-                    );
-                })}
-            </div>
-            <div className={cx('product__price')}>
-                <span className={cx('text')}>Giá chỉ</span>
-                <span className={cx('price')}>{prices[0].toLocaleString('vi-VN') + ' VNĐ'}</span>
-                <strike>{Math.round(prices[0] * 1.3).toLocaleString('vi-VN') + ' VNĐ'}</strike>
+                    ))}
+                </Carousel>
+            }
+        >
+            <Meta title={name} />
+
+            {/* Colors */}
+            <div className={styles.colors}>
+                <Space>
+                    {colorDTOs.map((color, index) => (
+                        <span key={index} className={styles.colorDot} style={{ backgroundColor: color.code }} />
+                    ))}
+                </Space>
             </div>
 
-            <button className={cx('btn_view')} onClick={handleViewDetail}>
-                <span>Xem chi tiết</span>
-            </button>
-        </div>
+            {/* Memory */}
+            <div className={styles.types}>
+                <Space wrap>
+                    {types.map((type, index) => (
+                        <Tag key={index}>{type}</Tag>
+                    ))}
+                </Space>
+            </div>
+
+            {/* Price */}
+            {prices.length > 0 && (
+                <div className={styles.priceBox}>
+                    <div className={styles.priceLabel}>Giá chỉ</div>
+
+                    <div className={styles.price}>{prices[0].toLocaleString('vi-VN')} VNĐ</div>
+
+                    <div className={styles.oldPrice}>{Math.round(prices[0] * 1.3).toLocaleString('vi-VN')} VNĐ</div>
+                </div>
+            )}
+
+            <Button type="primary" block className={styles.button} onClick={handleViewDetail}>
+                Xem chi tiết
+            </Button>
+        </Card>
     );
 }
 

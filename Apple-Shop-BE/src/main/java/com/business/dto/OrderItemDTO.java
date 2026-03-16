@@ -3,17 +3,17 @@ package com.business.dto;
 import java.math.BigDecimal;
 
 public class OrderItemDTO extends AbstractDTO {
-	 private String image;
+	 private ImageDTO image;
 	 private String name;
 	 private int quantity;
 	 private BigDecimal price;
 	 private String memory;
 	 private String color;
 	 private Long OrderId;
-	public String getImage() {
+	public ImageDTO getImage() {
 		return image;
 	}
-	public void setImage(String image) {
+	public void setImage(ImageDTO image) {
 		this.image = image;
 	}
 	public String getName() {

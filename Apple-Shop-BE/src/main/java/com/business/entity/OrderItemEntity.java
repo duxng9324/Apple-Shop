@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "order_item")
 public class OrderItemEntity extends BaseEntity {
-	@Column(name = "image")
-	private String image;
+	@ManyToOne()
+	private ImageEntity image;
 	
 	@Column(name = "name")
 	private String name;
@@ -33,11 +33,11 @@ public class OrderItemEntity extends BaseEntity {
 	@JoinColumn(name = "order_id", referencedColumnName = "id")
 	private OrderEntity order;
 
-	public String getImage() {
+	public ImageEntity getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(ImageEntity image) {
 		this.image = image;
 	}
 

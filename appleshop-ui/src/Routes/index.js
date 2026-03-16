@@ -76,7 +76,7 @@ const router = createBrowserRouter([
                 element: <Category title="Phụ kiện" />,
             },
             {
-                path: '/:category/:productCode',
+                path: '/:productCode',
                 element: <Detail />,
             },
             {

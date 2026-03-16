@@ -118,8 +118,9 @@ public class ProductService implements IProductService {
 
 	@Override
 	public ProductDTO getProductByCode(String code) {
+		System.out.println(code);
 		ProductEntity productEntity = productRepository.findByCode(code);
-
+			
 			ProductDTO productDTO = new ProductDTO();
 			productDTO = productConverter.toDTO(productEntity);
 		return productDTO;

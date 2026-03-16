@@ -1,83 +1,64 @@
-import classNames from 'classnames/bind';
-import styles from './ProductCartItem.module.scss';
-import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Card, Row, Col, Image, InputNumber, Select, Button, Space } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { CartService } from '~/service/cartService';
 
-const cx = classNames.bind(styles);
+function ProductCartItem({ item, index, onChange, onRemove }) {
+    const { productDTO, color, quantity, memory, id } = item;
 
-function ProductCartItem(props) {
-    const { setItems, index, id, onRemove } = props;
-    const { productDTO, color, quantity, memory } = props.props;
-    const { colorDTOs, imgLinks, list } = productDTO;
-    const link = imgLinks;
-    const priceReal = list.find((item) => item.type === memory).price;
+    const { imgLinks, list, colorDTOs } = productDTO;
 
-    const [quantityItem, setQuantityItem] = useState(quantity);
-    const [priceItem, setPriceItem] = useState(quantity * priceReal);
+    const price = list.find((i) => i.type === memory).price;
+
+    const [qty, setQty] = useState(quantity);
     const [colorSelect, setColorSelect] = useState(color);
 
-    useEffect(() => {
-        setPriceItem(quantityItem * priceReal);
-    }, [quantityItem, priceReal]);
-
-    useEffect(() => {
-        setItems(index, quantityItem, colorSelect);
-    }, [quantityItem, index, colorSelect]);
-
-    const handleClickMinus = () => {
-        if (quantityItem - 1 === 0) {
-            setQuantityItem(1);
-        } else {
-            setQuantityItem(quantityItem - 1);
-        }
-    };
-    const handleClickPlus = () => {
-        setQuantityItem(quantityItem + 1);
-    };
-
     const cartService = new CartService();
-    const onDelete = async () => {
-        try {
-            await cartService.remove(id);
-            onRemove();
-        } catch (error) {}
+
+    useEffect(() => {
+        onChange(index, qty, colorSelect);
+    }, [qty, colorSelect]);
+
+    const removeItem = async () => {
+        await cartService.remove(id);
+        onRemove();
     };
-    const handleColorChange = (e) => {
-        setColorSelect(e.target.value);
-    };
+
     return (
-        <div className={cx('item')}>
-            <img className={cx('image')} src={link[0]} alt="Hình ảnh của sản phẩm" />
-            <div className={cx('inside')}>
-                <div className={cx('name')}>
-                    {productDTO.name} {memory}
-                </div>
-                <select className={cx('color')} defaultValue={color} onChange={(e) => handleColorChange(e)}>
-                    {colorDTOs.map((color, index) => {
-                        return (
-                            <option value={color.color} key={index}>
-                                {color.color}
-                            </option>
-                        );
-                    })}
-                </select>
-            </div>
-            <div className={cx('quantity')}>
-                <div className={cx('adjust')}>
-                    <FaMinus onClick={() => handleClickMinus()} />
-                    <div>{quantityItem}</div>
-                    <FaPlus onClick={() => handleClickPlus()} />
-                </div>
-                <div className={cx('remove')} onClick={() => onDelete()}>
-                    <FaTrash /> Xóa
-                </div>
-            </div>
-            <div className={cx('price')}>
-                <div className={cx('real')}>{priceItem.toLocaleString('vi-VN') + 'đ'}</div>
-                <strike>{Math.floor(priceItem * 1.2).toLocaleString('vi-VN') + 'đ'}</strike>
-            </div>
-        </div>
+        <Card style={{ marginBottom: 12 }}>
+            <Row align="middle" gutter={16}>
+                <Col span={4}>
+                    <Image src={imgLinks[0]} width={80} />
+                </Col>
+
+                <Col span={8}>
+                    <div>
+                        <strong>{productDTO.name}</strong>
+                        <div>{memory}</div>
+                    </div>
+                </Col>
+
+                <Col span={4}>
+                    <Select value={colorSelect} style={{ width: '100%' }} onChange={setColorSelect}>
+                        {colorDTOs.map((c) => (
+                            <Select.Option key={c.color} value={c.color}>
+                                {c.color}
+                            </Select.Option>
+                        ))}
+                    </Select>
+                </Col>
+
+                <Col span={4}>
+                    <InputNumber min={1} value={qty} onChange={setQty} />
+                </Col>
+
+                <Col span={3}>{(qty * price).toLocaleString()}đ</Col>
+
+                <Col span={1}>
+                    <Button type="text" danger icon={<DeleteOutlined />} onClick={removeItem} />
+                </Col>
+            </Row>
+        </Card>
     );
 }
 
