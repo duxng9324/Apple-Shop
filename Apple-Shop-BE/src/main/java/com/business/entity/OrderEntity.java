@@ -51,6 +51,15 @@ public class OrderEntity{
 	
 	@Column(name = "Status")
 	private String status;
+
+	@Column(name = "payment_method")
+	private String paymentMethod;
+
+	@Column(name = "payment_status")
+	private String paymentStatus;
+
+	@Column(name = "paid_time")
+	private Date paidTime;
 	
 	@Column(name = "checkCmt")
 	private int checkCmt;
@@ -150,6 +159,30 @@ public class OrderEntity{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public Date getPaidTime() {
+		return paidTime;
+	}
+
+	public void setPaidTime(Date paidTime) {
+		this.paidTime = paidTime;
 	}
 
 	public UserEntity getUser() {

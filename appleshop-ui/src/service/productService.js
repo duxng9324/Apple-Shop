@@ -24,6 +24,6 @@ export class ProductService extends ServiceBase {
         const { productCode } = params;
         const code = productCode;
         console.log(code);
-        return this.get('/product/code', { code });
+        return this.get(`/product/code/${code}`);
     };
 }

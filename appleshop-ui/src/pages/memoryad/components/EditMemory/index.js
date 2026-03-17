@@ -41,7 +41,13 @@ function EditMemoryModal({ open, onClose, data, refresh }) {
       open={open}
       title="Edit Memory"
       footer={null}
+      centered
       onCancel={onClose}
+      afterClose={() => {
+        document.body.style.overflow = "";
+        document.body.style.width = "";
+        document.body.classList.remove("ant-scrolling-effect");
+      }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Form.Item label="Memory Type">

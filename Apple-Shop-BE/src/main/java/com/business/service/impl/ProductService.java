@@ -54,6 +54,9 @@ public class ProductService implements IProductService {
 		
 		//Category
 		CategoryEntity categoryEntity = categoryRepository.findByCode(productDTO.getCategoryCode());
+		if (categoryEntity == null) {
+			throw new RuntimeException("categoryCode không tồn tại: " + productDTO.getCategoryCode());
+		}
 		productEntity.setCategory(categoryEntity);
 		
 		// Color

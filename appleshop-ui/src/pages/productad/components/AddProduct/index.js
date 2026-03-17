@@ -6,10 +6,17 @@ import {
   Checkbox,
   Button,
   Space,
-  InputNumber
+  InputNumber,
+  Upload,
+  message
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import MDEditor from "@uiw/react-md-editor";
 import { ProductService } from "~/service/productService";
+import { ImageService } from "~/service/imageService";
+
+import "@uiw/react-md-editor/markdown-editor.css";
 
 function AddProductModal({
   open,
@@ -20,20 +27,46 @@ function AddProductModal({
   refresh
 }) {
   const [form] = Form.useForm();
+  const [uploading, setUploading] = useState(false);
+  const [productFiles, setProductFiles] = useState([]);
   const productService = new ProductService();
+  const imageService = new ImageService();
 
   const onFinish = async (values) => {
-    const payload = {
-      ...values,
-      imgLinks: values.imgLinks,
-      list: values.list
-    };
+    setUploading(true);
+    try {
+      let uploadedUrls = [];
+      if (productFiles.length > 0) {
+        const rawFiles = productFiles
+          .map((item) => item.originFileObj)
+          .filter(Boolean);
+        uploadedUrls = await imageService.uploadProductImages(rawFiles);
+      }
 
-    await productService.add(payload);
+      const manualLinks = (values.imgLinks || []).filter((item) => item && item.trim());
+      const imgLinks = [...manualLinks, ...uploadedUrls];
+      if (imgLinks.length === 0) {
+        message.error("Vui lòng thêm ít nhất 1 ảnh sản phẩm");
+        return;
+      }
 
-    refresh();
-    onClose();
-    form.resetFields();
+      const payload = {
+        ...values,
+        imgLinks,
+        list: values.list
+      };
+
+      await productService.add(payload);
+      message.success("Thêm sản phẩm thành công");
+      refresh();
+      onClose();
+      form.resetFields();
+      setProductFiles([]);
+    } catch (error) {
+      message.error(error?.response?.data || "Upload ảnh hoặc thêm sản phẩm thất bại");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -42,7 +75,19 @@ function AddProductModal({
       title="Add Product"
       footer={null}
       width={800}
+      centered
+      styles={{
+        body: {
+          maxHeight: "calc(100vh - 220px)",
+          overflowY: "auto"
+        }
+      }}
       onCancel={onClose}
+      afterClose={() => {
+        document.body.style.overflow = "";
+        document.body.style.width = "";
+        document.body.classList.remove("ant-scrolling-effect");
+      }}
     >
       <Form
         layout="vertical"
@@ -69,8 +114,16 @@ function AddProductModal({
           label="Description"
           name="description"
           rules={[{ required: true }]}
+          extra="Hỗ trợ Markdown: ## tiêu đề, **bold**, *italic*, - danh sách, [link](url)."
+          valuePropName="value"
+          getValueFromEvent={(value) => value || ""}
         >
-          <Input.TextArea />
+          <MDEditor
+            preview="edit"
+            height={280}
+            visibleDragbar={false}
+            textareaProps={{ placeholder: "Nhập mô tả sản phẩm dạng Markdown" }}
+          />
         </Form.Item>
 
         <Form.Item
@@ -128,11 +181,23 @@ function AddProductModal({
               ))}
 
               <Button
+                style={{margin: "0 10px"}}
                 icon={<PlusOutlined />}
                 onClick={() => add()}
               >
                 Add Image
               </Button>
+
+              <Upload
+                style={{margin: "0 10px"}}
+                multiple
+                listType="picture"
+                fileList={productFiles}
+                beforeUpload={() => false}
+                onChange={({ fileList }) => setProductFiles(fileList)}
+              >
+                <Button icon={<PlusOutlined />}>Upload Images</Button>
+              </Upload>
             </>
           )}
         </Form.List>
@@ -179,7 +244,7 @@ function AddProductModal({
                 </Space>
               ))}
 
-              <Button
+              <Button style={{margin: "0 10px"}}
                 icon={<PlusOutlined />}
                 onClick={() => add()}
               >
@@ -192,6 +257,7 @@ function AddProductModal({
         <Button
           type="primary"
           htmlType="submit"
+          loading={uploading}
           block
         >
           Add Product

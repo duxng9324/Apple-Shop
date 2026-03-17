@@ -74,7 +74,7 @@ function OrderAd() {
 
   return (
     <div style={{ padding: 24 }}>
-      <Card>
+      
         <Space
           style={{
             width: "100%",
@@ -172,7 +172,7 @@ function OrderAd() {
             </Card>
           );
         })}
-      </Card>
+
     </div>
   );
 }

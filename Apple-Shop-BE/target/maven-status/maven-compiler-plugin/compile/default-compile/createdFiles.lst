@@ -76,6 +76,7 @@ com\business\api\ImageAPI.class
 com\business\converter\CommentConverter.class
 com\business\entity\OrderEntity.class
 com\business\api\CommentAPI.class
+com\business\config\CloudinaryConfig.class
 com\business\entity\CartEntity.class
 com\business\service\impl\OrderService.class
 com\business\dto\UserDTO.class

@@ -37,6 +37,8 @@ public class OrderConverter {
 	
 	public OrderEntity toEntity(OrderDTO dto) {
 		OrderEntity entity = new OrderEntity();
+		String paymentMethod = dto.getPaymentMethod() != null ? dto.getPaymentMethod() : "COD";
+		boolean isOnlinePaid = !"COD".equalsIgnoreCase(paymentMethod);
 		entity.setSku(generateSku());
 		entity.setFullName(dto.getFullName());
 		entity.setSex(dto.getSex());
@@ -47,6 +49,9 @@ public class OrderConverter {
 		entity.setTotalPrice(dto.getTotalPrice());
 		entity.setStatus("Chờ xác nhận");
 		entity.setCheckCmt(0);
+		entity.setPaymentMethod(paymentMethod);
+		entity.setPaymentStatus(isOnlinePaid ? "Đã thanh toán" : "Chưa thanh toán");
+		entity.setPaidTime(isOnlinePaid ? getCurrentTime() : null);
 			   UserEntity userEntity = userRepository.findById(dto.getUserId()).orElse(null);
 		entity.setUser(userEntity);
 		return entity;
@@ -64,6 +69,9 @@ public class OrderConverter {
 		dto.setTotalPrice(entity.getTotalPrice());
 		dto.setStatus(entity.getStatus());
 		dto.setCheckCmt(entity.getCheckCmt());
+		dto.setPaymentMethod(entity.getPaymentMethod());
+		dto.setPaymentStatus(entity.getPaymentStatus());
+		dto.setPaidTime(entity.getPaidTime());
 		
 		List<OrderItemDTO> orderItemDTOs = new ArrayList<>();
 		List<OrderItemEntity> orderItemEntities = orderItemRepository.findByOrderId(entity.getId());

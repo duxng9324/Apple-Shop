@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './ProductItem.module.scss';
+import { Button } from 'antd';
 
 const cx = classNames.bind(styles);
 
@@ -56,9 +57,9 @@ function ProductItem(data) {
                 <strike>{Math.round(prices[0] * 1.3).toLocaleString('vi-VN') + ' VNĐ'}</strike>
             </div>
 
-            <button className={cx('btn_view')} onClick={handleViewDetail}>
+            <Button type='primary' className={cx('btn_view')} onClick={handleViewDetail}>
                 <span>Xem chi tiết</span>
-            </button>
+            </Button>
         </div>
     );
 }

@@ -26,23 +26,23 @@ public class ProductAPI {
 	private ProductService productService;
 	
 	@PostMapping(value = "/api/product")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO model) {
+	public ResponseEntity<?> addProduct(@RequestBody ProductDTO model) {
 		try {
 			ProductDTO productDTO = productService.save(model);
 			return ResponseEntity.ok(productDTO);
 			
 		} catch(RuntimeException ex) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 		}
     }
 	
 	@PutMapping(value = "/api/product/{id}")
-	public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO model, @PathVariable("id") long id) {
+	public ResponseEntity<?> updateProduct(@RequestBody ProductDTO model, @PathVariable("id") long id) {
 		try {	
 			model.setId(id);
 			return ResponseEntity.ok(productService.save(model));
 		} catch (RuntimeException ex) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 		}
 	}
 	@DeleteMapping(value = "/api/product/{id}")

@@ -17,6 +17,9 @@ public class OrderDTO {
 	private BigDecimal totalPrice;
 	private String status;
 	private int checkCmt;
+	private String paymentMethod;
+	private String paymentStatus;
+	private Date paidTime;
 	
 	private Long userId;
 	private List<OrderItemDTO> orderItemDTOs = new ArrayList<>();
@@ -123,6 +126,30 @@ public class OrderDTO {
 
 	public void setCheckCmt(int checkCmt) {
 		this.checkCmt = checkCmt;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public Date getPaidTime() {
+		return paidTime;
+	}
+
+	public void setPaidTime(Date paidTime) {
+		this.paidTime = paidTime;
 	}
 	
 	

@@ -172,9 +172,22 @@ function User() {
         data.userId = userId;
         try {
             await userService.changeInfo(data);
+
+            if (selectedFile) {
+                const formData = new FormData();
+                formData.append('image', selectedFile);
+                await axios.post(`http://localhost:8081/api/image/user/${userId}`, formData, {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                });
+            }
+
             OffRight();
             const res = await userService.view({ userId });
             setUser(res);
+            setSelectedFile(null);
+            setSelectedImage(null);
             toast.success('Cập nhật thông tin thành công', {
                 position: 'top-right',
                 autoClose: 3000,
@@ -186,6 +199,7 @@ function User() {
                 theme: 'dark',
             });
         } catch (error) {
+            console.error(error);
             toast.error('Cập nhật thông tin thất bại', {
                 position: 'top-right',
                 autoClose: 3000,
@@ -196,20 +210,6 @@ function User() {
                 progress: undefined,
                 theme: 'dark',
             });
-        }
-        if (selectedFile) {
-            const formData = new FormData();
-            formData.append('image', selectedFile);
-            axios
-                .post(`http://localhost:8081/api/image/user/${userId}`, formData, {
-                    headers: {
-                        Authorization: localStorage.getItem('token'),
-                    },
-                })
-                .then(() => {})
-                .catch((error) => {
-                    console.error(error);
-                });
         }
     };
 

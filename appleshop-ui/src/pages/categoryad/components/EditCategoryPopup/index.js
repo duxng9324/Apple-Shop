@@ -29,6 +29,12 @@ function EditCategoryModal({ open, data, onClose, reload }) {
       title="Edit Category"
       onCancel={onClose}
       footer={null}
+      centered
+      afterClose={() => {
+        document.body.style.overflow = "";
+        document.body.style.width = "";
+        document.body.classList.remove("ant-scrolling-effect");
+      }}
     >
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item

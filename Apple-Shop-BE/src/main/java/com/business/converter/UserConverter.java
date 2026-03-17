@@ -38,8 +38,13 @@ public class UserConverter {
 		dto.setEmail(entity.getEmail());
 		Optional<ImageEntity> dbImageData = imageRepository.findByUser(entity);
 		if (dbImageData.isPresent()) {
-			byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
-			dto.setImages(ImageUtils.convertBytesToDataUrl(images));
+			ImageEntity imageEntity = dbImageData.get();
+			if (imageEntity.getImageUrl() != null && !imageEntity.getImageUrl().trim().isEmpty()) {
+				dto.setImages(imageEntity.getImageUrl());
+			} else if (imageEntity.getImageData() != null) {
+				byte[] images = ImageUtils.decompressImage(imageEntity.getImageData());
+				dto.setImages(ImageUtils.convertBytesToDataUrl(images));
+			}
 		}
 		return dto;
 	}

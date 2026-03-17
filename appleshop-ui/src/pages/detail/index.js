@@ -17,6 +17,8 @@ import jwt_decode from 'jwt-decode';
 import { CartService } from '~/service/cartService';
 import RatingStars from '~/components/RenderStar';
 import { CommentService } from '~/service/commentService';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const cx = classNames.bind(styles);
 
@@ -258,7 +260,13 @@ function Detail() {
                     </div>
                 </div>
             </div>
-            <div className={cx('description')}>{product.description}</div>
+            <div className={cx('description')}>
+                <div className={cx('markdown-content')}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {product.description || '_Sản phẩm chưa có mô tả_'}
+                    </ReactMarkdown>
+                </div>
+            </div>
             {commentDTOs?.length > 0 && (
                 <div className={cx('box-review')}>
                     <div className={cx('rating')}>

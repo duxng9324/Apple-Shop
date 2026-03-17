@@ -25,6 +25,12 @@ public class ImageEntity {
 	
 	@Column(name = "imageData", columnDefinition = "LONGBLOB", length = 10000000)
 	private byte[] imageData;
+
+	@Column(name = "image_url", columnDefinition = "TEXT")
+	private String imageUrl;
+
+	@Column(name = "cloud_public_id")
+	private String cloudPublicId;
 	
 	@OneToOne
     @JoinColumn(name = "user_id")
@@ -60,6 +66,22 @@ public class ImageEntity {
 
 	public void setImageData(byte[] imageData) {
 		this.imageData = imageData;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public String getCloudPublicId() {
+		return cloudPublicId;
+	}
+
+	public void setCloudPublicId(String cloudPublicId) {
+		this.cloudPublicId = cloudPublicId;
 	}
 
 	public UserEntity getUser() {

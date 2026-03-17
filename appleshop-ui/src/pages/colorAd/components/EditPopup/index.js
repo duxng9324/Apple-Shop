@@ -35,7 +35,18 @@ function EditColorModal({ open, onClose, data, refresh }) {
   };
 
   return (
-    <Modal open={open} title="Edit Color" footer={null} onCancel={onClose}>
+    <Modal
+      open={open}
+      title="Edit Color"
+      footer={null}
+      centered
+      onCancel={onClose}
+      afterClose={() => {
+        document.body.style.overflow = "";
+        document.body.style.width = "";
+        document.body.classList.remove("ant-scrolling-effect");
+      }}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Form.Item label="Color">
           <Controller

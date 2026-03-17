@@ -199,7 +199,11 @@
     }
     .popupdelete {
         transition: all 0.5s ease-in-out;
-        transform: translate(-110%, -92%);
+        transform: translate(-50%, -55%);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 1002;
         max-width: 240px;
         width: 100%;
         padding: 12px;
@@ -208,6 +212,7 @@
         display: flex;
         flex-direction: column;
         opacity: 0;
+        pointer-events: none;
         .question {
             font-size: 16px;
             color: #fff;
@@ -251,8 +256,12 @@
         }
     }
     .boxChangePass {
-        transform: translate(-110%, -92%);
+        transform: translate(-50%, -55%);
         transition: all 0.5s ease-in-out;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 1002;
         opacity: 0;
         max-width: 240px;
         width: 100%;
@@ -264,6 +273,7 @@
         color: #fff;
         font-weight: 600;
         font-size: 16px;
+        pointer-events: none;
         .boxBtnPopup {
             margin-top: 12px;
             display: flex;
@@ -305,8 +315,9 @@
         gap: 12px;
     }
     .show3 {
-        transform: translate(0%, -92%);
+        transform: translate(-50%, -50%);
         opacity: 1;
+        pointer-events: auto;
         transition: all 0.5s ease-in-out;
     }
     input {

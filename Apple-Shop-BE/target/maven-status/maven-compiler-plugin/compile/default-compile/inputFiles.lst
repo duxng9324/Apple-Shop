@@ -61,6 +61,7 @@ C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\dto\
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\dto\MemoryDTO.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\repository\CategoryRepository.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\repository\UserRepository.java
+C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\config\CloudinaryConfig.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\entity\UserEntity.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\api\OrderAPI.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\converter\CommentConverter.java

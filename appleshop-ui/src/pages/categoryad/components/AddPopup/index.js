@@ -23,6 +23,12 @@ function AddCategoryModal({ open, onClose, reload }) {
       title="Add Category"
       onCancel={onClose}
       footer={null}
+      centered
+      afterClose={() => {
+        document.body.style.overflow = "";
+        document.body.style.width = "";
+        document.body.classList.remove("ant-scrolling-effect");
+      }}
     >
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item

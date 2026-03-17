@@ -79,6 +79,77 @@ function Order() {
     const handleLoading = () => {
         setIsLoading(!isLoading);
     };
+
+    const getPaymentMethodLabel = (method) => {
+        if (method === 'BANK_TRANSFER') return 'Chuyển khoản online';
+        return 'Thanh toán khi nhận được hàng';
+    };
+
+    const printInvoice = (order) => {
+        const invoiceWindow = window.open('', '_blank', 'width=1000,height=800');
+        if (!invoiceWindow) {
+            return;
+        }
+        const itemRows = order.orderItemDTOs
+            .map((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.name} ${item.memory} ${item.color}</td>
+                        <td>${item.quantity}</td>
+                        <td>${Number(item.price).toLocaleString('vi-VN')} đ</td>
+                        <td>${Number(itemTotal).toLocaleString('vi-VN')} đ</td>
+                    </tr>
+                `;
+            })
+            .join('');
+
+        invoiceWindow.document.write(`
+            <html>
+              <head>
+                <title>Hoa don ${order.sku}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 24px; color: #111827; }
+                    h1 { margin-bottom: 4px; }
+                    .meta { margin-bottom: 12px; color: #374151; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+                    th, td { border: 1px solid #d1d5db; padding: 8px; text-align: left; }
+                    th { background: #f3f4f6; }
+                    .summary { margin-top: 16px; font-size: 18px; font-weight: 700; }
+                </style>
+              </head>
+              <body>
+                <h1>Hoa don ban hang - Studio</h1>
+                <div class="meta">Ma don: ${order.sku}</div>
+                <div class="meta">Khach hang: ${order.fullName}</div>
+                <div class="meta">So dien thoai: ${order.orderPhone}</div>
+                <div class="meta">Email: ${order.email || ''}</div>
+                <div class="meta">Dia chi: ${order.orderAddress}</div>
+                <div class="meta">Thoi gian dat: ${new Date(order.orderTime).toLocaleString()}</div>
+                <div class="meta">Phuong thuc thanh toan: ${getPaymentMethodLabel(order.paymentMethod)}</div>
+                <div class="meta">Trang thai thanh toan: ${order.paymentStatus || 'Chua thanh toan'}</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>San pham</th>
+                            <th>So luong</th>
+                            <th>Don gia</th>
+                            <th>Thanh tien</th>
+                        </tr>
+                    </thead>
+                    <tbody>${itemRows}</tbody>
+                </table>
+                <div class="summary">Tong thanh toan: ${Number(order.totalPrice).toLocaleString('vi-VN')} đ</div>
+              </body>
+            </html>
+        `);
+        invoiceWindow.document.close();
+        invoiceWindow.focus();
+        invoiceWindow.print();
+    };
+
     return (
         <div className={cx('container')}>
             {visibleComment && (
@@ -117,6 +188,8 @@ function Order() {
                                 totalPrice,
                                 status,
                                 checkCmt,
+                                paymentMethod,
+                                paymentStatus,
                             } = order;
                             const handleCofirm = () => {
                                 order.status = 'Đơn hàng đã được hoàn thành';
@@ -164,7 +237,11 @@ function Order() {
                                             </tr>
                                             <tr>
                                                 <th>Hình thức thanh toán</th>
-                                                <td>Thanh toán khi nhận được hàng</td>
+                                                <td>{getPaymentMethodLabel(paymentMethod)}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Trạng thái thanh toán</th>
+                                                <td>{paymentStatus || 'Chưa thanh toán'}</td>
                                             </tr>
                                             <tr>
                                                 <th>Giao hàng đến</th>
@@ -239,6 +316,9 @@ function Order() {
                                                                 Đánh giá
                                                             </Button>
                                                         )}
+                                                        <Button onclick={() => printInvoice(order)} color="#32373d">
+                                                            In hóa đơn
+                                                        </Button>
                                                     </div>
                                                 </td>
                                                 <td>

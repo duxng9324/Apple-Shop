@@ -71,6 +71,7 @@ function Cart() {
     };
     const schema = yup.object().shape({
         sex: yup.string().required('Hãy chọn giới tính của bạn'),
+        paymentMethod: yup.string().required('Hãy chọn phương thức thanh toán'),
         fullName: yup.string().required('Hãy nhập tên của bạn'),
         orderPhone: yup.string().required('Hãy nhập số điện thoại của bạn'),
         email: yup.string().required('Hãy nhập email của bạn'),
@@ -104,6 +105,7 @@ function Cart() {
         const params = {
             fullName: data.fullName,
             sex: data.sex,
+            paymentMethod: data.paymentMethod,
             orderPhone: data.orderPhone,
             email: data.email,
             orderAddress: data.myhome + ', ' + data.ward + ', ' + data.district + ', ' + data.province,
@@ -172,6 +174,19 @@ function Cart() {
                             <label htmlFor="female">Nữ</label>
                         </div>
                         <p className={cx('errors')}>{errors.sex?.message}</p>
+                        <div className={cx('sex')}>
+                            <input type="radio" id="payCod" name="paymentMethod" value="COD" {...register('paymentMethod')} />
+                            <label htmlFor="payCod">Thanh toán khi nhận hàng (COD)</label>
+                            <input
+                                type="radio"
+                                id="payTransfer"
+                                name="paymentMethod"
+                                value="BANK_TRANSFER"
+                                {...register('paymentMethod')}
+                            />
+                            <label htmlFor="payTransfer">Chuyển khoản online</label>
+                        </div>
+                        <p className={cx('errors')}>{errors.paymentMethod?.message}</p>
                         <div className={cx('line')}>
                             <input
                                 type="text"

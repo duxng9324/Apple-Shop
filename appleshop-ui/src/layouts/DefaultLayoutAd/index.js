@@ -46,6 +46,7 @@ function DefaultLayoutAd() {
             {
                 key: 'profile',
                 label: 'Profile',
+                onClick: () => {navigate('/user')}
             },
             {
                 key: 'logout',
