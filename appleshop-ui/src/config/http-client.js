@@ -41,18 +41,23 @@ export class HttpClient {
         );
         this.axiosInstance.interceptors.response.use(
             function (response) {
-                return response.data;
+                const data = response.data;
+
+                return data;
             },
-            // function (error) {
-            //     return Promise.reject(error);
-            // },
             function (error) {
-                if (error.response.status === 401) {
+                if (!error.response) {
+                    return Promise.reject(new Error('Network error'));
+                }
+
+                const status = error.response.status;
+
+                if (status === 401) {
                     window.location.href = '/login';
-                } else if (error.response.status === 403) {
-                    // Hiện lên toast thông báo truy cập bị từ chối
+                } else if (status === 403) {
                     alert('Truy cập bị từ chối');
                 }
+
                 return Promise.reject(error);
             },
         );

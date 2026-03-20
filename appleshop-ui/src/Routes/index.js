@@ -14,6 +14,7 @@ import Home from '~/pages/home';
 import MemoryAd from '~/pages/memoryad';
 import Order from '~/pages/order';
 import OrderAd from '~/pages/orderad';
+import Payment from '~/pages/payment';
 import ProductAd from '~/pages/productad';
 
 const router = createBrowserRouter([
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
             {
                 path: '/order',
                 element: <Order />,
+            },
+            {
+                path: '/payment',
+                element: <Payment />,
             },
             { path: '/user', element: <User /> },
         ],

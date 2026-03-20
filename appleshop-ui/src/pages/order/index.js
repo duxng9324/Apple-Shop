@@ -81,6 +81,7 @@ function Order() {
     };
 
     const getPaymentMethodLabel = (method) => {
+        if (method === 'VNPAY_QR') return 'VNPay chuyển khoản qua QR';
         if (method === 'BANK_TRANSFER') return 'Chuyển khoản online';
         return 'Thanh toán khi nhận được hàng';
     };

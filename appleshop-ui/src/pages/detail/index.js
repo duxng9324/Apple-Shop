@@ -19,6 +19,8 @@ import RatingStars from '~/components/RenderStar';
 import { CommentService } from '~/service/commentService';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Button } from 'antd';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -26,34 +28,28 @@ function Detail() {
     const { productCode } = useParams();
     const navigate = useNavigate();
 
-    const [product, setProduct] = useState([]);
+    const [product, setProduct] = useState(null);
     const [priceSelect, setPriceSelect] = useState(0);
     const [colorSelect, setColorSelect] = useState(0);
-    const [cart, setCart] = useState({});
-    const [check, setCheck] = useState(false);
-    const [isLoading, setIsLoading] = useState();
-
-    useEffect(() => {
-        const cartService = new CartService();
-        const fetchData = async function () {
-            const res = await cartService.add(cart);
-            return res;
-        };
-        if (check) {
-            fetchData().then(() => navigate('/cart'));
-        }
-    }, [cart]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const productService = new ProductService();
-        const fetchData = async function () {
-            const res = await productService.viewProductByCode({ productCode });
-            setProduct(res);
-            return res;
+
+        const fetchData = async () => {
+            try {
+                const res = await productService.viewProductByCode({ productCode });
+                setProduct(res);
+            } catch (error) {
+                console.log('ERROR >>>', error);
+                toast.error('Lỗi khi tải dữ liệu');
+            }
         };
+
         fetchData();
     }, [productCode, isLoading]);
-    const { imgLinks, name, list, colorDTOs, commentDTOs } = product;
+
+    const { imgLinks, name, list, colorDTOs, commentDTOs } = product || {};
     const imageArray = imgLinks || [];
 
     const commentService = new CommentService();
@@ -97,17 +93,25 @@ function Detail() {
     };
     const token = localStorage.getItem('token');
     const decoded = jwt_decode(token);
-    const OnBuy = () => {
-        const token = localStorage.getItem('token');
-        const decoded = jwt_decode(token);
-        const item = {
-            userId: decoded.id,
-            productId: product.id,
-            memory: list?.[priceSelect]?.type,
-            color: colorDTOs?.[colorSelect]?.color,
-        };
-        setCart(item);
-        setCheck(true);
+    const OnBuy = async () => {
+        try {
+            const cartService = new CartService();
+
+            const item = {
+                userId: decoded.id,
+                productId: product.id,
+                memory: list?.[priceSelect]?.type,
+                color: colorDTOs?.[colorSelect]?.color,
+            };
+
+            const res = await cartService.add(item);
+            console.log(res);
+
+            navigate('/cart');
+            toast.success('Đã thêm sản phẩm vào giỏ hàng');
+        } catch (error) {
+            toast.error('Đã xảy ra lỗi ' + String(error));
+        }
     };
 
     function calculateAverageRating(commentDTOs) {
@@ -179,6 +183,9 @@ function Detail() {
     const handleEditCmtAdChange = (e) => {
         setReplyAd(e.target.value);
     };
+
+    if (!product) return <div>Loading...</div>;
+
     return (
         <div className={cx('container')}>
             <div className={cx('detail')}>
@@ -245,13 +252,13 @@ function Detail() {
                                 );
                             })}
                     </div>
-                    <div
+                    <Button
                         className={cx('btn-buynow', decoded.role !== 0 ? 'disabled' : '')}
-                        onClick={decoded.role !== 0 ? null : () => OnBuy()}
-                        style={{ opacity: decoded.role !== 0 ? 0.5 : 1 }}
+                        onClick={() => OnBuy()}
+                        type="primary"
                     >
                         MUA NGAY
-                    </div>
+                    </Button>
 
                     <div className={cx('contact')}>
                         <p>

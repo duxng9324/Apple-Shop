@@ -1,11 +1,848 @@
 [
     {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "StreamingResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "quote",
+        "importPath": "urllib.parse",
+        "description": "urllib.parse",
+        "isExtraImport": true,
+        "detail": "urllib.parse",
+        "documentation": {}
+    },
+    {
+        "label": "ChatRequest",
+        "importPath": "app.schemas.chat",
+        "description": "app.schemas.chat",
+        "isExtraImport": true,
+        "detail": "app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "ChatResponse",
+        "importPath": "app.schemas.chat",
+        "description": "app.schemas.chat",
+        "isExtraImport": true,
+        "detail": "app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "HistoryResponse",
+        "importPath": "app.schemas.chat",
+        "description": "app.schemas.chat",
+        "isExtraImport": true,
+        "detail": "app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "IntentData",
+        "importPath": "app.schemas.chat",
+        "description": "app.schemas.chat",
+        "isExtraImport": true,
+        "detail": "app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "IntentData",
+        "importPath": "app.schemas.chat",
+        "description": "app.schemas.chat",
+        "isExtraImport": true,
+        "detail": "app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "get_session",
+        "importPath": "app.core.memory",
+        "description": "app.core.memory",
+        "isExtraImport": true,
+        "detail": "app.core.memory",
+        "documentation": {}
+    },
+    {
+        "label": "update_session",
+        "importPath": "app.core.memory",
+        "description": "app.core.memory",
+        "isExtraImport": true,
+        "detail": "app.core.memory",
+        "documentation": {}
+    },
+    {
+        "label": "add_history",
+        "importPath": "app.core.memory",
+        "description": "app.core.memory",
+        "isExtraImport": true,
+        "detail": "app.core.memory",
+        "documentation": {}
+    },
+    {
+        "label": "rds",
+        "importPath": "app.core.memory",
+        "description": "app.core.memory",
+        "isExtraImport": true,
+        "detail": "app.core.memory",
+        "documentation": {}
+    },
+    {
+        "label": "check_redis",
+        "importPath": "app.core.memory",
+        "description": "app.core.memory",
+        "isExtraImport": true,
+        "detail": "app.core.memory",
+        "documentation": {}
+    },
+    {
+        "label": "llm_service",
+        "importPath": "app.services",
+        "description": "app.services",
+        "isExtraImport": true,
+        "detail": "app.services",
+        "documentation": {}
+    },
+    {
+        "label": "tour_service",
+        "importPath": "app.services",
+        "description": "app.services",
+        "isExtraImport": true,
+        "detail": "app.services",
+        "documentation": {}
+    },
+    {
+        "label": "intent_service",
+        "importPath": "app.services",
+        "description": "app.services",
+        "isExtraImport": true,
+        "detail": "app.services",
+        "documentation": {}
+    },
+    {
+        "label": "i18n",
+        "importPath": "app.core",
+        "description": "app.core",
+        "isExtraImport": true,
+        "detail": "app.core",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "app.config",
+        "description": "app.config",
+        "isExtraImport": true,
+        "detail": "app.config",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "redis.asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "redis.asyncio",
+        "description": "redis.asyncio",
+        "detail": "redis.asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "unidecode",
+        "importPath": "unidecode",
+        "description": "unidecode",
+        "isExtraImport": true,
+        "detail": "unidecode",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "process_rule_based",
+        "importPath": "app.core.rules",
+        "description": "app.core.rules",
+        "isExtraImport": true,
+        "detail": "app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "call_ollama_intent",
+        "importPath": "app.services.llm_service",
+        "description": "app.services.llm_service",
+        "isExtraImport": true,
+        "detail": "app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "build_intent_prompt",
+        "importPath": "app.core.prompts",
+        "description": "app.core.prompts",
+        "isExtraImport": true,
+        "detail": "app.core.prompts",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "BaseSettings",
+        "importPath": "pydantic_settings",
+        "description": "pydantic_settings",
+        "isExtraImport": true,
+        "detail": "pydantic_settings",
+        "documentation": {}
+    },
+    {
+        "label": "chat",
+        "importPath": "app.api",
+        "description": "app.api",
+        "isExtraImport": true,
+        "detail": "app.api",
+        "documentation": {}
+    },
+    {
+        "label": "CORSMiddleware",
+        "importPath": "fastapi.middleware.cors",
+        "description": "fastapi.middleware.cors",
+        "isExtraImport": true,
+        "detail": "fastapi.middleware.cors",
+        "documentation": {}
+    },
+    {
+        "label": "uvicorn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uvicorn",
+        "description": "uvicorn",
+        "detail": "uvicorn",
+        "documentation": {}
+    },
+    {
         "label": "mysql.connector",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "mysql.connector",
         "description": "mysql.connector",
         "detail": "mysql.connector",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.api.chat",
+        "description": "chat-bot-be.app.api.chat",
+        "peekOfCode": "router = APIRouter()\ndef _build_product_url(product: dict):\n    category = str(product.get(\"categoryCode\") or \"iphone\").strip().strip(\"/\")\n    code = str(product.get(\"code\") or \"\").strip().strip(\"/\")\n    if not code:\n        return None\n    return f\"{settings.FRONTEND_BASE_URL.rstrip('/')}/{quote(category)}/{quote(code)}\"\ndef _merge_recommend_candidates(primary: list, fallback: list, limit: int = 12):\n    merged = []\n    seen = set()",
+        "detail": "chat-bot-be.app.api.chat",
+        "documentation": {}
+    },
+    {
+        "label": "get_msg",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.i18n",
+        "description": "chat-bot-be.app.core.i18n",
+        "peekOfCode": "def get_msg(lang, key, **kwargs):\n    lang_dict = MESSAGES.get(lang, MESSAGES[\"vi\"])\n    template = lang_dict.get(key, MESSAGES[\"vi\"].get(key, \"\"))\n    return template.format(**kwargs)\ndef format_price(price, lang=\"vi\"):\n    try:\n        if price is None:\n            return \"Liên hệ\" if lang == \"vi\" else \"Contact\"\n        price_int = int(price)\n        currency = MESSAGES.get(lang, MESSAGES[\"vi\"])[\"labels\"][\"currency\"]",
+        "detail": "chat-bot-be.app.core.i18n",
+        "documentation": {}
+    },
+    {
+        "label": "format_price",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.i18n",
+        "description": "chat-bot-be.app.core.i18n",
+        "peekOfCode": "def format_price(price, lang=\"vi\"):\n    try:\n        if price is None:\n            return \"Liên hệ\" if lang == \"vi\" else \"Contact\"\n        price_int = int(price)\n        currency = MESSAGES.get(lang, MESSAGES[\"vi\"])[\"labels\"][\"currency\"]\n        if lang == \"vi\":\n            return f\"{price_int:,}\".replace(\",\", \".\") + f\" {currency}\"\n        return f\"{price_int:,} {currency}\"\n    except Exception:",
+        "detail": "chat-bot-be.app.core.i18n",
+        "documentation": {}
+    },
+    {
+        "label": "format_product_card",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.i18n",
+        "description": "chat-bot-be.app.core.i18n",
+        "peekOfCode": "def format_product_card(product, index, lang=\"vi\", product_url=None):\n    labels = MESSAGES.get(lang, MESSAGES[\"vi\"])[\"labels\"]\n    code = product.get(\"code\", \"N/A\")\n    name = product.get(\"name\", \"Apple Product\")\n    category = product.get(\"categoryCode\", \"\")\n    memories = _extract_memories(product)\n    memory_text = \", \".join(memories[:3]) if memories else \"N/A\"\n    price_text = format_price(_extract_lowest_price(product), lang)\n    card = (\n        f\"### {index}. {name}\\n\"",
+        "detail": "chat-bot-be.app.core.i18n",
+        "documentation": {}
+    },
+    {
+        "label": "MESSAGES",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.i18n",
+        "description": "chat-bot-be.app.core.i18n",
+        "peekOfCode": "MESSAGES = {\n    \"vi\": {\n        \"greeting\": \"Xin chào bạn, mình là AppleShop Assistant. Mình có thể giúp bạn tìm sản phẩm, tư vấn lựa chọn, hướng dẫn đặt hàng hoặc kiểm tra đơn hàng.\",\n        \"no_product\": \"Tiếc quá, mình chưa tìm thấy sản phẩm phù hợp với từ khóa của bạn.\",\n        \"cta\": \"Bạn muốn mình lọc tiếp theo màu, dung lượng hay tầm giá?\",\n        \"order_guide\": (\n            \"Bạn làm theo các bước để đặt hàng nhanh:\\n\"\n            \"1. Mở sản phẩm bạn muốn mua\\n\"\n            \"2. Chọn màu + dung lượng\\n\"\n            \"3. Nhấn Thêm vào giỏ hàng\\n\"",
+        "detail": "chat-bot-be.app.core.i18n",
+        "documentation": {}
+    },
+    {
+        "label": "SESSION_TTL",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.memory",
+        "description": "chat-bot-be.app.core.memory",
+        "peekOfCode": "SESSION_TTL = 60 * 60 * 6  # 6 tiếng\nrds = redis.Redis(\n    host=settings.REDIS_HOST,\n    port=settings.REDIS_PORT,\n    db=settings.REDIS_DB,\n    decode_responses=True,\n    socket_connect_timeout=2,\n)\nasync def check_redis():\n    \"\"\"Fail fast khi startup\"\"\"",
+        "detail": "chat-bot-be.app.core.memory",
+        "documentation": {}
+    },
+    {
+        "label": "rds",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.memory",
+        "description": "chat-bot-be.app.core.memory",
+        "peekOfCode": "rds = redis.Redis(\n    host=settings.REDIS_HOST,\n    port=settings.REDIS_PORT,\n    db=settings.REDIS_DB,\n    decode_responses=True,\n    socket_connect_timeout=2,\n)\nasync def check_redis():\n    \"\"\"Fail fast khi startup\"\"\"\n    try:",
+        "detail": "chat-bot-be.app.core.memory",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_SESSION",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.memory",
+        "description": "chat-bot-be.app.core.memory",
+        "peekOfCode": "DEFAULT_SESSION = {\n    \"category\": \"\",\n    \"product_name\": \"\",\n    \"product_code\": \"\",\n    \"memory\": \"\",\n    \"color\": \"\",\n    \"stage\": \"IDLE\",\n    \"language\": \"vi\",\n    \"history\": \"[]\",  # lưu string cho hash\n}",
+        "detail": "chat-bot-be.app.core.memory",
+        "documentation": {}
+    },
+    {
+        "label": "build_intent_prompt",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.prompts",
+        "description": "chat-bot-be.app.core.prompts",
+        "peekOfCode": "def build_intent_prompt(session, current_message):\n    history = \"\"\n    for h in session.get(\"history\", [])[-5:]:  \n        role = \"U\" if h[\"role\"] == \"user\" else \"A\"\n        history += f\"{role}:{h['content']}\\n\"\n    return f\"\"\"\n  You are AppleShop Assistant.\n  Nhiệm vụ: phân loại intent người dùng cho website bán sản phẩm Apple.\n⚠️ Chỉ được chọn CHÍNH XÁC 1 trong các giá trị sau:\n- GREETING",
+        "detail": "chat-bot-be.app.core.prompts",
+        "documentation": {}
+    },
+    {
+        "label": "SYSTEM_INSTRUCTION",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.prompts",
+        "description": "chat-bot-be.app.core.prompts",
+        "peekOfCode": "SYSTEM_INSTRUCTION = \"\"\"\nBạn là trợ lý mua sắm sản phẩm Apple chuyên nghiệp tên AppleShop Assistant.\nHãy trả lời câu hỏi một cách ngắn gọn, thân thiện bằng ngôn ngữ: {lang}.\n**Yêu cầu định dạng:** Sử dụng Markdown (in đậm, gạch đầu dòng, heading, code block) để câu trả lời dễ đọc hơn.\n\"\"\"",
+        "detail": "chat-bot-be.app.core.prompts",
+        "documentation": {}
+    },
+    {
+        "label": "normalize_text",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def normalize_text(text: str) -> str:\n    return unidecode(text).lower().strip() if text else \"\"\ndef contains_any(message: str, keywords: List[str]) -> bool:\n    return any(kw in message for kw in keywords)\ndef extract_category(msg_norm: str):\n    for k, v in CATEGORY_MAP.items():\n        if k in msg_norm:\n            return v\n    return None\ndef extract_memory(msg_norm: str):",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "contains_any",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def contains_any(message: str, keywords: List[str]) -> bool:\n    return any(kw in message for kw in keywords)\ndef extract_category(msg_norm: str):\n    for k, v in CATEGORY_MAP.items():\n        if k in msg_norm:\n            return v\n    return None\ndef extract_memory(msg_norm: str):\n    match = MEMORY_PATTERN.search(msg_norm)\n    if not match:",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "extract_category",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def extract_category(msg_norm: str):\n    for k, v in CATEGORY_MAP.items():\n        if k in msg_norm:\n            return v\n    return None\ndef extract_memory(msg_norm: str):\n    match = MEMORY_PATTERN.search(msg_norm)\n    if not match:\n        return None\n    value = int(match.group(1))",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "extract_memory",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def extract_memory(msg_norm: str):\n    match = MEMORY_PATTERN.search(msg_norm)\n    if not match:\n        return None\n    value = int(match.group(1))\n    unit = (match.group(2) or \"gb\").lower()\n    if unit == \"tb\":\n        value = value * 1024\n    return f\"{value}GB\"\ndef extract_quantity(message: str):",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "extract_quantity",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def extract_quantity(message: str):\n    for match in QUANTITY_PATTERN.finditer(message):\n        qty = int(match.group(1))\n        if 1 <= qty <= 20:\n            return qty\n    return None\ndef extract_product_code(message: str):\n    for match in PRODUCT_CODE_PATTERN.finditer(message.upper()):\n        candidate = match.group(0)\n        # Product code must contain at least one digit to avoid matching normal words like \"XIN\" or \"CHAO\".",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "extract_product_code",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def extract_product_code(message: str):\n    for match in PRODUCT_CODE_PATTERN.finditer(message.upper()):\n        candidate = match.group(0)\n        # Product code must contain at least one digit to avoid matching normal words like \"XIN\" or \"CHAO\".\n        if any(ch.isdigit() for ch in candidate):\n            return candidate\n    return None\ndef extract_order_code(message: str):\n    match = ORDER_CODE_PATTERN.search(message.upper())\n    return match.group(0) if match else None",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "extract_order_code",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def extract_order_code(message: str):\n    match = ORDER_CODE_PATTERN.search(message.upper())\n    return match.group(0) if match else None\ndef extract_color(msg_norm: str):\n    for color in KNOWN_COLORS:\n        if color in msg_norm:\n            return color\n    return None\ndef extract_product_name(message: str):\n    lower_msg = message.lower()",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "extract_color",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def extract_color(msg_norm: str):\n    for color in KNOWN_COLORS:\n        if color in msg_norm:\n            return color\n    return None\ndef extract_product_name(message: str):\n    lower_msg = message.lower()\n    products = [\n        \"iphone 15\", \"iphone 14\", \"iphone 13\", \"iphone 16\", \"iphone\",\n        \"ipad pro\", \"ipad air\", \"ipad mini\", \"ipad\",",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "extract_product_name",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def extract_product_name(message: str):\n    lower_msg = message.lower()\n    products = [\n        \"iphone 15\", \"iphone 14\", \"iphone 13\", \"iphone 16\", \"iphone\",\n        \"ipad pro\", \"ipad air\", \"ipad mini\", \"ipad\",\n        \"macbook air\", \"macbook pro\", \"imac\", \"mac mini\", \"mac studio\", \"macbook\", \"mac\",\n        \"apple watch\", \"watch\",\n        \"airpods\", \"airpods pro\", \"airpods max\",\n    ]\n    for name in products:",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "process_rule_based",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "def process_rule_based(message: str) -> IntentData:\n    msg_norm = normalize_text(message)\n    category = extract_category(msg_norm)\n    memory = extract_memory(msg_norm)\n    color = extract_color(msg_norm)\n    quantity = extract_quantity(message)\n    product_code = extract_product_code(message)\n    order_code = extract_order_code(message)\n    product_name = extract_product_name(message)\n    has_book = contains_any(msg_norm, KW_PLACE_ORDER)",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "CATEGORY_MAP",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "CATEGORY_MAP = {\n    \"iphone\": \"iphone\",\n    \"ipad\": \"ipad\",\n    \"mac\": \"mac\",\n    \"macbook\": \"mac\",\n    \"watch\": \"watch\",\n    \"apple watch\": \"watch\",\n    \"phu kien\": \"phu-kien\",\n    \"phukien\": \"phu-kien\",\n    \"airpods\": \"phu-kien\",",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "KW_GREETING",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "KW_GREETING = [\n    \"hi\", \"hello\", \"hey\", \"xin chao\", \"chao\", \"alo\", \"shop oi\", \"ad oi\", \"bot oi\",\n]\nKW_SEARCH = [\n    \"tim\", \"kiem\", \"search\", \"gia\", \"bao nhieu\", \"co hang\", \"con hang\", \"thong so\",\n    \"mau\", \"bo nho\", \"ram\", \"rom\", \"xem san pham\", \"chi tiet\",\n]\nKW_RECOMMEND = [\n    \"goi y\", \"tu van\", \"nen mua\", \"de xuat\", \"recommend\", \"suggest\", \"hot\",\n]",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "KW_SEARCH",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "KW_SEARCH = [\n    \"tim\", \"kiem\", \"search\", \"gia\", \"bao nhieu\", \"co hang\", \"con hang\", \"thong so\",\n    \"mau\", \"bo nho\", \"ram\", \"rom\", \"xem san pham\", \"chi tiet\",\n]\nKW_RECOMMEND = [\n    \"goi y\", \"tu van\", \"nen mua\", \"de xuat\", \"recommend\", \"suggest\", \"hot\",\n]\nKW_PLACE_ORDER = [\n    \"dat hang\", \"dat mua\", \"mua ngay\", \"order\", \"them gio\", \"gio hang\", \"thanh toan\", \"checkout\",\n]",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "KW_RECOMMEND",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "KW_RECOMMEND = [\n    \"goi y\", \"tu van\", \"nen mua\", \"de xuat\", \"recommend\", \"suggest\", \"hot\",\n]\nKW_PLACE_ORDER = [\n    \"dat hang\", \"dat mua\", \"mua ngay\", \"order\", \"them gio\", \"gio hang\", \"thanh toan\", \"checkout\",\n]\nKW_TRACK_ORDER = [\n    \"don hang\", \"ma don\", \"kiem tra don\", \"theo doi don\", \"trang thai don\", \"order status\",\n]\nKW_WEBSITE_GUIDE = [",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "KW_PLACE_ORDER",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "KW_PLACE_ORDER = [\n    \"dat hang\", \"dat mua\", \"mua ngay\", \"order\", \"them gio\", \"gio hang\", \"thanh toan\", \"checkout\",\n]\nKW_TRACK_ORDER = [\n    \"don hang\", \"ma don\", \"kiem tra don\", \"theo doi don\", \"trang thai don\", \"order status\",\n]\nKW_WEBSITE_GUIDE = [\n    \"huong dan\", \"cach dung\", \"su dung web\", \"dang nhap\", \"dang ky\", \"tim tren web\", \"mua tren web\",\n]\nMEMORY_PATTERN = re.compile(r\"\\b(64|128|256|512|1024)\\s*(gb|g|tb)?\\b\", re.IGNORECASE)",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "KW_TRACK_ORDER",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "KW_TRACK_ORDER = [\n    \"don hang\", \"ma don\", \"kiem tra don\", \"theo doi don\", \"trang thai don\", \"order status\",\n]\nKW_WEBSITE_GUIDE = [\n    \"huong dan\", \"cach dung\", \"su dung web\", \"dang nhap\", \"dang ky\", \"tim tren web\", \"mua tren web\",\n]\nMEMORY_PATTERN = re.compile(r\"\\b(64|128|256|512|1024)\\s*(gb|g|tb)?\\b\", re.IGNORECASE)\nPRODUCT_CODE_PATTERN = re.compile(r\"\\b[A-Z0-9]{3,}(?:-[A-Z0-9]{2,})?\\b\")\nORDER_CODE_PATTERN = re.compile(r\"\\b(?:ODR|DH)[-_]?[A-Z0-9]{4,}\\b\", re.IGNORECASE)\nQUANTITY_PATTERN = re.compile(r\"\\b(\\d+)\\s*(cai|chiec|sp|san pham)?\\b\", re.IGNORECASE)",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "KW_WEBSITE_GUIDE",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "KW_WEBSITE_GUIDE = [\n    \"huong dan\", \"cach dung\", \"su dung web\", \"dang nhap\", \"dang ky\", \"tim tren web\", \"mua tren web\",\n]\nMEMORY_PATTERN = re.compile(r\"\\b(64|128|256|512|1024)\\s*(gb|g|tb)?\\b\", re.IGNORECASE)\nPRODUCT_CODE_PATTERN = re.compile(r\"\\b[A-Z0-9]{3,}(?:-[A-Z0-9]{2,})?\\b\")\nORDER_CODE_PATTERN = re.compile(r\"\\b(?:ODR|DH)[-_]?[A-Z0-9]{4,}\\b\", re.IGNORECASE)\nQUANTITY_PATTERN = re.compile(r\"\\b(\\d+)\\s*(cai|chiec|sp|san pham)?\\b\", re.IGNORECASE)\nKNOWN_COLORS = [\n    \"black\", \"white\", \"blue\", \"red\", \"green\", \"purple\", \"pink\", \"yellow\", \"gold\", \"silver\", \"gray\", \"grey\",\n    \"den\", \"trang\", \"xanh\", \"do\", \"tim\", \"vang\", \"hong\", \"bac\", \"xam\",",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "MEMORY_PATTERN",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "MEMORY_PATTERN = re.compile(r\"\\b(64|128|256|512|1024)\\s*(gb|g|tb)?\\b\", re.IGNORECASE)\nPRODUCT_CODE_PATTERN = re.compile(r\"\\b[A-Z0-9]{3,}(?:-[A-Z0-9]{2,})?\\b\")\nORDER_CODE_PATTERN = re.compile(r\"\\b(?:ODR|DH)[-_]?[A-Z0-9]{4,}\\b\", re.IGNORECASE)\nQUANTITY_PATTERN = re.compile(r\"\\b(\\d+)\\s*(cai|chiec|sp|san pham)?\\b\", re.IGNORECASE)\nKNOWN_COLORS = [\n    \"black\", \"white\", \"blue\", \"red\", \"green\", \"purple\", \"pink\", \"yellow\", \"gold\", \"silver\", \"gray\", \"grey\",\n    \"den\", \"trang\", \"xanh\", \"do\", \"tim\", \"vang\", \"hong\", \"bac\", \"xam\",\n]\ndef normalize_text(text: str) -> str:\n    return unidecode(text).lower().strip() if text else \"\"",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "PRODUCT_CODE_PATTERN",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "PRODUCT_CODE_PATTERN = re.compile(r\"\\b[A-Z0-9]{3,}(?:-[A-Z0-9]{2,})?\\b\")\nORDER_CODE_PATTERN = re.compile(r\"\\b(?:ODR|DH)[-_]?[A-Z0-9]{4,}\\b\", re.IGNORECASE)\nQUANTITY_PATTERN = re.compile(r\"\\b(\\d+)\\s*(cai|chiec|sp|san pham)?\\b\", re.IGNORECASE)\nKNOWN_COLORS = [\n    \"black\", \"white\", \"blue\", \"red\", \"green\", \"purple\", \"pink\", \"yellow\", \"gold\", \"silver\", \"gray\", \"grey\",\n    \"den\", \"trang\", \"xanh\", \"do\", \"tim\", \"vang\", \"hong\", \"bac\", \"xam\",\n]\ndef normalize_text(text: str) -> str:\n    return unidecode(text).lower().strip() if text else \"\"\ndef contains_any(message: str, keywords: List[str]) -> bool:",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "ORDER_CODE_PATTERN",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "ORDER_CODE_PATTERN = re.compile(r\"\\b(?:ODR|DH)[-_]?[A-Z0-9]{4,}\\b\", re.IGNORECASE)\nQUANTITY_PATTERN = re.compile(r\"\\b(\\d+)\\s*(cai|chiec|sp|san pham)?\\b\", re.IGNORECASE)\nKNOWN_COLORS = [\n    \"black\", \"white\", \"blue\", \"red\", \"green\", \"purple\", \"pink\", \"yellow\", \"gold\", \"silver\", \"gray\", \"grey\",\n    \"den\", \"trang\", \"xanh\", \"do\", \"tim\", \"vang\", \"hong\", \"bac\", \"xam\",\n]\ndef normalize_text(text: str) -> str:\n    return unidecode(text).lower().strip() if text else \"\"\ndef contains_any(message: str, keywords: List[str]) -> bool:\n    return any(kw in message for kw in keywords)",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "QUANTITY_PATTERN",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "QUANTITY_PATTERN = re.compile(r\"\\b(\\d+)\\s*(cai|chiec|sp|san pham)?\\b\", re.IGNORECASE)\nKNOWN_COLORS = [\n    \"black\", \"white\", \"blue\", \"red\", \"green\", \"purple\", \"pink\", \"yellow\", \"gold\", \"silver\", \"gray\", \"grey\",\n    \"den\", \"trang\", \"xanh\", \"do\", \"tim\", \"vang\", \"hong\", \"bac\", \"xam\",\n]\ndef normalize_text(text: str) -> str:\n    return unidecode(text).lower().strip() if text else \"\"\ndef contains_any(message: str, keywords: List[str]) -> bool:\n    return any(kw in message for kw in keywords)\ndef extract_category(msg_norm: str):",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "KNOWN_COLORS",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.core.rules",
+        "description": "chat-bot-be.app.core.rules",
+        "peekOfCode": "KNOWN_COLORS = [\n    \"black\", \"white\", \"blue\", \"red\", \"green\", \"purple\", \"pink\", \"yellow\", \"gold\", \"silver\", \"gray\", \"grey\",\n    \"den\", \"trang\", \"xanh\", \"do\", \"tim\", \"vang\", \"hong\", \"bac\", \"xam\",\n]\ndef normalize_text(text: str) -> str:\n    return unidecode(text).lower().strip() if text else \"\"\ndef contains_any(message: str, keywords: List[str]) -> bool:\n    return any(kw in message for kw in keywords)\ndef extract_category(msg_norm: str):\n    for k, v in CATEGORY_MAP.items():",
+        "detail": "chat-bot-be.app.core.rules",
+        "documentation": {}
+    },
+    {
+        "label": "ChatRequest",
+        "kind": 6,
+        "importPath": "chat-bot-be.app.schemas.chat",
+        "description": "chat-bot-be.app.schemas.chat",
+        "peekOfCode": "class ChatRequest(BaseModel):\n    message: str\n    user_id: Optional[str] = None\nclass ChatResponse(BaseModel):\n    reply: str\nclass IntentData(BaseModel):\n    intent: str\n    product_name: Optional[str] = None\n    product_code: Optional[str] = None\n    category: Optional[str] = None",
+        "detail": "chat-bot-be.app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "ChatResponse",
+        "kind": 6,
+        "importPath": "chat-bot-be.app.schemas.chat",
+        "description": "chat-bot-be.app.schemas.chat",
+        "peekOfCode": "class ChatResponse(BaseModel):\n    reply: str\nclass IntentData(BaseModel):\n    intent: str\n    product_name: Optional[str] = None\n    product_code: Optional[str] = None\n    category: Optional[str] = None\n    color: Optional[str] = None\n    memory: Optional[str] = None\n    people: Optional[int] = None",
+        "detail": "chat-bot-be.app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "IntentData",
+        "kind": 6,
+        "importPath": "chat-bot-be.app.schemas.chat",
+        "description": "chat-bot-be.app.schemas.chat",
+        "peekOfCode": "class IntentData(BaseModel):\n    intent: str\n    product_name: Optional[str] = None\n    product_code: Optional[str] = None\n    category: Optional[str] = None\n    color: Optional[str] = None\n    memory: Optional[str] = None\n    people: Optional[int] = None\n    quantity: Optional[int] = None\n    order_code: Optional[str] = None",
+        "detail": "chat-bot-be.app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "Message",
+        "kind": 6,
+        "importPath": "chat-bot-be.app.schemas.chat",
+        "description": "chat-bot-be.app.schemas.chat",
+        "peekOfCode": "class Message(BaseModel):\n    role: str       # \"user\" hoặc \"ai\"\n    content: str    # Nội dung tin nhắn\nclass HistoryResponse(BaseModel):\n    user_id: str\n    history: List[Message]",
+        "detail": "chat-bot-be.app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "HistoryResponse",
+        "kind": 6,
+        "importPath": "chat-bot-be.app.schemas.chat",
+        "description": "chat-bot-be.app.schemas.chat",
+        "peekOfCode": "class HistoryResponse(BaseModel):\n    user_id: str\n    history: List[Message]",
+        "detail": "chat-bot-be.app.schemas.chat",
+        "documentation": {}
+    },
+    {
+        "label": "get_smart_intent",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.intent_service",
+        "description": "chat-bot-be.app.services.intent_service",
+        "peekOfCode": "def get_smart_intent(session: dict, message: str):\n    intent_data = process_rule_based(message)\n    print(f\"⚡ Rule Result: {intent_data.intent} | Product: {intent_data.product_name}\")\n    should_call_ai = False\n    if intent_data.intent == \"UNKNOWN\":\n        should_call_ai = True\n        print(\"Reason: Rule returned UNKNOWN\")\n    elif intent_data.intent == \"GREETING\":\n        return intent_data\n    elif intent_data.intent == \"SEARCH_PRODUCT\" and not any([",
+        "detail": "chat-bot-be.app.services.intent_service",
+        "documentation": {}
+    },
+    {
+        "label": "extract_json",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.llm_service",
+        "description": "chat-bot-be.app.services.llm_service",
+        "peekOfCode": "def extract_json(text: str):\n    \"\"\"\n    Trích xuất chuỗi JSON từ phản hồi của AI (vì AI hay nói nhảm thêm ở đầu/đuôi).\n    \"\"\"\n    try:\n        # Tìm chuỗi bắt đầu bằng { và kết thúc bằng }\n        match = re.search(r\"\\{[\\s\\S]*\\}\", text)\n        return match.group(0) if match else None\n    except:\n        return None",
+        "detail": "chat-bot-be.app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "normalize_int",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.llm_service",
+        "description": "chat-bot-be.app.services.llm_service",
+        "peekOfCode": "def normalize_int(value):\n    \"\"\"\n    Chuyển đổi text sang số (Ví dụ: \"3 ngày\" -> 3).\n    \"\"\"\n    if isinstance(value, int):\n        return value\n    if isinstance(value, str):\n        match = re.search(r\"\\d+\", value)\n        return int(match.group()) if match else None\n    return None",
+        "detail": "chat-bot-be.app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "local_chat_fallback",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.llm_service",
+        "description": "chat-bot-be.app.services.llm_service",
+        "peekOfCode": "def local_chat_fallback(message: str, lang: str = \"vi\") -> str:\n    msg_norm = message.lower().strip()\n    if lang == \"en\":\n        if any(k in msg_norm for k in [\"your name\", \"who are you\", \"what are you\"]):\n            return \"I am AppleShop Assistant. I can help you find Apple products, guide checkout, and support order tracking.\"\n        if any(k in msg_norm for k in [\"what can you do\", \"help me\", \"support\"]):\n            return (\n                \"I can help with: product search, recommendations by budget, checkout steps, \"\n                \"and order tracking in /order.\"\n            )",
+        "detail": "chat-bot-be.app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "recommend_products_with_ai",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.llm_service",
+        "description": "chat-bot-be.app.services.llm_service",
+        "peekOfCode": "def recommend_products_with_ai(products: List[dict], user_message: str, lang: str = \"vi\", limit: int = 3) -> Tuple[str, List[dict]]:\n    if not products:\n        return \"\", []\n    candidates = products[:12]\n    catalog = \"\\n\".join([_build_product_line(product) for product in candidates])\n    msg_norm = user_message.lower()\n    strict_single_category = any(\n        keyword in msg_norm\n        for keyword in [\"chi iphone\", \"chỉ iphone\", \"only iphone\", \"chi ipad\", \"chỉ ipad\", \"only ipad\", \"chi mac\", \"chỉ mac\", \"only mac\"]\n    )",
+        "detail": "chat-bot-be.app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "call_ollama_intent",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.llm_service",
+        "description": "chat-bot-be.app.services.llm_service",
+        "peekOfCode": "def call_ollama_intent(session: dict, message: str, rule_intent: IntentData | None = None) -> IntentData:\n    \"\"\"\n    Phân tích Intent bằng AI.\n    ⚡ Rule-based luôn ưu tiên cao hơn AI.\n    Nếu rule đã xác định intent != UNKNOWN → KHÔNG gọi AI.\n    \"\"\"\n    use_ai = False\n    if not rule_intent or rule_intent.intent == \"UNKNOWN\":\n        use_ai = True\n    else:",
+        "detail": "chat-bot-be.app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "call_ollama_chat_raw",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.llm_service",
+        "description": "chat-bot-be.app.services.llm_service",
+        "peekOfCode": "def call_ollama_chat_raw(session ,message: str, lang: str = \"vi\") -> str:\n    history = \"\"\n    for h in session.get(\"history\", [])[-3:]:  \n        role = \"U\" if h[\"role\"] == \"user\" else \"A\"\n        history += f\"{role}:{h['content']}\\n\"\n    \"\"\"\n    Hàm chat tự do (Non-stream) hỗ trợ đa ngôn ngữ.\n    Dùng cho các trường hợp fallback hoặc khi không cần hiệu ứng gõ chữ.\n    \"\"\"\n    print(\"Call chat raw\")",
+        "detail": "chat-bot-be.app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "call_ollama_intro_fast",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.llm_service",
+        "description": "chat-bot-be.app.services.llm_service",
+        "peekOfCode": "def call_ollama_intro_fast(user_msg: str, tour_count: int, dest_name: str = \"\", lang: str = \"vi\") -> str:\n    if lang == \"en\":\n        if tour_count > 0:\n            return f\"I found {tour_count} matching Apple products for you 🌟\"\n        return \"Sorry, I could not find matching products. Want to try another keyword?\"\n    else:\n        if tour_count > 0:\n            return f\"Mình tìm được {tour_count} sản phẩm phù hợp cho bạn đây 🌟\"\n        return \"Tiếc quá, hiện chưa có sản phẩm phù hợp. Bạn thử từ khóa khác nhé?\"\ndef call_ollama_chat_stream(message: str, lang: str = \"vi\"):",
+        "detail": "chat-bot-be.app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "call_ollama_chat_stream",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.llm_service",
+        "description": "chat-bot-be.app.services.llm_service",
+        "peekOfCode": "def call_ollama_chat_stream(message: str, lang: str = \"vi\"):\n    \"\"\"\n    Chat Stream tự do (Greeting, hỏi đáp chung)\n    \"\"\"\n    # System Prompt định hướng ngôn ngữ\n    if lang == \"en\":\n        system_instruction = \"You are AppleShop Assistant. Answer in English. Keep it concise and friendly.\"\n    else:\n        system_instruction = \"Bạn là AppleShop Assistant. Trả lời bằng Tiếng Việt. Giọng điệu thân thiện, ngắn gọn.\"\n    prompt = f\"\"\"",
+        "detail": "chat-bot-be.app.services.llm_service",
+        "documentation": {}
+    },
+    {
+        "label": "search_products",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.tour_service",
+        "description": "chat-bot-be.app.services.tour_service",
+        "peekOfCode": "def search_products(\n    query: str = None,\n    product_code: str = None,\n    category: str = None,\n    memory: str = None,\n    color: str = None,\n):\n    try:\n        products = _fetch_all_products()\n        result = []",
+        "detail": "chat-bot-be.app.services.tour_service",
+        "documentation": {}
+    },
+    {
+        "label": "search_tours",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.tour_service",
+        "description": "chat-bot-be.app.services.tour_service",
+        "peekOfCode": "def search_tours(departure: str = None, destination: str = None, people: int = None, days: int = None):\n    # Backward-compatible wrapper for existing import paths.\n    return search_products(query=destination)\ndef add_to_cart(user_id: int, product_id: int, memory: str = None, color: str = None):\n    try:\n        payload = {\n            \"userId\": user_id,\n            \"productId\": product_id,\n            \"memory\": memory,\n            \"color\": color,",
+        "detail": "chat-bot-be.app.services.tour_service",
+        "documentation": {}
+    },
+    {
+        "label": "add_to_cart",
+        "kind": 2,
+        "importPath": "chat-bot-be.app.services.tour_service",
+        "description": "chat-bot-be.app.services.tour_service",
+        "peekOfCode": "def add_to_cart(user_id: int, product_id: int, memory: str = None, color: str = None):\n    try:\n        payload = {\n            \"userId\": user_id,\n            \"productId\": product_id,\n            \"memory\": memory,\n            \"color\": color,\n        }\n        response = _http.post(settings.CART_API, json=payload, timeout=8)\n        if response.status_code not in [200, 201]:",
+        "detail": "chat-bot-be.app.services.tour_service",
+        "documentation": {}
+    },
+    {
+        "label": "_http",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.services.tour_service",
+        "description": "chat-bot-be.app.services.tour_service",
+        "peekOfCode": "_http = requests.Session()\n_PRODUCT_CACHE = {\n    \"data\": [],\n    \"expires_at\": 0.0,\n}\n_CACHE_TTL_SECONDS = 45\ndef _normalize(value: str):\n    return (value or \"\").strip().lower()\ndef _matches_text(text: str, keyword: str):\n    if not keyword:",
+        "detail": "chat-bot-be.app.services.tour_service",
+        "documentation": {}
+    },
+    {
+        "label": "_PRODUCT_CACHE",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.services.tour_service",
+        "description": "chat-bot-be.app.services.tour_service",
+        "peekOfCode": "_PRODUCT_CACHE = {\n    \"data\": [],\n    \"expires_at\": 0.0,\n}\n_CACHE_TTL_SECONDS = 45\ndef _normalize(value: str):\n    return (value or \"\").strip().lower()\ndef _matches_text(text: str, keyword: str):\n    if not keyword:\n        return True",
+        "detail": "chat-bot-be.app.services.tour_service",
+        "documentation": {}
+    },
+    {
+        "label": "_CACHE_TTL_SECONDS",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.services.tour_service",
+        "description": "chat-bot-be.app.services.tour_service",
+        "peekOfCode": "_CACHE_TTL_SECONDS = 45\ndef _normalize(value: str):\n    return (value or \"\").strip().lower()\ndef _matches_text(text: str, keyword: str):\n    if not keyword:\n        return True\n    return _normalize(keyword) in _normalize(text)\ndef _extract_memories(product: dict):\n    memories = []\n    for item in product.get(\"list\", []) or []:",
+        "detail": "chat-bot-be.app.services.tour_service",
+        "documentation": {}
+    },
+    {
+        "label": "Settings",
+        "kind": 6,
+        "importPath": "chat-bot-be.app.config",
+        "description": "chat-bot-be.app.config",
+        "peekOfCode": "class Settings(BaseSettings):\n    OLLAMA_URL: str\n    OLLAMA_MODEL: str\n    JAVA_BACKEND_BASE: str\n    FRONTEND_BASE_URL: str = \"http://localhost:3000\"\n    REDIS_HOST: str = \"localhost\"\n    REDIS_PORT: int = 6379\n    REDIS_DB: int = 0\n    @property\n    def TOUR_API(self):",
+        "detail": "chat-bot-be.app.config",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.config",
+        "description": "chat-bot-be.app.config",
+        "peekOfCode": "settings = Settings()",
+        "detail": "chat-bot-be.app.config",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "chat-bot-be.app.main",
+        "description": "chat-bot-be.app.main",
+        "peekOfCode": "app = FastAPI(title=\"AppleShop Virtual Assistant\", version=\"1.0.0\")\n# Cấu hình CORS cho Frontend (React/Vue) gọi vào\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\napp.include_router(chat.router, prefix=\"/ai\", tags=[\"Chat\"])",
+        "detail": "chat-bot-be.app.main",
         "documentation": {}
     },
     {

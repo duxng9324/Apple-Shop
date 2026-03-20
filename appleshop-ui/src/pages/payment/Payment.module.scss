@@ -1,0 +1,81 @@
+.container {
+    max-width: 1176px;
+    margin: 0 auto;
+    padding: 16px 12px 36px;
+}
+
+.backBtn {
+    margin-bottom: 14px;
+    padding-left: 0;
+}
+
+.card {
+    border-radius: 16px;
+    border: 1px solid #ebeff5;
+    box-shadow: 0 10px 28px rgba(16, 24, 40, 0.08);
+}
+
+.titleWrap {
+    margin-bottom: 8px;
+}
+
+.qrWrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 14px 0;
+}
+
+.qrImage {
+    width: 280px;
+    height: 280px;
+    border-radius: 14px;
+    border: 1px solid #edf1f7;
+    background: #fff;
+    padding: 10px;
+}
+
+.line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+
+    span {
+        color: #606776;
+    }
+
+    strong {
+        text-align: right;
+    }
+}
+
+.address {
+    max-width: 260px;
+}
+
+.totalPrice {
+    color: #d32029;
+    font-size: 24px;
+}
+
+.actionWrap {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    button {
+        width: 100%;
+        height: 44px;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .qrImage {
+        width: 240px;
+        height: 240px;
+    }
+}
