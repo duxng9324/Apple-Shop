@@ -1,11 +1,21 @@
 .assistantRoot {
     position: fixed;
-    right: 20px;
-    bottom: 20px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     z-index: 1300;
+    pointer-events: none;
+
+    &.open {
+        pointer-events: auto;
+    }
 }
 
 .floatingButton {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
     border: none;
     outline: none;
     cursor: pointer;
@@ -20,6 +30,7 @@
     align-items: center;
     gap: 8px;
     transition: transform 0.2s ease, opacity 0.2s ease;
+    pointer-events: auto;
 
     &:hover {
         transform: translateY(-2px);
@@ -31,6 +42,21 @@
     }
 }
 
+.backdrop {
+    position: absolute;
+    inset: 0;
+    border: none;
+    background: rgba(15, 23, 42, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+
+    &.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
 .floatingDot {
     width: 8px;
     height: 8px;
@@ -39,18 +65,24 @@
 }
 
 .chatPanel {
-    width: min(380px, calc(100vw - 24px));
-    height: min(70vh, 620px);
-    border-radius: 16px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: clamp(320px, 34vw, 460px);
+    height: 100vh;
+    border-radius: 0;
     overflow: hidden;
     background: #fff;
-    box-shadow: 0 20px 50px rgba(2, 6, 23, 0.25);
-    border: 1px solid #dbeafe;
-    display: none;
+    box-shadow: -12px 0 40px rgba(2, 6, 23, 0.24);
+    border-left: 1px solid #dbeafe;
+    display: flex;
     flex-direction: column;
+    transform: translateX(102%);
+    transition: transform 0.32s ease;
+    pointer-events: auto;
 
     &.open {
-        display: flex;
+        transform: translateX(0);
     }
 }
 
@@ -226,18 +258,13 @@
 }
 
 @media (max-width: 768px) {
-    .assistantRoot {
-        right: 10px;
-        left: 10px;
-        bottom: 10px;
-    }
-
     .chatPanel {
         width: 100%;
-        height: min(75vh, 560px);
+        height: 100%;
     }
 
     .floatingButton {
-        margin-left: auto;
+        right: 12px;
+        bottom: 12px;
     }
 }

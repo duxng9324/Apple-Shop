@@ -269,6 +269,7 @@ def call_ollama_intent(session: dict, message: str, rule_intent: IntentData | No
 
         ai_data["quantity"] = normalize_int(ai_data.get("quantity"))
         ai_data["people"] = normalize_int(ai_data.get("people"))
+        ai_data["target_price"] = normalize_int(ai_data.get("target_price"))
 
         ai_result = IntentData(**ai_data)
 
@@ -282,6 +283,7 @@ def call_ollama_intent(session: dict, message: str, rule_intent: IntentData | No
                 product_name=rule_intent.product_name or ai_result.product_name,
                 product_code=rule_intent.product_code or ai_result.product_code,
                 category=rule_intent.category or ai_result.category,
+                target_price=rule_intent.target_price or ai_result.target_price,
                 color=rule_intent.color or ai_result.color,
                 memory=rule_intent.memory or ai_result.memory,
                 quantity=rule_intent.quantity or ai_result.quantity,

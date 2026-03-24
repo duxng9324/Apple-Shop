@@ -19,6 +19,7 @@ def get_smart_intent(session: dict, message: str):
         intent_data.product_name,
         intent_data.product_code,
         intent_data.category,
+        intent_data.target_price,
     ]):
         should_call_ai = True
         print("Reason: Search intent but missing product entity")

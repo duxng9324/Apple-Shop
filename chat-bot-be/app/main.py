@@ -32,7 +32,7 @@ async def startup():
                 "stream": False,
                 "keep_alive": -1,
             },
-            timeout=8,
+            timeout=60,
         )
         if r.status_code >= 400:
             print(f"⚠️ AI warm-up failed with status {r.status_code}: {r.text}")

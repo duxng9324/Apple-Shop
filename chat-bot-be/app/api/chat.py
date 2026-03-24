@@ -66,6 +66,116 @@ def _ensure_category_diversity(suggested_products: list, candidates: list, max_i
     return selected
 
 
+def _extract_lowest_price(product: dict):
+    prices = []
+    for item in product.get("list", []) or []:
+        if not isinstance(item, dict):
+            continue
+        value = item.get("price")
+        if value is None:
+            continue
+        try:
+            prices.append(int(value))
+        except Exception:
+            pass
+    return min(prices) if prices else None
+
+
+def _extract_memories(product: dict):
+    values = []
+    for item in product.get("list", []) or []:
+        if isinstance(item, dict) and item.get("memory"):
+            values.append(str(item.get("memory")).upper())
+    return sorted(list(set(values)))
+
+
+def _extract_colors(product: dict):
+    values = []
+    for color in product.get("colorDTOs", []) or []:
+        if isinstance(color, dict) and color.get("name"):
+            values.append(str(color.get("name")))
+    return sorted(list(set(values)))
+
+
+def _max_memory_capacity(product: dict):
+    max_capacity = 0
+    for memory in _extract_memories(product):
+        numbers = re.findall(r"\d+", memory)
+        if not numbers:
+            continue
+        try:
+            max_capacity = max(max_capacity, int(numbers[0]))
+        except Exception:
+            pass
+    return max_capacity
+
+
+def _build_budget_comparison(products: list, target_price: int, lang: str = "vi"):
+    if not products:
+        return ""
+
+    rows = []
+    for product in products[:3]:
+        price = _extract_lowest_price(product)
+        if price is None:
+            continue
+        diff = price - target_price
+        rows.append((product, price, diff))
+
+    if not rows:
+        return ""
+
+    best_product, best_price, best_diff = min(
+        rows,
+        key=lambda row: (abs(row[2]), -_max_memory_capacity(row[0]), row[1]),
+    )
+
+    target_price_text = i18n.format_price(target_price, lang)
+    lines = []
+
+    if lang == "en":
+        lines.append(f"### Price & specs comparison (target: {target_price_text})")
+        for idx, (product, price, diff) in enumerate(rows, 1):
+            memories = ", ".join(_extract_memories(product)[:3]) or "N/A"
+            colors = ", ".join(_extract_colors(product)[:3]) or "N/A"
+            sign = "+" if diff >= 0 else "-"
+            lines.append(
+                f"{idx}. {product.get('name', 'Apple Product')}: {i18n.format_price(price, lang)} "
+                f"({sign}{i18n.format_price(abs(diff), lang)} vs target) | Memory: {memories} | Colors: {colors}"
+            )
+
+        if best_diff >= 0:
+            reason = f"closest to budget and above target by {i18n.format_price(abs(best_diff), lang)}"
+        else:
+            reason = f"closest to budget and saves {i18n.format_price(abs(best_diff), lang)}"
+        lines.append(
+            f"Recommendation: {best_product.get('name', 'Apple Product')} because it is {reason} and has competitive specs."
+        )
+        return "\n".join(lines)
+
+    lines.append(f"### So sánh giá & thông số (mục tiêu: {target_price_text})")
+    for idx, (product, price, diff) in enumerate(rows, 1):
+        memories = ", ".join(_extract_memories(product)[:3]) or "N/A"
+        colors = ", ".join(_extract_colors(product)[:3]) or "N/A"
+        if diff >= 0:
+            diff_text = f"cao hơn {i18n.format_price(abs(diff), lang)}"
+        else:
+            diff_text = f"thấp hơn {i18n.format_price(abs(diff), lang)}"
+        lines.append(
+            f"{idx}. {product.get('name', 'Sản phẩm Apple')}: {i18n.format_price(price, lang)} "
+            f"({diff_text} so với mức bạn đặt) | Bộ nhớ: {memories} | Màu: {colors}"
+        )
+
+    if best_diff >= 0:
+        reason = f"sát ngân sách nhất, chỉ cao hơn {i18n.format_price(abs(best_diff), lang)}"
+    else:
+        reason = f"sát ngân sách nhất và tiết kiệm hơn {i18n.format_price(abs(best_diff), lang)}"
+    lines.append(
+        f"Gợi ý chốt: {best_product.get('name', 'Sản phẩm Apple')} vì {reason}, đồng thời thông số vẫn cạnh tranh."
+    )
+    return "\n".join(lines)
+
+
 @router.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(req: ChatRequest):
     user_id = req.user_id or "guest"
@@ -89,6 +199,8 @@ async def chat_endpoint(req: ChatRequest):
         updates["color"] = intent_data.color
     if intent_data.memory:
         updates["memory"] = intent_data.memory
+    if intent_data.target_price:
+        updates["target_price"] = intent_data.target_price
 
     if updates:
         await update_session(user_id, updates)
@@ -101,10 +213,17 @@ async def chat_endpoint(req: ChatRequest):
     reply_text = ""
 
     if intent == "SEARCH_PRODUCT":
+        category_filter = intent_data.category or session.get("category")
+        target_price = intent_data.target_price or session.get("target_price")
+        query_text = intent_data.product_name or session.get("product_name")
+        if not query_text and not any([intent_data.product_code, category_filter]):
+            query_text = req.message
+
         products = tour_service.search_products(
-            query=intent_data.product_name or req.message,
+            query=query_text,
             product_code=intent_data.product_code,
-            category=intent_data.category or session.get("category"),
+            category=category_filter,
+            target_price=target_price,
             memory=intent_data.memory,
             color=intent_data.color,
         )
@@ -112,11 +231,18 @@ async def chat_endpoint(req: ChatRequest):
         if not products:
             reply_text = i18n.get_msg(current_lang, "no_product")
         else:
-            intro_text = llm_service.call_ollama_intro_fast(
-                req.message,
-                len(products),
-                lang=current_lang,
-            )
+            if target_price:
+                budget_text = i18n.format_price(target_price, current_lang)
+                if current_lang == "en":
+                    intro_text = f"I found {len(products)} products close to your budget around {budget_text}."
+                else:
+                    intro_text = f"Mình tìm được {len(products)} sản phẩm gần với mức giá {budget_text} mà bạn yêu cầu."
+            else:
+                intro_text = llm_service.call_ollama_intro_fast(
+                    req.message,
+                    len(products),
+                    lang=current_lang,
+                )
             top_products = products[:5]
             list_text = "\n\n".join(
                 [
@@ -129,8 +255,14 @@ async def chat_endpoint(req: ChatRequest):
                     for i, product in enumerate(top_products, 1)
                 ]
             )
+            comparison_text = ""
+            if target_price:
+                comparison_text = _build_budget_comparison(products, target_price, current_lang)
             cta_text = i18n.get_msg(current_lang, "cta")
-            reply_text = f"{intro_text}\n\n{list_text}\n\n{cta_text}"
+            if comparison_text:
+                reply_text = f"{intro_text}\n\n{list_text}\n\n{comparison_text}\n\n{cta_text}"
+            else:
+                reply_text = f"{intro_text}\n\n{list_text}\n\n{cta_text}"
 
     elif intent == "RECOMMEND_PRODUCT":
         is_generic_request = _is_generic_recommend_request(req.message, intent_data)
@@ -139,6 +271,7 @@ async def chat_endpoint(req: ChatRequest):
             query=intent_data.product_name,
             product_code=intent_data.product_code,
             category=intent_data.category or session.get("category"),
+            target_price=intent_data.target_price or session.get("target_price"),
             memory=intent_data.memory,
             color=intent_data.color,
         )
@@ -148,6 +281,7 @@ async def chat_endpoint(req: ChatRequest):
         else:
             broad_products = tour_service.search_products(
                 category=intent_data.category or session.get("category"),
+                target_price=intent_data.target_price or session.get("target_price"),
                 memory=intent_data.memory,
                 color=intent_data.color,
             )
@@ -183,6 +317,7 @@ async def chat_endpoint(req: ChatRequest):
             query=intent_data.product_name,
             product_code=intent_data.product_code,
             category=intent_data.category or session.get("category"),
+            target_price=intent_data.target_price or session.get("target_price"),
             memory=intent_data.memory,
             color=intent_data.color,
         )

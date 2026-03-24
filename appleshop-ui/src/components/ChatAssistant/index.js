@@ -95,6 +95,18 @@ function ChatAssistant() {
         loadHistory();
     }, [isOpen, chatbotService, userId]);
 
+    useEffect(() => {
+        if (!isOpen) {
+            document.body.style.overflow = '';
+            return;
+        }
+
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
+
     const sendMessage = async (customText = '') => {
         const text = (customText || draft).trim();
         if (!text || isSending) return;
@@ -149,7 +161,7 @@ function ChatAssistant() {
     };
 
     return (
-        <div className={cx('assistantRoot')}>
+        <div className={cx('assistantRoot', { open: isOpen })}>
             <button
                 className={cx('floatingButton', { hidden: isOpen })}
                 onClick={() => setIsOpen(true)}
@@ -160,7 +172,14 @@ function ChatAssistant() {
                 Trợ lý Apple
             </button>
 
-            <div className={cx('chatPanel', { open: isOpen })}>
+            <button
+                type="button"
+                className={cx('backdrop', { visible: isOpen })}
+                aria-label="Đóng khung chat"
+                onClick={() => setIsOpen(false)}
+            />
+
+            <aside className={cx('chatPanel', { open: isOpen })} aria-hidden={!isOpen}>
                 <div className={cx('chatHeader')}>
                     <div className={cx('headerText')}>
                         <h4>AppleShop Assistant</h4>
@@ -225,7 +244,7 @@ function ChatAssistant() {
                         Gửi
                     </button>
                 </div>
-            </div>
+            </aside>
         </div>
     );
 }
