@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.business.converter.ProductConverter;
 import com.business.dto.ProductDTO;
@@ -43,6 +44,7 @@ public class ProductService implements IProductService {
 	private ProductMemoryRepository productMemoryRepository;
 	
 	@Override
+	@Transactional
 	public ProductDTO save(ProductDTO productDTO) {
 		ProductEntity productEntity = new ProductEntity();
 		if(productDTO.getId() != null) {
@@ -61,12 +63,14 @@ public class ProductService implements IProductService {
 		
 		// Color
 		List<Long> colors = productDTO.getColors();
+		if (colors == null) {
+			colors = new ArrayList<>();
+		}
 		List<ColorEntity> colorEntities= new ArrayList<>();
-		
-		for(int i = 0; i < colors.size(); i++) {
+		for (int i = 0; i < colors.size(); i++) {
 			Long id = colors.get(i);
-			   ColorEntity colorEntity = colorRepository.findById(id).orElse(null);
-		      colorEntities.add(colorEntity);
+			ColorEntity colorEntity = colorRepository.findById(id).orElse(null);
+			colorEntities.add(colorEntity);
 		}
 		productEntity.setColors(colorEntities);
 		
@@ -74,10 +78,13 @@ public class ProductService implements IProductService {
 		//typeDTO
 		productRepository.save(productEntity);
 		List<TypeDTO> list = productDTO.getList();
-		if(productDTO.getId() != null) {
+		if (list == null) {
+			list = new ArrayList<>();
+		}
+		if (productDTO.getId() != null) {
 			productMemoryRepository.delete(productDTO.getId());
 		} 
-		for(TypeDTO item : list) {
+		for (TypeDTO item : list) {
 			String type = item.getType();
 			MemoryEntity memoryEntity = memoryRepository.findByType(type);
 			ProductMemoryEntity productMemoryEntity = new ProductMemoryEntity();

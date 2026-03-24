@@ -71,6 +71,7 @@ com\business\repository\ImageRepository.class
 com\business\entity\UserEntity.class
 com\business\config\SecurityConfig.class
 com\business\entity\ProductMemoryEntity.class
+com\business\entity\ProductImageEntity.class
 com\business\service\impl\MemoryService.class
 com\business\api\ImageAPI.class
 com\business\converter\CommentConverter.class
