@@ -80,16 +80,20 @@ def _lowest_price(product: dict):
 def _memories(product: dict):
     values = []
     for item in product.get("list", []) or []:
-        if isinstance(item, dict) and item.get("memory"):
-            values.append(str(item.get("memory")).upper())
+        if isinstance(item, dict):
+            memory = item.get("memory") or item.get("type")
+            if memory:
+                values.append(str(memory).upper())
     return sorted(list(set(values)))
 
 
 def _colors(product: dict):
     values = []
     for color in product.get("colorDTOs", []) or []:
-        if isinstance(color, dict) and color.get("name"):
-            values.append(str(color.get("name")))
+        if isinstance(color, dict):
+            color_name = color.get("name") or color.get("color")
+            if color_name:
+                values.append(str(color_name))
     return sorted(list(set(values)))
 
 
@@ -206,6 +210,139 @@ Chỉ trả về JSON hợp lệ:
         print(f"⚠️ Recommend AI error: {e}")
 
     return default_intro, candidates[:limit]
+
+
+def build_ai_comparison_reply(
+    products: List[dict],
+    user_message: str,
+    intent: str = "UNKNOWN",
+    lang: str = "vi",
+    limit: int = 3,
+    target_price: int = None,
+) -> str:
+    """
+    Always use AI to produce a detailed comparison + final recommendation.
+    Works for any intent by selecting top products first, then asking AI to compare.
+    """
+    if not products:
+        return ""
+
+    intro, selected = recommend_products_with_ai(products, user_message, lang=lang, limit=limit)
+    if not selected:
+        selected = products[:limit]
+
+    catalog = "\n".join([_build_product_line(product) for product in selected[:limit]])
+
+    if lang == "en":
+        budget_line = f"Target budget: {target_price} VND" if target_price else "Target budget: not specified"
+        prompt = f"""
+You are AppleShop Assistant.
+User intent: {intent}
+User request: "{user_message}"
+{budget_line}
+
+Below are the top matching products in this format:
+code|name|category|lowest_price|memories|colors
+{catalog}
+
+Write a concise but detailed markdown response in English with exactly these parts:
+1) "### Detailed comparison (Top {limit})"
+2) For each product: key specs + pros + cons + budget fit
+3) "### Final recommendation" with one best choice and reason
+
+Rules:
+- Compare ONLY these products.
+- Mention memory and color when available.
+- If target budget exists, explicitly show price difference vs budget for each product.
+- If a field is missing, write N/A.
+- Keep practical shopping advice.
+- Do not output JSON.
+"""
+        fallback_lines = [
+            f"### Detailed comparison (Top {len(selected[:limit])})",
+        ]
+        for i, p in enumerate(selected[:limit], 1):
+            lowest = _lowest_price(p)
+            budget_fit = ""
+            if target_price and lowest is not None:
+                diff = int(lowest) - int(target_price)
+                sign = "+" if diff >= 0 else "-"
+                budget_fit = f" | Budget diff: {sign}{abs(diff)}"
+            fallback_lines.append(
+                f"{i}. {p.get('name', 'Apple Product')} | Price: {(lowest or 'N/A')} | Memory: {', '.join(_memories(p)) or 'N/A'} | Colors: {', '.join(_colors(p)) or 'N/A'}{budget_fit}"
+            )
+        fallback_lines.append("### Final recommendation")
+        fallback_lines.append(f"Recommended: {selected[0].get('name', 'Apple Product')} based on overall fit.")
+        fallback = "\n".join(fallback_lines)
+    else:
+        budget_line = f"Ngân sách mục tiêu: {target_price} VND" if target_price else "Ngân sách mục tiêu: chưa cung cấp"
+        prompt = f"""
+Bạn là AppleShop Assistant.
+Intent người dùng: {intent}
+Nhu cầu người dùng: "{user_message}"
+{budget_line}
+
+Danh sách sản phẩm phù hợp nhất (định dạng):
+code|name|category|lowest_price|memories|colors
+{catalog}
+
+Hãy viết markdown bằng tiếng Việt có dấu với đúng các phần:
+1) "### So sánh chi tiết (Top {limit})"
+2) Mỗi sản phẩm: thông số chính + ưu điểm + nhược điểm + độ phù hợp ngân sách
+3) "### Gợi ý chốt" nêu 1 lựa chọn tốt nhất và lý do
+
+Quy tắc:
+- Chỉ so sánh trong danh sách trên.
+- Ưu tiên thông tin bộ nhớ, màu, giá.
+- Nếu có ngân sách mục tiêu, bắt buộc nêu chênh lệch giá so với ngân sách cho từng sản phẩm.
+- Thiếu dữ liệu thì ghi N/A.
+- Văn phong ngắn gọn, thực tế, dễ quyết định mua.
+- Không trả JSON.
+"""
+        fallback_lines = [
+            f"### So sánh chi tiết (Top {len(selected[:limit])})",
+        ]
+        for i, p in enumerate(selected[:limit], 1):
+            lowest = _lowest_price(p)
+            budget_fit = ""
+            if target_price and lowest is not None:
+                diff = int(lowest) - int(target_price)
+                if diff >= 0:
+                    budget_fit = f" | Chênh ngân sách: +{abs(diff)}"
+                else:
+                    budget_fit = f" | Chênh ngân sách: -{abs(diff)}"
+            fallback_lines.append(
+                f"{i}. {p.get('name', 'Sản phẩm Apple')} | Giá: {(lowest or 'N/A')} | Bộ nhớ: {', '.join(_memories(p)) or 'N/A'} | Màu: {', '.join(_colors(p)) or 'N/A'}{budget_fit}"
+            )
+        fallback_lines.append("### Gợi ý chốt")
+        fallback_lines.append(f"Nên chọn: {selected[0].get('name', 'Sản phẩm Apple')} vì phù hợp tổng thể nhất.")
+        fallback = "\n".join(fallback_lines)
+
+    payload = {
+        "model": settings.OLLAMA_MODEL,
+        "prompt": prompt,
+        "stream": False,
+        "options": {
+            "temperature": 0.3,
+            "num_ctx": 1024,
+            "num_predict": 420,
+        },
+    }
+
+    try:
+        res = requests.post(settings.OLLAMA_URL, json=payload, timeout=35)
+        res.raise_for_status()
+        data = res.json() if res.content else {}
+        response_text = ""
+        if isinstance(data, dict):
+            response_text = str(data.get("response", "")).strip()
+
+        if response_text:
+            return f"{intro}\n\n{response_text}"
+    except Exception as e:
+        print(f"⚠️ AI comparison error: {e}")
+
+    return f"{intro}\n\n{fallback}"
 
 # ==========================================
 # 2. CORE SERVICES

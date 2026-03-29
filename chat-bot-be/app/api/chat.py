@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 import re
+import json
 from urllib.parse import quote
 
 from app.schemas.chat import ChatRequest, ChatResponse, HistoryResponse
@@ -84,17 +85,51 @@ def _extract_lowest_price(product: dict):
 def _extract_memories(product: dict):
     values = []
     for item in product.get("list", []) or []:
-        if isinstance(item, dict) and item.get("memory"):
-            values.append(str(item.get("memory")).upper())
+        if isinstance(item, dict):
+            memory = item.get("memory") or item.get("type")
+            if memory:
+                values.append(str(memory).upper())
     return sorted(list(set(values)))
 
 
 def _extract_colors(product: dict):
     values = []
     for color in product.get("colorDTOs", []) or []:
-        if isinstance(color, dict) and color.get("name"):
-            values.append(str(color.get("name")))
+        if isinstance(color, dict):
+            color_name = color.get("name") or color.get("color")
+            if color_name:
+                values.append(str(color_name))
     return sorted(list(set(values)))
+
+
+def _to_int(value):
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+
+    text = str(value).strip().replace(",", "")
+    if not text:
+        return None
+
+    try:
+        return int(float(text))
+    except Exception:
+        return None
+
+
+def _description_summary(product: dict, max_len: int = 180):
+    description = str(product.get("description") or "").strip()
+    if not description:
+        return "N/A"
+
+    # Normalize markdown-heavy content from BE so comparison stays concise and readable.
+    text = re.sub(r"[`*_>#\-]+", " ", description)
+    text = re.sub(r"\s+", " ", text).strip()
+    if not text:
+        return "N/A"
+
+    return (text[:max_len].rstrip() + "...") if len(text) > max_len else text
 
 
 def _max_memory_capacity(product: dict):
@@ -111,6 +146,10 @@ def _max_memory_capacity(product: dict):
 
 
 def _build_budget_comparison(products: list, target_price: int, lang: str = "vi"):
+    target_price = _to_int(target_price)
+    if target_price is None:
+        return ""
+
     if not products:
         return ""
 
@@ -176,6 +215,157 @@ def _build_budget_comparison(products: list, target_price: int, lang: str = "vi"
     return "\n".join(lines)
 
 
+def _build_recommend_intro(product: dict, lang: str = "vi"):
+    name = product.get("name", "Sản phẩm Apple")
+    price = _extract_lowest_price(product)
+    memories = ", ".join(_extract_memories(product)[:3]) or "N/A"
+    colors = ", ".join(_extract_colors(product)[:3]) or "N/A"
+    price_text = i18n.format_price(price, lang) if price is not None else "N/A"
+
+    if lang == "en":
+        return (
+            f"AI suggestion: start with {name} because it balances price and specs well "
+            f"(from {price_text}, memory: {memories}, colors: {colors})."
+        )
+
+    return (
+        f"AI gợi ý bạn ưu tiên {name} vì cân bằng tốt giữa giá và cấu hình "
+        f"(giá từ {price_text}, bộ nhớ: {memories}, màu: {colors})."
+    )
+
+
+def _build_detailed_comparison(products: list, lang: str = "vi", limit: int = 3, base_url: str = None, target_price: int = None):
+    """
+    Tạo chuỗi so sánh chi tiết cho tối đa `limit` sản phẩm:
+    - Thông số kỹ thuật (bộ nhớ, giá thấp nhất, màu)
+    - Ưu/nhược điểm dựa trên giá và dung lượng bộ nhớ
+    - Gợi ý chốt
+    """
+    if not products:
+        return ""
+
+    selected = products[:limit]
+
+    lines = []
+    if lang == "en":
+        lines.append(f"I compare the {len(selected)} best matching products below, limited to the top {limit} items:")
+    else:
+        lines.append(f"Mình giới hạn so sánh chi tiết {len(selected)} sản phẩm phù hợp nhất:")
+
+    # Build per-product detail
+    for idx, product in enumerate(selected, 1):
+        name = product.get("name") or "Sản phẩm Apple"
+        code = product.get("code") or ""
+        category = product.get("categoryCode") or ""
+        price = _extract_lowest_price(product)
+        memories = _extract_memories(product)
+        colors = _extract_colors(product)
+        description_summary = _description_summary(product)
+
+        price_text = i18n.format_price(price, lang) if price is not None else "N/A"
+        memories_text = ", ".join(memories) if memories else "N/A"
+        colors_text = ", ".join(colors) if colors else "N/A"
+
+        # technical specs
+        lines.append("")
+        if lang == "en":
+            lines.append(f"### {idx}. {name}")
+            lines.append(f"- Code: {code}")
+            lines.append(f"- Category: {category}")
+            lines.append(f"- Lowest price: {price_text}")
+            lines.append(f"- Available memories: {memories_text}")
+            lines.append(f"- Available colors: {colors_text}")
+        else:
+            lines.append(f"### {idx}. {name}")
+            lines.append(f"- Mã SP: {code}")
+            lines.append(f"- Danh mục: {category}")
+            lines.append(f"- Giá: {price_text}")
+            lines.append(f"- Bộ nhớ: {memories_text}")
+            lines.append(f"- Màu: {colors_text}")
+            lines.append(f"- Mô tả nhanh: {description_summary}")
+
+        # show memory-price pairs if available
+        if product.get("list"):
+            if lang == "en":
+                lines.append("- Memory / Price details:")
+            else:
+                lines.append("- Chi tiết bộ nhớ / giá:")
+            for mem in product.get("list")[:5]:
+                if isinstance(mem, dict):
+                    m = mem.get("memory") or mem.get("type") or "-"
+                    p = mem.get("price")
+                    p_text = i18n.format_price(int(p), lang) if p is not None else "N/A"
+                    lines.append(f"  - {m}: {p_text}")
+
+        # pros/cons heuristics
+        pros = []
+        cons = []
+        # good price
+        if price is not None:
+            # relative to median of selected
+            prices = [p for p in (_extract_lowest_price(x) for x in selected) if p is not None]
+            if prices:
+                median = sorted(prices)[len(prices)//2]
+                if price <= median:
+                    pros.append("Giá cạnh tranh")
+                else:
+                    cons.append("Giá tương đối cao")
+
+        # memory
+        max_mem = _max_memory_capacity(product)
+        if max_mem >= 128:
+            pros.append("Dung lượng lớn phù hợp lưu trữ")
+        elif max_mem == 0:
+            cons.append("Không có thông tin bộ nhớ rõ ràng")
+
+        if colors and len(colors) >= 2:
+            pros.append("Nhiều lựa chọn màu")
+        else:
+            cons.append("Lựa chọn màu hạn chế")
+
+        if lang == "en":
+            if pros:
+                lines.append(f"- Pros: {', '.join(pros)}")
+            if cons:
+                lines.append(f"- Cons: {', '.join(cons)}")
+        else:
+            if pros:
+                lines.append(f"- Ưu điểm: {', '.join(pros)}")
+            if cons:
+                lines.append(f"- Nhược điểm: {', '.join(cons)}")
+
+        # link
+        url = None
+        if base_url:
+            url = f"{base_url.rstrip('/')}/{category}/{code}" if code else None
+        else:
+            url = _build_product_url(product)
+
+        if url:
+            if lang == "en":
+                lines.append(f"- Details: {url}")
+            else:
+                lines.append(f"- Chi tiết: {url}")
+
+    # final recommendation
+    # choose best: prefer close to target_price if provided, else prefer high memory + low price
+    best = None
+    parsed_target_price = _to_int(target_price)
+    if parsed_target_price:
+        best = min(selected, key=lambda p: (abs((_extract_lowest_price(p) or 10**9) - parsed_target_price), -_max_memory_capacity(p), _extract_lowest_price(p) or 10**9))
+    else:
+        best = min(selected, key=lambda p: ((_extract_lowest_price(p) or 10**9), -_max_memory_capacity(p)))
+
+    if best:
+        best_name = best.get('name', 'Sản phẩm Apple')
+        if lang == 'en':
+            lines.append(f"\nRecommendation: {best_name} — balanced choice based on price and specs.")
+        else:
+            lines.append(f"\nGợi ý chốt: {best_name} — lựa chọn cân bằng giữa giá và thông số.")
+
+    return "\n".join(lines)
+
+
 @router.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(req: ChatRequest):
     user_id = req.user_id or "guest"
@@ -211,6 +401,7 @@ async def chat_endpoint(req: ChatRequest):
     intent = intent_data.intent
 
     reply_text = ""
+    products_for_ai = []
 
     if intent == "SEARCH_PRODUCT":
         category_filter = intent_data.category or session.get("category")
@@ -231,6 +422,7 @@ async def chat_endpoint(req: ChatRequest):
         if not products:
             reply_text = i18n.get_msg(current_lang, "no_product")
         else:
+            products_for_ai = products[:12]
             if target_price:
                 budget_text = i18n.format_price(target_price, current_lang)
                 if current_lang == "en":
@@ -255,38 +447,14 @@ async def chat_endpoint(req: ChatRequest):
                     for i, product in enumerate(top_products, 1)
                 ]
             )
-            comparison_text = ""
-            if target_price:
-                comparison_text = _build_budget_comparison(products, target_price, current_lang)
-            cta_text = i18n.get_msg(current_lang, "cta")
-            if comparison_text:
-                reply_text = f"{intro_text}\n\n{list_text}\n\n{comparison_text}\n\n{cta_text}"
-            else:
-                reply_text = f"{intro_text}\n\n{list_text}\n\n{cta_text}"
+            # Budget + specs comparison will be generated by AI in one unified section.
+            reply_text = f"{intro_text}\n\n{list_text}"
 
     elif intent == "RECOMMEND_PRODUCT":
-        is_generic_request = _is_generic_recommend_request(req.message, intent_data)
 
-        focused_products = tour_service.search_products(
-            query=intent_data.product_name,
-            product_code=intent_data.product_code,
-            category=intent_data.category or session.get("category"),
-            target_price=intent_data.target_price or session.get("target_price"),
-            memory=intent_data.memory,
-            color=intent_data.color,
-        )
-
-        if is_generic_request:
-            broad_products = tour_service.search_products()
-        else:
-            broad_products = tour_service.search_products(
-                category=intent_data.category or session.get("category"),
-                target_price=intent_data.target_price or session.get("target_price"),
-                memory=intent_data.memory,
-                color=intent_data.color,
-            )
-
-        products = _merge_recommend_candidates(focused_products, broad_products, limit=12)
+        # NOTE: Force AI-only selection — ignore rule-based intent filters
+        # Fetch the full catalog and let AI pick the best matches based solely on the user message.
+        products = tour_service.search_products()
 
         if not products:
             reply_text = i18n.get_msg(current_lang, "no_product")
@@ -297,7 +465,14 @@ async def chat_endpoint(req: ChatRequest):
                 lang=current_lang,
                 limit=3,
             )
-            suggested_products = _ensure_category_diversity(suggested_products, products, max_items=3)
+            if _is_generic_recommend_request(req.message, intent_data):
+                suggested_products = _ensure_category_diversity(suggested_products, products, max_items=3)
+            products_for_ai = suggested_products[:3] if suggested_products else products[:3]
+
+            # Keep recommendation intro grounded in system data to avoid hallucinated specs.
+            if products_for_ai:
+                intro_text = _build_recommend_intro(products_for_ai[0], lang=current_lang)
+
             list_text = "\n\n".join(
                 [
                     i18n.format_product_card(
@@ -306,11 +481,10 @@ async def chat_endpoint(req: ChatRequest):
                         lang=current_lang,
                         product_url=_build_product_url(product),
                     )
-                    for i, product in enumerate(suggested_products, 1)
+                    for i, product in enumerate(products_for_ai, 1)
                 ]
             )
-            cta_text = i18n.get_msg(current_lang, "cta")
-            reply_text = f"{intro_text}\n\n{list_text}\n\n{cta_text}"
+            reply_text = f"{intro_text}\n\n{list_text}"
 
     elif intent == "PLACE_ORDER":
         product_candidates = tour_service.search_products(
@@ -326,6 +500,7 @@ async def chat_endpoint(req: ChatRequest):
 
         if user_id_num and product_candidates:
             selected = product_candidates[0]
+            products_for_ai = product_candidates[:3]
             cart_result = tour_service.add_to_cart(
                 user_id=user_id_num,
                 product_id=selected.get("id"),
@@ -358,6 +533,26 @@ async def chat_endpoint(req: ChatRequest):
             lang=current_lang,
         )
 
+    # Only compare products for product-related intents.
+    if intent in {"SEARCH_PRODUCT", "RECOMMEND_PRODUCT"} and products_for_ai:
+        target_price = intent_data.target_price or session.get("target_price")
+        detailed_compare_text = _build_detailed_comparison(
+            products_for_ai,
+            lang=current_lang,
+            limit=3,
+            target_price=target_price,
+        )
+        if detailed_compare_text:
+            reply_text = f"{reply_text}\n\n{detailed_compare_text}" if reply_text else detailed_compare_text
+
+        if target_price:
+            budget_compare_text = _build_budget_comparison(products_for_ai, int(target_price), lang=current_lang)
+            if budget_compare_text:
+                reply_text = f"{reply_text}\n\n{budget_compare_text}" if reply_text else budget_compare_text
+
+        cta_text = i18n.get_msg(current_lang, "cta")
+        reply_text = f"{reply_text}\n\n{cta_text}" if reply_text else cta_text
+
     await add_history(user_id, "ai", reply_text)
 
     return ChatResponse(reply=reply_text)
@@ -385,17 +580,21 @@ async def clear_chat_history(user_id: str):
 
 @router.post("/chat_stream")
 async def chat_stream_endpoint(req: ChatRequest):
-    user_id = req.user_id or "guest"
-
-    await add_history(user_id, "user", req.message)
-
     async def generate():
-        full_response = ""
+        try:
+            chat_response = await chat_endpoint(req)
+            reply = chat_response.reply or ""
 
-        for chunk in llm_service.call_ollama_chat_stream(req.message):
-            full_response += chunk
-            yield chunk
+            chunk_size = 80
+            for i in range(0, len(reply), chunk_size):
+                chunk = reply[i:i + chunk_size]
+                payload = json.dumps({"delta": chunk}, ensure_ascii=False)
+                yield f"data: {payload}\n\n"
 
-        await add_history(user_id, "ai", full_response)
+            yield "data: [DONE]\n\n"
+        except Exception as e:
+            payload = json.dumps({"error": str(e)}, ensure_ascii=False)
+            yield f"data: {payload}\n\n"
+            yield "data: [DONE]\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")

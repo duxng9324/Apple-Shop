@@ -14,6 +14,7 @@ public class ProductDTO extends AbstractDTO {
 	private CategoryDTO categoryDTO;
 	private List<ColorDTO> colorDTOs;
 	private List<CommentDTO> commentDTOs;
+	private List<VariantStockDTO> variantStocks;
 	
 	
 	public String getName() {
@@ -75,6 +76,12 @@ public class ProductDTO extends AbstractDTO {
 	}
 	public void setCommentDTOs(List<CommentDTO> commentDTOs) {
 		this.commentDTOs = commentDTOs;
+	}
+	public List<VariantStockDTO> getVariantStocks() {
+		return variantStocks;
+	}
+	public void setVariantStocks(List<VariantStockDTO> variantStocks) {
+		this.variantStocks = variantStocks;
 	}
 
 	

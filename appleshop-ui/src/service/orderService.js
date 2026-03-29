@@ -12,9 +12,16 @@ export class OrderService extends ServiceBase {
         return this.get(`/order`);
     };
     changeStatus = async (params) => {
-        const { id } = params;
-        return this.put(`/order/confirm/${id}`, params);
+        const { id, strategy } = params;
+        const query = strategy ? `?strategy=${encodeURIComponent(strategy)}` : '';
+        return this.put(`/order/confirm/${id}${query}`, params);
     };
+
+    markPaid = async (params) => {
+        const { id } = params;
+        return this.put(`/order/payment/${id}`);
+    };
+
     changeCheckOrder = async (params) => {
         const { orderId } = params;
         return this.put(`/order/change/${orderId}`);

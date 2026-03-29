@@ -141,6 +141,17 @@
                 }
             }
         }
+        .stockInfo {
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            &.in {
+                color: #2f855a;
+            }
+            &.out {
+                color: #cb1c22;
+            }
+        }
         .btn-buynow {
             width: 100%;
             margin-top: 48px;

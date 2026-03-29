@@ -112,27 +112,78 @@ function ChatAssistant() {
         if (!text || isSending) return;
 
         const userMessage = { role: 'user', content: text };
-        setMessages((prev) => [...prev, userMessage]);
+        const assistantMessageId = `ai_${Date.now()}`;
+        setMessages((prev) => [...prev, userMessage, { id: assistantMessageId, role: 'ai', content: '' }]);
         setDraft('');
         setIsSending(true);
 
+        let typingTimer = null;
+        let queuedText = '';
+        let renderedText = '';
+        let streamFinished = false;
+        let resolveDrain = null;
+        const drainPromise = new Promise((resolve) => {
+            resolveDrain = resolve;
+        });
+
+        const patchAssistantMessage = (content) => {
+            setMessages((prev) =>
+                prev.map((msg) => (msg.id === assistantMessageId ? { ...msg, content } : msg)),
+            );
+        };
+
+        const startTyping = () => {
+            if (typingTimer) return;
+
+            typingTimer = setInterval(() => {
+                if (!queuedText.length) {
+                    if (streamFinished) {
+                        clearInterval(typingTimer);
+                        typingTimer = null;
+                        if (resolveDrain) resolveDrain();
+                    }
+                    return;
+                }
+
+                const step = queuedText.slice(0, 3);
+                queuedText = queuedText.slice(3);
+                renderedText += step;
+                patchAssistantMessage(renderedText);
+            }, 18);
+        };
+
+        const enqueueAssistantMessage = (delta) => {
+            queuedText += delta;
+            startTyping();
+        };
+
         try {
-            const res = await chatbotService.chat({ userId, message: text });
-            setMessages((prev) => [
-                ...prev,
-                {
-                    role: 'ai',
-                    content: res?.reply || 'Mình chưa thể phản hồi lúc này, bạn thử lại giúp mình nhé.',
-                },
-            ]);
+            const streamed = await chatbotService.chatStream({
+                userId,
+                message: text,
+                onDelta: enqueueAssistantMessage,
+            });
+
+            streamFinished = true;
+            if (!typingTimer) {
+                if (resolveDrain) resolveDrain();
+            }
+            await drainPromise;
+
+            if (!streamed?.reply?.trim() || !renderedText.trim()) {
+                throw new Error('empty stream reply');
+            }
         } catch (error) {
-            setMessages((prev) => [
-                ...prev,
-                {
-                    role: 'ai',
-                    content: 'Mình đang gặp lỗi kết nối chatbot. Bạn vui lòng thử lại sau ít phút.',
-                },
-            ]);
+            if (typingTimer) {
+                clearInterval(typingTimer);
+                typingTimer = null;
+            }
+            try {
+                const res = await chatbotService.chat({ userId, message: text });
+                patchAssistantMessage(res?.reply || 'Mình chưa thể phản hồi lúc này, bạn thử lại giúp mình nhé.');
+            } catch (fallbackError) {
+                patchAssistantMessage('Mình đang gặp lỗi kết nối chatbot. Bạn vui lòng thử lại sau ít phút.');
+            }
         } finally {
             setIsSending(false);
         }
@@ -210,7 +261,7 @@ function ChatAssistant() {
                         </div>
                     )}
                     {messages.map((msg, index) => (
-                        <div key={`${msg.role}_${index}`} className={cx('messageRow', msg.role)}>
+                        <div key={msg.id || `${msg.role}_${index}`} className={cx('messageRow', msg.role)}>
                             <div className={cx('bubble')}>
                                 <ReactMarkdown
                                     remarkPlugins={[remarkGfm]}
@@ -225,11 +276,6 @@ function ChatAssistant() {
                             </div>
                         </div>
                     ))}
-                    {isSending && (
-                        <div className={cx('messageRow', 'ai')}>
-                            <div className={cx('bubble')}>Đang xử lý yêu cầu của bạn...</div>
-                        </div>
-                    )}
                 </div>
 
                 <div className={cx('composer')}>

@@ -58,6 +58,8 @@ KNOWN_COLORS = [
     "den", "trang", "xanh", "do", "tim", "vang", "hong", "bac", "xam",
 ]
 
+AMBIGUOUS_COLORS = {"tim", "do"}
+
 
 def normalize_text(text: str) -> str:
     return unidecode(text).lower().strip() if text else ""
@@ -93,6 +95,10 @@ def extract_memory(msg_norm: str):
 def extract_quantity(message: str):
     for match in QUANTITY_PATTERN.finditer(message):
         qty = int(match.group(1))
+        # Skip numeric values that clearly belong to price expressions like "5 trieu" or "500k".
+        tail = message[match.end(): match.end() + 12].lower()
+        if re.match(r"\s*(trieu|tr|m|nghin|ngan|k)\b", tail):
+            continue
         if 1 <= qty <= 20:
             return qty
     return None
@@ -154,8 +160,19 @@ def extract_order_code(message: str):
 
 
 def extract_color(msg_norm: str):
+    color_hint_pattern = re.compile(r"\b(mau|color|phien ban|ban mau)\b", re.IGNORECASE)
+
     for color in KNOWN_COLORS:
-        if color in msg_norm:
+        pattern = re.compile(rf"\b{re.escape(color)}\b", re.IGNORECASE)
+        if not pattern.search(msg_norm):
+            continue
+
+        # Ambiguous Vietnamese words like "tim" can mean the verb "find".
+        # Only accept them when there is an explicit color hint nearby.
+        if color in AMBIGUOUS_COLORS and not color_hint_pattern.search(msg_norm):
+            continue
+
+        if pattern.search(msg_norm):
             return color
     return None
 

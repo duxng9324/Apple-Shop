@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.business.dto.BatchRoleUpdateDTO;
 import com.business.dto.UserDTO;
 
 public interface IUserService {
@@ -14,4 +15,6 @@ public interface IUserService {
 		List<UserDTO> getAllUser();
 		void delete(Long id);
 		ResponseEntity<String> changeInfo(UserDTO userDTO, Long id);
+		ResponseEntity<String> updateRole(Long id, int role);
+		ResponseEntity<String> updateRoleBatch(List<BatchRoleUpdateDTO> updates);
 }

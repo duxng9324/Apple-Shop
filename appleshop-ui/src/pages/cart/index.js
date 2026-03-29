@@ -116,6 +116,8 @@ function Cart() {
         items.forEach((item) => {
             const { productDTO, memory, color, quantity } = item;
             const orderItem = {
+                productId: productDTO.id,
+                productCode: productDTO.code,
                 image: productDTO.imgLinks[0],
                 name: productDTO.name,
                 quantity: quantity,

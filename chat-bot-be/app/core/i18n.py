@@ -103,8 +103,10 @@ def _extract_lowest_price(product: dict):
 def _extract_memories(product: dict):
     values = []
     for item in product.get("list", []) or []:
-        if isinstance(item, dict) and item.get("memory"):
-            values.append(str(item.get("memory")).upper())
+        if isinstance(item, dict):
+            memory = item.get("memory") or item.get("type")
+            if memory:
+                values.append(str(memory).upper())
     return sorted(list(set(values)))
 
 

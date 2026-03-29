@@ -63,6 +63,12 @@ public class OrderEntity{
 	
 	@Column(name = "checkCmt")
 	private int checkCmt;
+
+	@Column(name = "inventory_deducted")
+	private Boolean inventoryDeducted = false;
+
+	@Column(name = "accounting_data_version")
+	private Integer accountingDataVersion = 0;
 	
 	public int getCheckCmt() {
 		return checkCmt;
@@ -70,6 +76,22 @@ public class OrderEntity{
 
 	public void setCheckCmt(int checkCmt) {
 		this.checkCmt = checkCmt;
+	}
+
+	public Boolean getInventoryDeducted() {
+		return inventoryDeducted;
+	}
+
+	public void setInventoryDeducted(Boolean inventoryDeducted) {
+		this.inventoryDeducted = inventoryDeducted;
+	}
+
+	public Integer getAccountingDataVersion() {
+		return accountingDataVersion;
+	}
+
+	public void setAccountingDataVersion(Integer accountingDataVersion) {
+		this.accountingDataVersion = accountingDataVersion;
 	}
 
 	@ManyToOne

@@ -4,7 +4,8 @@ import {
   Space,
   Image,
   Tag,
-  Popconfirm
+  Popconfirm,
+  message
 } from "antd";
 
 import {
@@ -49,8 +50,13 @@ function ProductAd() {
   }, []);
 
   const handleDelete = async (id) => {
-    await productService.remove({id});
-    fetchProducts();
+    try {
+      await productService.remove({id});
+      message.success("Xóa sản phẩm thành công");
+      fetchProducts();
+    } catch (error) {
+      message.error(error?.response?.data || "Xóa sản phẩm thất bại");
+    }
   };
 
   const columns = [
@@ -148,7 +154,7 @@ function ProductAd() {
           icon={<PlusOutlined />}
           onClick={() => setVisibleAdd(true)}
         >
-          Add Product
+          Publish Product
         </Button>
       </Space>
 
@@ -162,23 +168,22 @@ function ProductAd() {
       <AddProductModal
         open={visibleAdd}
         onClose={() => setVisibleAdd(false)}
+        products={products}
         categories={categories}
         colors={colors}
         memories={memories}
         refresh={fetchProducts}
       />
 
-      {rowProduct && (
-        <EditProductModal
-          open={!!rowProduct}
-          onClose={() => setRowProduct(null)}
-          data={rowProduct}
-          categories={categories}
-          colors={colors}
-          memories={memories}
-          refresh={fetchProducts}
-        />
-      )}
+      <EditProductModal
+        open={!!rowProduct}
+        onClose={() => setRowProduct(null)}
+        data={rowProduct}
+        categories={categories}
+        colors={colors}
+        memories={memories}
+        refresh={fetchProducts}
+      />
     </>
   );
 }

@@ -18,6 +18,8 @@ public class OrderItemConverter {
 		OrderItemEntity entity = new OrderItemEntity();
 		entity.setImage(dto.getImage());
 		entity.setName(dto.getName());
+		entity.setProductIdRef(dto.getProductId());
+		entity.setProductCode(dto.getProductCode());
 		entity.setQuantity(dto.getQuantity());
 		entity.setPrice(dto.getPrice());
 		entity.setMemory(dto.getMemory());
@@ -31,6 +33,8 @@ public class OrderItemConverter {
 		dto.setId(entity.getId());
 		dto.setImage(entity.getImage());
 		dto.setName(entity.getName());
+		dto.setProductId(entity.getProductIdRef());
+		dto.setProductCode(entity.getProductCode());
 		dto.setQuantity(entity.getQuantity());
 		dto.setPrice(entity.getPrice());
 		dto.setMemory(entity.getMemory());

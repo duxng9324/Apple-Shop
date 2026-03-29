@@ -59,7 +59,7 @@ function Login() {
             localStorage.setItem('token', token);
             const decoded = jwt_decode(token);
             setTimeout(() => {
-                if (decoded.role === 1) navigate('/admin');
+                if ([1, 2, 3, 4].includes(Number(decoded.role))) navigate('/admin');
                 else {
                     navigate('/');
                 }

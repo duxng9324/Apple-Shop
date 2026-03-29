@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 public class OrderItemDTO extends AbstractDTO {
 	 private String image;
 	 private String name;
+	 private Long productId;
+	 private String productCode;
 	 private int quantity;
 	 private BigDecimal price;
 	 private String memory;
@@ -21,6 +23,18 @@ public class OrderItemDTO extends AbstractDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Long getProductId() {
+		return productId;
+	}
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+	public String getProductCode() {
+		return productCode;
+	}
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
 	}
 	public int getQuantity() {
 		return quantity;

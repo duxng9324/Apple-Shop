@@ -47,7 +47,16 @@ function Payment() {
 
         try {
             setIsSubmitting(true);
-            await orderService.add(paymentPayload);
+            const normalizedPayload = {
+                ...paymentPayload,
+                orderItemDTOs: (paymentPayload.orderItemDTOs || []).map((item) => ({
+                    ...item,
+                    productId: item.productId,
+                    productCode: item.productCode,
+                })),
+            };
+
+            await orderService.add(normalizedPayload);
             await cartService.removeAll(paymentPayload.userId);
             message.success('Xác nhận thanh toán thành công, đơn hàng đã được tạo.');
             navigate('/order', { state: true });

@@ -16,6 +16,12 @@ public class OrderItemEntity extends BaseEntity {
 	
 	@Column(name = "name")
 	private String name;
+
+	@Column(name = "product_id_ref")
+	private Long productIdRef;
+
+	@Column(name = "product_code")
+	private String productCode;
 	
 	@Column(name = "quantity")
 	private int quantity;
@@ -47,6 +53,22 @@ public class OrderItemEntity extends BaseEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getProductIdRef() {
+		return productIdRef;
+	}
+
+	public void setProductIdRef(Long productIdRef) {
+		this.productIdRef = productIdRef;
+	}
+
+	public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
 	}
 
 	public int getQuantity() {

@@ -15,6 +15,32 @@ def _normalize(value: str):
     return (value or "").strip().lower()
 
 
+def _to_int(value):
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+
+    text = str(value).strip()
+    if not text:
+        return None
+
+    text = text.replace(",", "").replace("_", "")
+    try:
+        return int(float(text))
+    except Exception:
+        return None
+
+
+def _category_candidates(product: dict):
+    category_code = str(product.get("categoryCode") or "")
+    category_dto = product.get("categoryDTO") if isinstance(product.get("categoryDTO"), dict) else {}
+    dto_code = str(category_dto.get("code") or "")
+    dto_name = str(category_dto.get("name") or "")
+
+    return [candidate for candidate in [category_code, dto_code, dto_name] if candidate]
+
+
 def _matches_text(text: str, keyword: str):
     if not keyword:
         return True
@@ -24,7 +50,7 @@ def _matches_text(text: str, keyword: str):
 def _extract_memories(product: dict):
     memories = []
     for item in product.get("list", []) or []:
-        memory = item.get("memory") if isinstance(item, dict) else None
+        memory = (item.get("memory") or item.get("type")) if isinstance(item, dict) else None
         if memory:
             memories.append(str(memory).upper())
     return memories
@@ -38,10 +64,9 @@ def _lowest_price(product: dict):
         value = item.get("price")
         if value is None:
             continue
-        try:
-            prices.append(int(value))
-        except Exception:
-            pass
+        parsed = _to_int(value)
+        if parsed is not None:
+            prices.append(parsed)
     return min(prices) if prices else None
 
 
@@ -106,6 +131,7 @@ def search_products(
     color: str = None,
 ):
     try:
+        target_price = _to_int(target_price)
         products = _fetch_all_products()
 
         result = []
@@ -113,7 +139,7 @@ def search_products(
             code = str(product.get("code", ""))
             name = str(product.get("name", ""))
             description = str(product.get("description", ""))
-            category_code = str(product.get("categoryCode", ""))
+            category_values = _category_candidates(product)
 
             if product_code and not _matches_text(code, product_code):
                 continue
@@ -125,7 +151,7 @@ def search_products(
             ):
                 continue
 
-            if category and not _matches_text(category_code, category):
+            if category and not any(_matches_text(candidate, category) for candidate in category_values):
                 continue
 
             if memory:
@@ -135,7 +161,7 @@ def search_products(
 
             if color:
                 color_candidates = [
-                    str(c.get("name", ""))
+                    str(c.get("name") or c.get("color") or "")
                     for c in (product.get("colorDTOs", []) or [])
                     if isinstance(c, dict)
                 ]
@@ -143,7 +169,7 @@ def search_products(
                     continue
 
             result.append(product)
-        if target_price and target_price > 0:
+        if target_price is not None and target_price > 0:
             result = _sort_by_nearest_price(result, target_price)
             result = _keep_near_price(result, target_price)
         return result

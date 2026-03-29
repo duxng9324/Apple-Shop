@@ -20,6 +20,7 @@ public class OrderDTO {
 	private String paymentMethod;
 	private String paymentStatus;
 	private Date paidTime;
+	private Boolean inventoryDeducted;
 	
 	private Long userId;
 	private List<OrderItemDTO> orderItemDTOs = new ArrayList<>();
@@ -150,6 +151,14 @@ public class OrderDTO {
 
 	public void setPaidTime(Date paidTime) {
 		this.paidTime = paidTime;
+	}
+
+	public Boolean getInventoryDeducted() {
+		return inventoryDeducted;
+	}
+
+	public void setInventoryDeducted(Boolean inventoryDeducted) {
+		this.inventoryDeducted = inventoryDeducted;
 	}
 	
 	

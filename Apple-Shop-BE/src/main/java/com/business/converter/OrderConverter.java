@@ -52,6 +52,7 @@ public class OrderConverter {
 		entity.setPaymentMethod(paymentMethod);
 		entity.setPaymentStatus(isOnlinePaid ? "Đã thanh toán" : "Chưa thanh toán");
 		entity.setPaidTime(isOnlinePaid ? getCurrentTime() : null);
+		entity.setInventoryDeducted(false);
 			   UserEntity userEntity = userRepository.findById(dto.getUserId()).orElse(null);
 		entity.setUser(userEntity);
 		return entity;
@@ -72,6 +73,7 @@ public class OrderConverter {
 		dto.setPaymentMethod(entity.getPaymentMethod());
 		dto.setPaymentStatus(entity.getPaymentStatus());
 		dto.setPaidTime(entity.getPaidTime());
+		dto.setInventoryDeducted(entity.getInventoryDeducted());
 		
 		List<OrderItemDTO> orderItemDTOs = new ArrayList<>();
 		List<OrderItemEntity> orderItemEntities = orderItemRepository.findByOrderId(entity.getId());

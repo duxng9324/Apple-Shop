@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Table, Select, Tag, Typography, Image, Space } from "antd";
+import { Button, Card, Table, Select, Tag, Typography, Image, Space, message } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
 import { OrderService } from "~/service/orderService";
 
@@ -18,6 +18,7 @@ const statusOptions = [
 function OrderAd() {
   const [orders, setOrders] = useState([]);
   const [filterValue, setFilterValue] = useState("all");
+  const [issueStrategy, setIssueStrategy] = useState("FIFO");
   const orderService = new OrderService();
 
   const fetchOrders = async () => {
@@ -30,9 +31,23 @@ function OrderAd() {
   }, []);
 
   const handleChangeStatus = async (value, order) => {
-    const updated = { ...order, status: value };
-    await orderService.changeStatus(updated);
-    fetchOrders();
+    try {
+      const updated = { ...order, status: value, strategy: issueStrategy };
+      await orderService.changeStatus(updated);
+      fetchOrders();
+    } catch (error) {
+      message.error("Không thể xác nhận đơn do tồn kho không đủ hoặc chưa có lớp nhập kho phù hợp.");
+    }
+  };
+
+  const handleMarkPaid = async (order) => {
+    try {
+      await orderService.markPaid({ id: order.id });
+      message.success("Đơn hàng đã được ghi nhận thanh toán");
+      fetchOrders();
+    } catch (error) {
+      message.error("Không thể cập nhật trạng thái thanh toán");
+    }
   };
 
   const filteredOrders =
@@ -86,6 +101,15 @@ function OrderAd() {
 
           <Space>
             <FilterOutlined />
+            <Select
+              value={issueStrategy}
+              style={{ width: 120 }}
+              onChange={setIssueStrategy}
+              options={[
+                { value: "FIFO", label: "FIFO" },
+                { value: "LIFO", label: "LIFO" },
+              ]}
+            />
             <Select
               value={filterValue}
               style={{ width: 220 }}
@@ -162,6 +186,12 @@ function OrderAd() {
                         label: s,
                       }))}
                     />
+
+                    {order.paymentStatus !== "Đã thanh toán" && (
+                      <Button type="primary" onClick={() => handleMarkPaid(order)}>
+                        Xác nhận đã thu tiền
+                      </Button>
+                    )}
                   </Space>
 
                   <Text strong style={{ fontSize: 16 }}>

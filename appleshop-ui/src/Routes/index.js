@@ -11,11 +11,14 @@ import CategoryAd from '~/pages/categoryad';
 import ColorAd from '~/pages/colorAd';
 import Detail from '~/pages/detail';
 import Home from '~/pages/home';
+import AccountingAd from '~/pages/accountingad';
 import MemoryAd from '~/pages/memoryad';
 import Order from '~/pages/order';
 import OrderAd from '~/pages/orderad';
 import Payment from '~/pages/payment';
 import ProductAd from '~/pages/productad';
+import WarehouseAd from '~/pages/warehousead';
+import UserGroupPermissionAd from '~/pages/admin/userad';
 
 const router = createBrowserRouter([
     {
@@ -36,6 +39,9 @@ const router = createBrowserRouter([
             { path: 'color', element: <ColorAd /> },
             { path: 'product', element: <ProductAd /> },
             { path: 'order', element: <OrderAd /> },
+            { path: 'operations', element: <WarehouseAd /> },
+            { path: 'accounting', element: <AccountingAd /> },
+            { path: 'user-admin', element: <UserGroupPermissionAd /> },
         ],
     },
     {

@@ -11,7 +11,7 @@ import {
   message
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { ProductService } from "~/service/productService";
 import { ImageService } from "~/service/imageService";
@@ -21,6 +21,7 @@ import "@uiw/react-md-editor/markdown-editor.css";
 function AddProductModal({
   open,
   onClose,
+  products,
   categories,
   colors,
   memories,
@@ -31,6 +32,43 @@ function AddProductModal({
   const [productFiles, setProductFiles] = useState([]);
   const productService = new ProductService();
   const imageService = new ImageService();
+  const selectedProductId = Form.useWatch("productId", form);
+
+  useEffect(() => {
+    if (!open) {
+      form.resetFields();
+      setProductFiles([]);
+      return;
+    }
+
+    form.setFieldsValue({
+      productId: undefined,
+    });
+  }, [open, form]);
+
+  const productOptions = useMemo(() => {
+    return (products || []).map((item) => ({
+      value: item.id,
+      label: item.name,
+    }));
+  }, [products]);
+
+  const handleSelectProduct = (productId) => {
+    const selected = (products || []).find((item) => item.id === productId);
+    if (!selected) {
+      return;
+    }
+
+    form.setFieldsValue({
+      name: selected.name,
+      code: selected.code,
+      description: selected.description,
+      categoryCode: selected.categoryDTO?.code,
+      colors: (selected.colorDTOs || []).map((item) => item.id),
+      list: selected.list || [],
+      imgLinks: selected.imgLinks || [],
+    });
+  };
 
   const onFinish = async (values) => {
     setUploading(true);
@@ -52,12 +90,18 @@ function AddProductModal({
 
       const payload = {
         ...values,
+        id: values.productId,
         imgLinks,
         list: values.list
       };
 
-      await productService.add(payload);
-      message.success("Thêm sản phẩm thành công");
+      if (!values.productId) {
+        message.error("Vui lòng chọn sản phẩm cần publish");
+        return;
+      }
+
+      await productService.edit(payload);
+      message.success("Cập nhật thông tin bán sản phẩm thành công");
       refresh();
       onClose();
       form.resetFields();
@@ -72,7 +116,7 @@ function AddProductModal({
   return (
     <Modal
       open={open}
-      title="Add Product"
+      title="Publish Product"
       footer={null}
       width={800}
       centered
@@ -96,10 +140,26 @@ function AddProductModal({
       >
         <Form.Item
           label="Product Name"
+          name="productId"
+          rules={[{ required: true }]}
+        >
+          <Select
+            showSearch
+            options={productOptions}
+            placeholder="Chọn sản phẩm đã nhập kho"
+            onChange={handleSelectProduct}
+            filterOption={(input, option) =>
+              (option?.label || "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Product Name"
           name="name"
           rules={[{ required: true }]}
         >
-          <Input />
+          <Input disabled />
         </Form.Item>
 
         <Form.Item
@@ -107,7 +167,7 @@ function AddProductModal({
           name="code"
           rules={[{ required: true }]}
         >
-          <Input />
+          <Input disabled />
         </Form.Item>
 
         <Form.Item
@@ -216,11 +276,8 @@ function AddProductModal({
                     rules={[{ required: true }]}
                   >
                     <Select placeholder="Memory">
-                      {memories.map((m) => (
-                        <Select.Option
-                          key={m.id}
-                          value={m.type}
-                        >
+                      {(memories || []).map((m) => (
+                        <Select.Option key={m.id} value={m.type}>
                           {m.type}
                         </Select.Option>
                       ))}
@@ -258,9 +315,10 @@ function AddProductModal({
           type="primary"
           htmlType="submit"
           loading={uploading}
+          disabled={!selectedProductId}
           block
         >
-          Add Product
+          Save Publish Info
         </Button>
       </Form>
     </Modal>

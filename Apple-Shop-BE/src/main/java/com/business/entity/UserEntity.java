@@ -16,6 +16,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Entity
 @Table(name = "user")
 public class UserEntity extends BaseEntity {
+	public static final int ROLE_CUSTOMER = 0;
+	public static final int ROLE_ADMIN = 1;
+	public static final int ROLE_WAREHOUSE_MANAGER = 2;
+	public static final int ROLE_PRODUCT_MANAGER = 3;
+	public static final int ROLE_ACCOUNTANT = 4;
+
+	public static final String AUTH_WAREHOUSE = "PERM_WAREHOUSE";
+	public static final String AUTH_PRODUCT = "PERM_PRODUCT";
+	public static final String AUTH_ACCOUNTING = "PERM_ACCOUNTING";
+
 	@Column(name = "full_name")
 	private String fullName;
 	
@@ -139,10 +149,18 @@ public class UserEntity extends BaseEntity {
 
 	public List<GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		if(this.role == 1) {
+		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		if(this.role == ROLE_ADMIN) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		} else {
-			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+			authorities.add(new SimpleGrantedAuthority(AUTH_WAREHOUSE));
+			authorities.add(new SimpleGrantedAuthority(AUTH_PRODUCT));
+			authorities.add(new SimpleGrantedAuthority(AUTH_ACCOUNTING));
+		} else if (this.role == ROLE_WAREHOUSE_MANAGER) {
+			authorities.add(new SimpleGrantedAuthority(AUTH_WAREHOUSE));
+		} else if (this.role == ROLE_PRODUCT_MANAGER) {
+			authorities.add(new SimpleGrantedAuthority(AUTH_PRODUCT));
+		} else if (this.role == ROLE_ACCOUNTANT) {
+			authorities.add(new SimpleGrantedAuthority(AUTH_ACCOUNTING));
 		}
 		return authorities;
 	}

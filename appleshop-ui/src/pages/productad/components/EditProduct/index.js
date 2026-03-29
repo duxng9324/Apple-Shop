@@ -6,11 +6,12 @@ import {
   Checkbox,
   Button,
   Space,
+  InputNumber,
   Upload,
   message
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { ProductService } from "~/service/productService";
 import { ImageService } from "~/service/imageService";
@@ -32,6 +33,26 @@ function EditProductModal({
   const productService = new ProductService();
   const imageService = new ImageService();
 
+  useEffect(() => {
+    if (!open) {
+      form.resetFields();
+      setProductFiles([]);
+      return;
+    }
+
+    if (data) {
+      form.setFieldsValue({
+        name: data.name,
+        code: data.code,
+        description: data.description,
+        categoryCode: data.categoryDTO?.code,
+        colors: data.colorDTOs?.map((c) => c.id),
+        imgLinks: data.imgLinks,
+        list: data.list
+      });
+    }
+  }, [open, data, form]);
+
   const onFinish = async (values) => {
     setUploading(true);
     try {
@@ -48,7 +69,7 @@ function EditProductModal({
 
       const payload = {
         ...values,
-        id: data.id,
+        id: data?.id,
         imgLinks
       };
 
@@ -88,22 +109,13 @@ function EditProductModal({
         layout="vertical"
         form={form}
         onFinish={onFinish}
-        initialValues={{
-          name: data?.name,
-          code: data?.code,
-          description: data?.description,
-          categoryCode: data?.categoryDTO?.code,
-          colors: data?.colorDTOs?.map((c) => c.id),
-          imgLinks: data?.imgLinks,
-          list: data?.list
-        }}
       >
         <Form.Item label="Name" name="name" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
 
         <Form.Item label="Code" name="code" rules={[{ required: true }]}>
-          <Input />
+          <Input disabled />
         </Form.Item>
 
         <Form.Item
@@ -172,6 +184,47 @@ function EditProductModal({
               >
                 <Button style={{margin: "0 10px"}} icon={<PlusOutlined />}>Upload Images</Button>
               </Upload>
+            </>
+          )}
+        </Form.List>
+
+        {/* Memory Price */}
+        <Form.List name="list">
+          {(fields, { add, remove }) => (
+            <>
+              <label>Memory - Price</label>
+
+              {fields.map((field) => (
+                <Space key={field.key}>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, "type"]}
+                    rules={[{ required: true }]}
+                  >
+                    <Select placeholder="Memory">
+                      {memories.map((m) => (
+                        <Select.Option key={m.id} value={m.type}>
+                          {m.type}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+
+                  <Form.Item
+                    {...field}
+                    name={[field.name, "price"]}
+                    rules={[{ required: true }]}
+                  >
+                    <InputNumber placeholder="Price" min={0} />
+                  </Form.Item>
+
+                  <MinusCircleOutlined onClick={() => remove(field.name)} />
+                </Space>
+              ))}
+
+              <Button style={{ margin: "0 10px" }} icon={<PlusOutlined />} onClick={() => add()}>
+                Add Memory
+              </Button>
             </>
           )}
         </Form.List>

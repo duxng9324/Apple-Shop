@@ -3,7 +3,7 @@ import styles from './Detail.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ProductService } from '~/service/productService';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper';
 
@@ -51,6 +51,20 @@ function Detail() {
 
     const { imgLinks, name, list, colorDTOs, commentDTOs } = product || {};
     const imageArray = imgLinks || [];
+    const selectedMemory = list?.[priceSelect]?.type || '';
+    const selectedColor = colorDTOs?.[colorSelect]?.color || '';
+    const selectedVariantStock = useMemo(() => {
+        const stocks = product?.variantStocks || [];
+        return (
+            stocks.find(
+                (item) =>
+                    (item?.memoryType || '').toUpperCase() === selectedMemory.toUpperCase() &&
+                    (item?.colorName || '').toLowerCase() === selectedColor.toLowerCase(),
+            ) || null
+        );
+    }, [product, selectedColor, selectedMemory]);
+    const availableQuantity = Number(selectedVariantStock?.quantity || 0);
+    const isOutOfStock = availableQuantity <= 0;
 
     const commentService = new CommentService();
     const deleteComment = async (id) => {
@@ -94,6 +108,11 @@ function Detail() {
     const token = localStorage.getItem('token');
     const decoded = jwt_decode(token);
     const OnBuy = async () => {
+        if (isOutOfStock) {
+            toast.warning('Sản phẩm đã hết hàng với lựa chọn hiện tại');
+            return;
+        }
+
         try {
             const cartService = new CartService();
 
@@ -252,10 +271,16 @@ function Detail() {
                                 );
                             })}
                     </div>
+                    <div className={cx('stockInfo', isOutOfStock ? 'out' : 'in')}>
+                        {isOutOfStock
+                            ? `Hết hàng cho lựa chọn ${selectedColor} - ${selectedMemory}`
+                            : `Còn ${availableQuantity} sản phẩm cho lựa chọn ${selectedColor} - ${selectedMemory}`}
+                    </div>
                     <Button
                         className={cx('btn-buynow', decoded.role !== 0 ? 'disabled' : '')}
                         onClick={() => OnBuy()}
                         type="primary"
+                        disabled={decoded.role !== 0 || isOutOfStock}
                     >
                         MUA NGAY
                     </Button>
