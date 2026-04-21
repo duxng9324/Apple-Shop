@@ -1,0 +1,8 @@
+node_modules
+build
+.git
+.gitignore
+.vscode
+.idea
+README.md
+build_output.txt
