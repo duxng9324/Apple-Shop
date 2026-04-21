@@ -64,15 +64,15 @@ public class StockReceiptService implements IStockReceiptService {
     @Transactional
     public StockReceiptDTO createVoucher(StockReceiptDTO stockReceiptDTO) {
         if (stockReceiptDTO.getWarehouseId() == null) {
-            throw new RuntimeException("warehouseId is required");
+            throw new RuntimeException("warehouseId là bắt buộc");
         }
         if (stockReceiptDTO.getItems() == null || stockReceiptDTO.getItems().isEmpty()) {
-            throw new RuntimeException("Stock receipt must contain at least one item");
+            throw new RuntimeException("Phiếu nhập phải có ít nhất một dòng hàng");
         }
 
         WarehouseEntity warehouse = warehouseRepository.findById(stockReceiptDTO.getWarehouseId()).orElse(null);
         if (warehouse == null) {
-            throw new RuntimeException("Warehouse not found");
+            throw new RuntimeException("Không tìm thấy kho");
         }
 
         StockReceiptEntity receipt = new StockReceiptEntity();
@@ -88,7 +88,7 @@ public class StockReceiptService implements IStockReceiptService {
 
         for (StockReceiptItemDTO itemDTO : stockReceiptDTO.getItems()) {
             if (itemDTO.getQuantity() == null || itemDTO.getQuantity() <= 0) {
-                throw new RuntimeException("Invalid stock receipt line item");
+                throw new RuntimeException("Dòng hàng trong phiếu nhập không hợp lệ");
             }
 
             String memoryType = itemDTO.getMemoryType() == null ? "DEFAULT" : itemDTO.getMemoryType().trim().toUpperCase();

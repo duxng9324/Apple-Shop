@@ -19,6 +19,9 @@ import com.business.entity.InventoryEntity;
 import com.business.entity.MemoryEntity;
 import com.business.entity.ProductEntity;
 import com.business.entity.ProductMemoryEntity;
+import com.business.exception.BadRequestException;
+import com.business.exception.ConflictException;
+import com.business.exception.NotFoundException;
 import com.business.repository.CategoryRepository;
 import com.business.repository.ColorRepository;
 import com.business.repository.InventoryRepository;
@@ -55,7 +58,7 @@ public class ProductService implements IProductService {
 	@Transactional
 	public ProductDTO save(ProductDTO productDTO) {
 		if (productDTO.getCode() == null || productDTO.getCode().trim().isEmpty()) {
-			throw new RuntimeException("Mã sản phẩm là bắt buộc");
+			throw new BadRequestException("Mã sản phẩm là bắt buộc");
 		}
 
 		ProductEntity productEntity;
@@ -69,7 +72,7 @@ public class ProductService implements IProductService {
 		//Category
 		CategoryEntity categoryEntity = categoryRepository.findByCode(productDTO.getCategoryCode());
 		if (categoryEntity == null) {
-			throw new RuntimeException("categoryCode không tồn tại: " + productDTO.getCategoryCode());
+			throw new NotFoundException("categoryCode không tồn tại: " + productDTO.getCategoryCode());
 		}
 		productEntity.setCategory(categoryEntity);
 		
@@ -93,7 +96,7 @@ public class ProductService implements IProductService {
 			list = new ArrayList<>();
 		}
 		if (list.isEmpty()) {
-			throw new RuntimeException("Vui lòng chọn ít nhất 1 bộ nhớ có tồn kho trước khi thêm/sửa sản phẩm");
+			throw new BadRequestException("Vui lòng chọn ít nhất 1 bộ nhớ có tồn kho trước khi thêm/sửa sản phẩm");
 		}
 
 		String normalizedCode = productDTO.getCode().trim();
@@ -107,7 +110,7 @@ public class ProductService implements IProductService {
 			String type = normalizeMemoryType(item.getType());
 			MemoryEntity memoryEntity = memoryRepository.findByType(type);
 			if (memoryEntity == null) {
-				throw new RuntimeException("Bộ nhớ không tồn tại: " + type);
+				throw new NotFoundException("Bộ nhớ không tồn tại: " + type);
 			}
 			ProductMemoryEntity productMemoryEntity = new ProductMemoryEntity();
 			productMemoryEntity.setMemory(memoryEntity);
@@ -122,7 +125,7 @@ public class ProductService implements IProductService {
 	@Override
 	public void delete(long id) {
 		if (inventoryRepository.existsByProductIdAndQuantityGreaterThan(id, 0)) {
-			throw new RuntimeException("Không thể xóa sản phẩm vì vẫn còn tồn kho. Hãy xuất kho hết trước khi xóa.");
+			throw new ConflictException("Không thể xóa sản phẩm vì vẫn còn tồn kho. Hãy xuất kho hết trước khi xóa.");
 		}
 			   productRepository.deleteById(id);
 	}
@@ -153,7 +156,7 @@ public class ProductService implements IProductService {
 	public ProductDTO getProductByCode(String code) {
 		ProductEntity productEntity = productRepository.findByCode(code);
 		if (productEntity == null) {
-			throw new RuntimeException("Product not found: " + code);
+			throw new NotFoundException("Không tìm thấy sản phẩm: " + code);
 		}
 
 			ProductDTO productDTO = productConverter.toDTO(productEntity);
@@ -190,7 +193,7 @@ public class ProductService implements IProductService {
 			boolean hasInventory = inventoryRepository
 					.existsByProductCodeAndMemoryTypeAndQuantityGreaterThan(productCode, memoryType, 0);
 			if (!hasInventory) {
-				throw new RuntimeException("Chưa có tồn kho cho mã " + productCode + " với bộ nhớ " + memoryType
+				throw new NotFoundException("Chưa có tồn kho cho mã " + productCode + " với bộ nhớ " + memoryType
 						+ ". Vui lòng nhập kho trước rồi mới thêm/sửa ở tab sản phẩm.");
 			}
 		}
@@ -198,7 +201,7 @@ public class ProductService implements IProductService {
 
 	private String normalizeMemoryType(String memoryType) {
 		if (memoryType == null || memoryType.trim().isEmpty()) {
-			throw new RuntimeException("Bộ nhớ là bắt buộc");
+			throw new BadRequestException("Bộ nhớ là bắt buộc");
 		}
 		return memoryType.trim().toUpperCase();
 	}

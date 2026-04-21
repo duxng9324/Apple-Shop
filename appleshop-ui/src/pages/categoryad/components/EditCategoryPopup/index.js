@@ -15,18 +15,18 @@ function EditCategoryModal({ open, data, onClose, reload }) {
   const handleSubmit = async (values) => {
     try {
       await categoryService.edit({ ...values, id: data.id });
-      message.success("Category updated");
+      message.success("Cập nhật danh mục thành công");
       onClose();
       reload();
     } catch (error) {
-      message.error("Update failed");
+      message.error("Cập nhật danh mục thất bại");
     }
   };
 
   return (
     <Modal
       open={open}
-      title="Edit Category"
+      title="Sửa danh mục"
       onCancel={onClose}
       footer={null}
       centered
@@ -38,7 +38,7 @@ function EditCategoryModal({ open, data, onClose, reload }) {
     >
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item
-          label="Category Name"
+          label="Tên danh mục"
           name="name"
           rules={[{ required: true }]}
         >
@@ -46,7 +46,7 @@ function EditCategoryModal({ open, data, onClose, reload }) {
         </Form.Item>
 
         <Form.Item
-          label="Category Code"
+          label="Mã danh mục"
           name="code"
           rules={[{ required: true }]}
         >
@@ -54,7 +54,7 @@ function EditCategoryModal({ open, data, onClose, reload }) {
         </Form.Item>
 
         <Button type="primary" htmlType="submit" block>
-          Update
+          Cập nhật
         </Button>
       </Form>
     </Modal>

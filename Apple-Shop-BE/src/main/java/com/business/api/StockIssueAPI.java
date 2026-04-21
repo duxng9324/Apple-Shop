@@ -3,7 +3,6 @@ package com.business.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +23,7 @@ public class StockIssueAPI {
 
     @PostMapping(value = "/api/stock-issue")
     public ResponseEntity<StockIssueDTO> create(@RequestBody StockIssueDTO model) {
-        try {
-            return ResponseEntity.ok(stockIssueService.createVoucher(model));
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        return ResponseEntity.ok(stockIssueService.createVoucher(model));
     }
 
     @GetMapping(value = "/api/stock-issue")

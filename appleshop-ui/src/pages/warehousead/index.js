@@ -66,6 +66,33 @@ function WarehouseAd() {
     const [receiptForm] = Form.useForm();
     const [issueForm] = Form.useForm();
 
+    const getErrorMessage = (error, fallback) => {
+        const apiError = error?.response?.data;
+        if (typeof apiError === 'string') {
+            return apiError;
+        }
+        if (apiError?.message) {
+            return apiError.message;
+        }
+        return fallback;
+    };
+
+    const executeWithConflictRetry = async (action, maxRetry = 1) => {
+        let attempt = 0;
+        while (attempt <= maxRetry) {
+            try {
+                return await action();
+            } catch (error) {
+                const status = error?.response?.status;
+                if (status === 409 && attempt < maxRetry) {
+                    attempt += 1;
+                    continue;
+                }
+                throw error;
+            }
+        }
+    };
+
     const fetchData = async () => {
         try {
             const [warehouseRes, productRes, memoryRes, inventoryRes, issueRes, receiptRes] = await Promise.all([
@@ -92,6 +119,7 @@ function WarehouseAd() {
 
     useEffect(() => {
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -178,12 +206,12 @@ function WarehouseAd() {
 
     const onAdjustInventory = async (values) => {
         try {
-            await inventoryService.adjust(values);
+            await executeWithConflictRetry(() => inventoryService.adjust(values), 1);
             message.success('Điều chỉnh tồn kho thành công');
             inventoryForm.resetFields();
             fetchData();
         } catch (error) {
-            message.error(error?.response?.data || 'Điều chỉnh tồn kho thất bại');
+            message.error(getErrorMessage(error, 'Điều chỉnh tồn kho thất bại'));
         }
     };
 
@@ -210,13 +238,13 @@ function WarehouseAd() {
                 note: values.note,
                 items: [item],
             };
-            await stockReceiptService.create(payload);
+            await executeWithConflictRetry(() => stockReceiptService.create(payload), 1);
             message.success('Lập phiếu nhập kho thành công');
             receiptForm.resetFields();
             receiptForm.setFieldsValue({ receiptMode: 'existing' });
             fetchData();
         } catch (error) {
-            message.error(error?.response?.data || 'Lập phiếu nhập kho thất bại');
+            message.error(getErrorMessage(error, 'Lập phiếu nhập kho thất bại'));
         }
     };
 
@@ -234,12 +262,12 @@ function WarehouseAd() {
                     },
                 ],
             };
-            await stockIssueService.create(payload);
+            await executeWithConflictRetry(() => stockIssueService.create(payload), 1);
             message.success('Lập phiếu xuất kho thành công');
             issueForm.resetFields();
             fetchData();
-        } catch {
-            message.error('Lập phiếu xuất kho thất bại');
+        } catch (error) {
+            message.error(getErrorMessage(error, 'Lập phiếu xuất kho thất bại'));
         }
     };
 
@@ -294,14 +322,14 @@ function WarehouseAd() {
                 items,
             };
 
-            await stockReceiptService.create(payload);
+            await executeWithConflictRetry(() => stockReceiptService.create(payload), 1);
             message.success(`Đã nhập tự động ${items.length} dòng tồn kho`);
             receiptForm.setFieldsValue({
                 bulkNote: undefined,
             });
             fetchData();
         } catch (error) {
-            message.error(error?.response?.data || 'Nhập tự động thất bại');
+            message.error(getErrorMessage(error, 'Nhập tự động thất bại'));
         }
     };
 

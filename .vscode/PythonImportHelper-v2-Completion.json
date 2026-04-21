@@ -382,7 +382,7 @@
         "kind": 2,
         "importPath": "chat-bot-be.app.core.i18n",
         "description": "chat-bot-be.app.core.i18n",
-        "peekOfCode": "def format_product_card(product, index, lang=\"vi\", product_url=None):\n    labels = MESSAGES.get(lang, MESSAGES[\"vi\"])[\"labels\"]\n    code = product.get(\"code\", \"N/A\")\n    name = product.get(\"name\", \"Apple Product\")\n    category = product.get(\"categoryCode\", \"\")\n    memories = _extract_memories(product)\n    memory_text = \", \".join(memories[:3]) if memories else \"N/A\"\n    price_text = format_price(_extract_lowest_price(product), lang)\n    card = (\n        f\"### {index}. {name}\\n\"",
+        "peekOfCode": "def format_product_card(product, index, lang=\"vi\", product_url=None):\n    labels = MESSAGES.get(lang, MESSAGES[\"vi\"])[\"labels\"]\n    code = product.get(\"code\", \"N/A\")\n    name = product.get(\"name\", \"Sản phẩm Apple\")\n    category = product.get(\"categoryCode\", \"\")\n    memories = _extract_memories(product)\n    memory_text = \", \".join(memories[:3]) if memories else \"N/A\"\n    price_text = format_price(_extract_lowest_price(product), lang)\n    card = (\n        f\"### {index}. {name}\\n\"",
         "detail": "chat-bot-be.app.core.i18n",
         "documentation": {}
     },

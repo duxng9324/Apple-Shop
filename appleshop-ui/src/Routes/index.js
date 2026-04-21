@@ -16,6 +16,7 @@ import MemoryAd from '~/pages/memoryad';
 import Order from '~/pages/order';
 import OrderAd from '~/pages/orderad';
 import Payment from '~/pages/payment';
+import PaymentResult from '~/pages/payment-result';
 import ProductAd from '~/pages/productad';
 import WarehouseAd from '~/pages/warehousead';
 import UserGroupPermissionAd from '~/pages/admin/userad';
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
             {
                 path: '/payment',
                 element: <Payment />,
+            },
+            {
+                path: '/payment-result',
+                element: <PaymentResult />,
             },
             { path: '/user', element: <User /> },
         ],

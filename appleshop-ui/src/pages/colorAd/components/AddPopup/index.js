@@ -5,8 +5,8 @@ import * as yup from "yup";
 import { ColorService } from "~/service/colorService";
 
 const schema = yup.object({
-  color: yup.string().required("Please enter color name"),
-  code: yup.string().required("Please enter color code"),
+  color: yup.string().required("Vui lòng nhập tên màu"),
+  code: yup.string().required("Vui lòng nhập mã màu"),
 });
 
 function AddColorModal({ open, onClose, refresh }) {
@@ -31,7 +31,7 @@ function AddColorModal({ open, onClose, refresh }) {
   return (
     <Modal
       open={open}
-      title="Add Color"
+      title="Thêm màu"
       footer={null}
       centered
       onCancel={onClose}
@@ -43,15 +43,15 @@ function AddColorModal({ open, onClose, refresh }) {
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Form.Item
-          label="Color"
+          label="Tên màu"
           validateStatus={errors.color && "error"}
           help={errors.color?.message}
         >
-          <Input placeholder="Enter color name" {...register("color")} />
+          <Input placeholder="Nhập tên màu" {...register("color")} />
         </Form.Item>
 
         <Form.Item
-          label="Color Code"
+          label="Mã màu"
           validateStatus={errors.code && "error"}
           help={errors.code?.message}
         >
@@ -59,7 +59,7 @@ function AddColorModal({ open, onClose, refresh }) {
         </Form.Item>
 
         <Button type="primary" htmlType="submit" block>
-          Add Color
+          Thêm màu
         </Button>
       </form>
     </Modal>

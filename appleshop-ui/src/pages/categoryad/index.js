@@ -32,15 +32,15 @@ function CategoryAd() {
       dataIndex: "id"
     },
     {
-      title: "Category",
+      title: "Danh mục",
       dataIndex: "name"
     },
     {
-      title: "Code",
+      title: "Mã",
       dataIndex: "code"
     },
     {
-      title: "Action",
+      title: "Thao tác",
       render: (_, record) => (
         <Space>
           <Button
@@ -49,7 +49,7 @@ function CategoryAd() {
           />
 
           <Popconfirm
-            title="Delete category?"
+            title="Xóa danh mục này?"
             onConfirm={() => handleDelete(record.id)}
           >
             <Button danger icon={<DeleteOutlined />} />
@@ -68,14 +68,14 @@ function CategoryAd() {
           justifyContent: "space-between"
         }}
       >
-        <h3>Categories</h3>
+        <h3>Quản lý danh mục</h3>
 
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => setVisibleAdd(true)}
         >
-          Add Category
+          Thêm danh mục
         </Button>
       </Space>
 

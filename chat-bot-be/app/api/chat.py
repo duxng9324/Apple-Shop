@@ -172,26 +172,6 @@ def _build_budget_comparison(products: list, target_price: int, lang: str = "vi"
     target_price_text = i18n.format_price(target_price, lang)
     lines = []
 
-    if lang == "en":
-        lines.append(f"### Price & specs comparison (target: {target_price_text})")
-        for idx, (product, price, diff) in enumerate(rows, 1):
-            memories = ", ".join(_extract_memories(product)[:3]) or "N/A"
-            colors = ", ".join(_extract_colors(product)[:3]) or "N/A"
-            sign = "+" if diff >= 0 else "-"
-            lines.append(
-                f"{idx}. {product.get('name', 'Apple Product')}: {i18n.format_price(price, lang)} "
-                f"({sign}{i18n.format_price(abs(diff), lang)} vs target) | Memory: {memories} | Colors: {colors}"
-            )
-
-        if best_diff >= 0:
-            reason = f"closest to budget and above target by {i18n.format_price(abs(best_diff), lang)}"
-        else:
-            reason = f"closest to budget and saves {i18n.format_price(abs(best_diff), lang)}"
-        lines.append(
-            f"Recommendation: {best_product.get('name', 'Apple Product')} because it is {reason} and has competitive specs."
-        )
-        return "\n".join(lines)
-
     lines.append(f"### So sánh giá & thông số (mục tiêu: {target_price_text})")
     for idx, (product, price, diff) in enumerate(rows, 1):
         memories = ", ".join(_extract_memories(product)[:3]) or "N/A"
@@ -222,12 +202,6 @@ def _build_recommend_intro(product: dict, lang: str = "vi"):
     colors = ", ".join(_extract_colors(product)[:3]) or "N/A"
     price_text = i18n.format_price(price, lang) if price is not None else "N/A"
 
-    if lang == "en":
-        return (
-            f"AI suggestion: start with {name} because it balances price and specs well "
-            f"(from {price_text}, memory: {memories}, colors: {colors})."
-        )
-
     return (
         f"AI gợi ý bạn ưu tiên {name} vì cân bằng tốt giữa giá và cấu hình "
         f"(giá từ {price_text}, bộ nhớ: {memories}, màu: {colors})."
@@ -247,10 +221,7 @@ def _build_detailed_comparison(products: list, lang: str = "vi", limit: int = 3,
     selected = products[:limit]
 
     lines = []
-    if lang == "en":
-        lines.append(f"I compare the {len(selected)} best matching products below, limited to the top {limit} items:")
-    else:
-        lines.append(f"Mình giới hạn so sánh chi tiết {len(selected)} sản phẩm phù hợp nhất:")
+    lines.append(f"Mình giới hạn so sánh chi tiết {len(selected)} sản phẩm phù hợp nhất:")
 
     # Build per-product detail
     for idx, product in enumerate(selected, 1):
@@ -268,28 +239,17 @@ def _build_detailed_comparison(products: list, lang: str = "vi", limit: int = 3,
 
         # technical specs
         lines.append("")
-        if lang == "en":
-            lines.append(f"### {idx}. {name}")
-            lines.append(f"- Code: {code}")
-            lines.append(f"- Category: {category}")
-            lines.append(f"- Lowest price: {price_text}")
-            lines.append(f"- Available memories: {memories_text}")
-            lines.append(f"- Available colors: {colors_text}")
-        else:
-            lines.append(f"### {idx}. {name}")
-            lines.append(f"- Mã SP: {code}")
-            lines.append(f"- Danh mục: {category}")
-            lines.append(f"- Giá: {price_text}")
-            lines.append(f"- Bộ nhớ: {memories_text}")
-            lines.append(f"- Màu: {colors_text}")
-            lines.append(f"- Mô tả nhanh: {description_summary}")
+        lines.append(f"### {idx}. {name}")
+        lines.append(f"- Mã SP: {code}")
+        lines.append(f"- Danh mục: {category}")
+        lines.append(f"- Giá: {price_text}")
+        lines.append(f"- Bộ nhớ: {memories_text}")
+        lines.append(f"- Màu: {colors_text}")
+        lines.append(f"- Mô tả nhanh: {description_summary}")
 
         # show memory-price pairs if available
         if product.get("list"):
-            if lang == "en":
-                lines.append("- Memory / Price details:")
-            else:
-                lines.append("- Chi tiết bộ nhớ / giá:")
+            lines.append("- Chi tiết bộ nhớ / giá:")
             for mem in product.get("list")[:5]:
                 if isinstance(mem, dict):
                     m = mem.get("memory") or mem.get("type") or "-"
@@ -323,16 +283,10 @@ def _build_detailed_comparison(products: list, lang: str = "vi", limit: int = 3,
         else:
             cons.append("Lựa chọn màu hạn chế")
 
-        if lang == "en":
-            if pros:
-                lines.append(f"- Pros: {', '.join(pros)}")
-            if cons:
-                lines.append(f"- Cons: {', '.join(cons)}")
-        else:
-            if pros:
-                lines.append(f"- Ưu điểm: {', '.join(pros)}")
-            if cons:
-                lines.append(f"- Nhược điểm: {', '.join(cons)}")
+        if pros:
+            lines.append(f"- Ưu điểm: {', '.join(pros)}")
+        if cons:
+            lines.append(f"- Nhược điểm: {', '.join(cons)}")
 
         # link
         url = None
@@ -342,10 +296,7 @@ def _build_detailed_comparison(products: list, lang: str = "vi", limit: int = 3,
             url = _build_product_url(product)
 
         if url:
-            if lang == "en":
-                lines.append(f"- Details: {url}")
-            else:
-                lines.append(f"- Chi tiết: {url}")
+            lines.append(f"- Chi tiết: {url}")
 
     # final recommendation
     # choose best: prefer close to target_price if provided, else prefer high memory + low price
@@ -358,10 +309,7 @@ def _build_detailed_comparison(products: list, lang: str = "vi", limit: int = 3,
 
     if best:
         best_name = best.get('name', 'Sản phẩm Apple')
-        if lang == 'en':
-            lines.append(f"\nRecommendation: {best_name} — balanced choice based on price and specs.")
-        else:
-            lines.append(f"\nGợi ý chốt: {best_name} — lựa chọn cân bằng giữa giá và thông số.")
+        lines.append(f"\nGợi ý chốt: {best_name} — lựa chọn cân bằng giữa giá và thông số.")
 
     return "\n".join(lines)
 
@@ -377,8 +325,6 @@ async def chat_endpoint(req: ChatRequest):
     intent_data = intent_service.get_smart_intent(session, req.message)
 
     updates = {}
-    if intent_data.language:
-        updates["language"] = intent_data.language
     if intent_data.category:
         updates["category"] = intent_data.category
     if intent_data.product_name:
@@ -397,7 +343,7 @@ async def chat_endpoint(req: ChatRequest):
 
     session = await get_session(user_id)
 
-    current_lang = session.get("language", "vi")
+    current_lang = "vi"
     intent = intent_data.intent
 
     reply_text = ""
@@ -425,10 +371,7 @@ async def chat_endpoint(req: ChatRequest):
             products_for_ai = products[:12]
             if target_price:
                 budget_text = i18n.format_price(target_price, current_lang)
-                if current_lang == "en":
-                    intro_text = f"I found {len(products)} products close to your budget around {budget_text}."
-                else:
-                    intro_text = f"Mình tìm được {len(products)} sản phẩm gần với mức giá {budget_text} mà bạn yêu cầu."
+                intro_text = f"Mình tìm được {len(products)} sản phẩm gần với mức giá {budget_text} mà bạn yêu cầu."
             else:
                 intro_text = llm_service.call_ollama_intro_fast(
                     req.message,

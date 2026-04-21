@@ -13,6 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.business.entity.ImageEntity;
 import com.business.entity.UserEntity;
+import com.business.exception.BadRequestException;
+import com.business.exception.InternalServerException;
+import com.business.exception.NotFoundException;
 import com.business.repository.ImageRepository;
 import com.business.repository.UserRepository;
 import com.business.service.IImageService;
@@ -37,7 +40,7 @@ public class ImageService implements IImageService {
 
 	private Map<?, ?> uploadToCloud(MultipartFile file) throws IOException {
 		if (file == null || file.isEmpty()) {
-			throw new RuntimeException("File ảnh trống");
+			throw new BadRequestException("File ảnh trống");
 		}
 		return cloudinary.uploader().upload(file.getBytes(),
 				ObjectUtils.asMap("folder", cloudinaryFolder, "resource_type", "image"));
@@ -66,14 +69,14 @@ public class ImageService implements IImageService {
 			imageEntity= imageRepository.save(imageEntity);
 			return imageEntity.getImageUrl();
 		} catch (Exception ex) {
-			throw new RuntimeException("Upload ảnh lên cloud thất bại", ex);
+			throw new InternalServerException("Upload ảnh lên cloud thất bại", ex);
 		}
 	}
 
 	@Override
 	public List<String> uploadProductFiles(MultipartFile[] files) {
 		if (files == null || files.length == 0) {
-			throw new RuntimeException("Danh sách ảnh sản phẩm trống");
+			throw new BadRequestException("Danh sách ảnh sản phẩm trống");
 		}
 		List<String> urls = new ArrayList<>();
 		for (MultipartFile file : files) {
@@ -84,11 +87,11 @@ public class ImageService implements IImageService {
 					urls.add(url);
 				}
 			} catch (Exception ex) {
-				throw new RuntimeException("Upload ảnh sản phẩm thất bại", ex);
+				throw new InternalServerException("Upload ảnh sản phẩm thất bại", ex);
 			}
 		}
 		if (urls.isEmpty()) {
-			throw new RuntimeException("Upload ảnh sản phẩm thất bại");
+			throw new InternalServerException("Upload ảnh sản phẩm thất bại");
 		}
 		return urls;
 	}
@@ -106,7 +109,7 @@ public class ImageService implements IImageService {
 	@Override
 	public String uploadFileByUser(MultipartFile file, Long userId) {
 		UserEntity userEntity = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+				.orElseThrow(() -> new NotFoundException("Không tìm thấy user"));
 		Optional<ImageEntity> imageEntityex = imageRepository.findByUser(userEntity);
 		try {
 			Map<?, ?> uploadResult = uploadToCloud(file);
@@ -122,14 +125,14 @@ public class ImageService implements IImageService {
 			imageEntity = imageRepository.save(imageEntity);
 			return imageEntity.getImageUrl();
 		} catch (Exception ex) {
-			throw new RuntimeException("Upload ảnh đại diện thất bại", ex);
+			throw new InternalServerException("Upload ảnh đại diện thất bại", ex);
 		}
 	}
 
 	@Override
 	public String downloadImageByUser(Long userId) {
 		UserEntity userEntity = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+				.orElseThrow(() -> new NotFoundException("Không tìm thấy user"));
 		Optional<ImageEntity> dbImageData = imageRepository.findByUser(userEntity);
 		if (!dbImageData.isPresent()) {
 			return null;

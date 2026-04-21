@@ -19,8 +19,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpServletRequest request) {
         ApiErrorResponse error = new ApiErrorResponse(
                 ex.getCode() != null ? ex.getCode() : "OPTIMISTIC_LOCK_FAIL",
-                ex.getMessage() != null ? ex.getMessage() : "Conflict: Data was modified concurrently",
-                "Another user modified this data. Please refresh and try again.",
+            ex.getMessage() != null ? ex.getMessage() : "Dữ liệu vừa được cập nhật đồng thời",
+            "Dữ liệu đã thay đổi bởi người khác. Vui lòng tải lại và thử lại.",
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpServletRequest request) {
         ApiErrorResponse error = new ApiErrorResponse(
                 "BAD_REQUEST",
-                "Invalid argument",
+            "Tham số không hợp lệ",
                 ex.getMessage(),
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
@@ -39,18 +39,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiErrorResponse> handleRuntimeException(RuntimeException ex,
             HttpServletRequest request) {
-        String message = ex.getMessage() != null ? ex.getMessage() : "Internal Server Error";
+        String message = ex.getMessage() != null ? ex.getMessage() : "Lỗi hệ thống";
         String code = "SERVER_ERROR";
 
         if (message.contains("Order not found") || message.contains("User not found") || 
             message.contains("Warehouse not found") || message.contains("Product not found") ||
+            message.contains("Không tìm thấy") ||
             message.contains("not found")) {
             code = "NOT_FOUND";
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiErrorResponse(code, message, request.getRequestURI()));
         }
 
-        if (message.contains("Unauthorized") || message.contains("Forbidden")) {
+        if (message.contains("Unauthorized") || message.contains("Forbidden")
+                || message.contains("Bạn chưa đăng nhập") || message.contains("Bạn không có quyền truy cập")) {
             code = "FORBIDDEN";
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new ApiErrorResponse(code, message, request.getRequestURI()));
@@ -71,7 +73,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpServletRequest request) {
         ApiErrorResponse error = new ApiErrorResponse(
                 "GENERAL_ERROR",
-                "An unexpected error occurred",
+            "Đã xảy ra lỗi không mong muốn",
                 ex.getMessage(),
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);

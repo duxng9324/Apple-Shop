@@ -93,7 +93,7 @@ public class UserService implements IUserService {
 	public UserDTO getUserById(Long id) {
 			   UserEntity userEntity = userRepository.findById(id).orElse(null);
 		if (userEntity == null) {
-			throw new RuntimeException("User not found");
+			throw new RuntimeException("Không tìm thấy người dùng");
 		}
 		return userConverter.toDTO(userEntity);
 	}
@@ -118,7 +118,7 @@ public class UserService implements IUserService {
 	public ResponseEntity<String> changeInfo(UserDTO userDTO, Long id) {
 			   UserEntity userEx = userRepository.findById(id).orElse(null);
 		if (userEx == null) {
-			throw new RuntimeException("User not found");
+			throw new RuntimeException("Không tìm thấy người dùng");
 		}
 		userEx = userRepository.save(userConverter.toEntity( userDTO, userEx));
 		return ResponseEntity.status(HttpStatus.OK).body("Đổi thông tin tài khoản thành công");
@@ -131,12 +131,12 @@ public class UserService implements IUserService {
 				&& role != UserEntity.ROLE_WAREHOUSE_MANAGER
 				&& role != UserEntity.ROLE_PRODUCT_MANAGER
 				&& role != UserEntity.ROLE_ACCOUNTANT) {
-			throw new RuntimeException("Invalid role");
+			throw new RuntimeException("Vai trò không hợp lệ");
 		}
 
 		UserEntity userEx = userRepository.findById(id).orElse(null);
 		if (userEx == null) {
-			throw new RuntimeException("User not found");
+			throw new RuntimeException("Không tìm thấy người dùng");
 		}
 		userEx.setRole(role);
 		userRepository.save(userEx);

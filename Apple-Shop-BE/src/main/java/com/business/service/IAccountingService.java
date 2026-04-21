@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.business.dto.AccountItemDTO;
+import com.business.dto.AccountingDashboardDTO;
 import com.business.dto.AccountingReportDTO;
+import com.business.dto.AccountingVoucherDTO;
 import com.business.dto.JournalEntryViewDTO;
 import com.business.dto.PayableAgingDTO;
 import com.business.dto.ReceivableAgingDTO;
@@ -22,4 +24,10 @@ public interface IAccountingService {
     List<PayableAgingDTO> getPayableAging(Date asOfDate);
 
     ReconciliationSummaryDTO getReconciliationSummary();
+
+    List<AccountingVoucherDTO> getCashReceipts(Date fromDate, Date toDate);
+
+    List<AccountingVoucherDTO> getCashPayments(Date fromDate, Date toDate);
+
+    AccountingDashboardDTO getDashboard(Date fromDate, Date toDate);
 }

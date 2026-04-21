@@ -7,6 +7,7 @@ import com.business.dto.OrderDTO;
 public interface IOrderService {
 	OrderDTO save(OrderDTO orderDTO);
 	List<OrderDTO> getOrderByUserId(Long userId);
+	OrderDTO getOrderById(Long id);
 	OrderDTO updateStatusOrder(Long id, String status, String paymentStatus, String strategy);
 	OrderDTO markOrderPaid(Long id);
 	List<OrderDTO> getAllOrder();

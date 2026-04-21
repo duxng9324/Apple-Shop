@@ -39,13 +39,13 @@ public class InventoryService implements IInventoryService {
     @Transactional
     public InventoryDTO adjustStock(InventoryAdjustDTO adjustDTO) {
         if (adjustDTO.getWarehouseId() == null || adjustDTO.getProductId() == null || adjustDTO.getMemoryType() == null) {
-            throw new RuntimeException("warehouseId, productId, memoryType are required");
+            throw new RuntimeException("warehouseId, productId, memoryType là bắt buộc");
         }
 
         Integer requestedDelta = adjustDTO.getQuantityDelta();
         Integer delta = requestedDelta == null ? 0 : requestedDelta;
         if (delta == 0) {
-            throw new RuntimeException("quantityDelta must be non-zero");
+            throw new RuntimeException("quantityDelta phải khác 0");
         }
         if (delta > 0) {
             throw new RuntimeException("Không được tăng tồn kho qua điều chỉnh. Vui lòng nhập qua phiếu nhập.");
@@ -54,14 +54,14 @@ public class InventoryService implements IInventoryService {
         WarehouseEntity warehouse = warehouseRepository.findById(adjustDTO.getWarehouseId()).orElse(null);
         ProductEntity product = productRepository.findById(adjustDTO.getProductId()).orElse(null);
         if (warehouse == null || product == null) {
-            throw new RuntimeException("Warehouse or product not found");
+            throw new RuntimeException("Không tìm thấy kho hoặc sản phẩm");
         }
 
         ColorEntity color = null;
         if (adjustDTO.getColorId() != null) {
             color = colorRepository.findById(adjustDTO.getColorId()).orElse(null);
             if (color == null) {
-                throw new RuntimeException("Color not found");
+                throw new RuntimeException("Không tìm thấy màu sắc");
             }
         }
 
@@ -92,7 +92,7 @@ public class InventoryService implements IInventoryService {
         Integer safeCurrentQuantity = currentQuantity == null ? 0 : currentQuantity;
         Integer newQuantity = Integer.sum(safeCurrentQuantity, delta);
         if (newQuantity.compareTo(0) < 0) {
-            throw new RuntimeException("Insufficient inventory");
+            throw new RuntimeException("Số lượng tồn kho không đủ");
         }
 
         entity.setQuantity(newQuantity);

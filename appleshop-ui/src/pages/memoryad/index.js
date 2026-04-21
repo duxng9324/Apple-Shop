@@ -29,11 +29,11 @@ function MemoryAd() {
       width: 80,
     },
     {
-      title: "Memory Type",
+      title: "Loại bộ nhớ",
       dataIndex: "type",
     },
     {
-      title: "Action",
+      title: "Thao tác",
       width: 150,
       render: (_, record) => (
         <Space>
@@ -61,14 +61,14 @@ function MemoryAd() {
           justifyContent: "space-between",
         }}
       >
-        <h3>Memory Management</h3>
+        <h3>Quản lý bộ nhớ</h3>
 
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => setVisibleAdd(true)}
         >
-          Add Memory
+          Thêm bộ nhớ
         </Button>
       </Space>
 

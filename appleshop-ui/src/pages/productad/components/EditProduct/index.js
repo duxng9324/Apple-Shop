@@ -88,7 +88,7 @@ function EditProductModal({
   return (
     <Modal
       open={open}
-      title="Edit Product"
+      title="Sửa sản phẩm"
       footer={null}
       width={800}
       centered
@@ -110,16 +110,16 @@ function EditProductModal({
         form={form}
         onFinish={onFinish}
       >
-        <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+        <Form.Item label="Tên sản phẩm" name="name" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
 
-        <Form.Item label="Code" name="code" rules={[{ required: true }]}>
+        <Form.Item label="Mã sản phẩm" name="code" rules={[{ required: true }]}>
           <Input disabled />
         </Form.Item>
 
         <Form.Item
-          label="Description"
+          label="Mô tả"
           name="description"
           extra="Hỗ trợ Markdown: ## tiêu đề, **bold**, *italic*, - danh sách, [link](url)."
           valuePropName="value"
@@ -133,7 +133,7 @@ function EditProductModal({
           />
         </Form.Item>
 
-        <Form.Item label="Category" name="categoryCode">
+        <Form.Item label="Danh mục" name="categoryCode">
           <Select>
             {categories.map((c) => (
               <Select.Option key={c.code} value={c.code}>
@@ -143,7 +143,7 @@ function EditProductModal({
           </Select>
         </Form.Item>
 
-        <Form.Item label="Colors" name="colors">
+        <Form.Item label="Màu sắc" name="colors">
           <Checkbox.Group>
             <Space wrap>
               {colors.map((c) => (
@@ -158,12 +158,12 @@ function EditProductModal({
         <Form.List name="imgLinks">
           {(fields, { add, remove }) => (
             <>
-              <label>Images</label>
+              <label>Hình ảnh</label>
 
               {fields.map((field) => (
                 <Space key={field.key}>
                   <Form.Item {...field} rules={[{ required: true }]}>
-                    <Input placeholder="Image link" />
+                    <Input placeholder="Đường dẫn hình ảnh" />
                   </Form.Item>
 
                   <MinusCircleOutlined onClick={() => remove(field.name)} />
@@ -171,7 +171,7 @@ function EditProductModal({
               ))}
 
               <Button style={{margin: "0 10px"}} icon={<PlusOutlined />} onClick={() => add()}>
-                Add Image
+                Thêm hình ảnh
               </Button>
 
               <Upload
@@ -182,7 +182,7 @@ function EditProductModal({
                 beforeUpload={() => false}
                 onChange={({ fileList }) => setProductFiles(fileList)}
               >
-                <Button style={{margin: "0 10px"}} icon={<PlusOutlined />}>Upload Images</Button>
+                <Button style={{margin: "0 10px"}} icon={<PlusOutlined />}>Tải ảnh lên</Button>
               </Upload>
             </>
           )}
@@ -192,7 +192,7 @@ function EditProductModal({
         <Form.List name="list">
           {(fields, { add, remove }) => (
             <>
-              <label>Memory - Price</label>
+              <label>Bộ nhớ - Giá</label>
 
               {fields.map((field) => (
                 <Space key={field.key}>
@@ -201,7 +201,7 @@ function EditProductModal({
                     name={[field.name, "type"]}
                     rules={[{ required: true }]}
                   >
-                    <Select placeholder="Memory">
+                    <Select placeholder="Bộ nhớ">
                       {memories.map((m) => (
                         <Select.Option key={m.id} value={m.type}>
                           {m.type}
@@ -215,7 +215,7 @@ function EditProductModal({
                     name={[field.name, "price"]}
                     rules={[{ required: true }]}
                   >
-                    <InputNumber placeholder="Price" min={0} />
+                    <InputNumber placeholder="Giá" min={0} />
                   </Form.Item>
 
                   <MinusCircleOutlined onClick={() => remove(field.name)} />
@@ -223,14 +223,14 @@ function EditProductModal({
               ))}
 
               <Button style={{ margin: "0 10px" }} icon={<PlusOutlined />} onClick={() => add()}>
-                Add Memory
+                Thêm bộ nhớ
               </Button>
             </>
           )}
         </Form.List>
 
         <Button type="primary" htmlType="submit" loading={uploading} block>
-          Update Product
+          Cập nhật sản phẩm
         </Button>
       </Form>
     </Modal>

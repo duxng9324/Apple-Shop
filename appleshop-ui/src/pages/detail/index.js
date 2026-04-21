@@ -67,11 +67,35 @@ function Detail() {
     const isOutOfStock = availableQuantity <= 0;
 
     const commentService = new CommentService();
+    const getDecodedToken = () => {
+        const storedToken = localStorage.getItem('token');
+        if (!storedToken) {
+            return null;
+        }
+
+        try {
+            return jwt_decode(storedToken);
+        } catch {
+            return null;
+        }
+    };
+
+    const decoded = getDecodedToken();
+    const currentRole = decoded?.role;
+    const currentUsername = decoded?.username;
     const deleteComment = async (id) => {
+        if (!decoded) {
+            toast.warning('Vui lòng đăng nhập để thực hiện thao tác này');
+            return;
+        }
         await commentService.remove(id);
         setIsLoading(!isLoading);
     };
     const deleteReply = async (id) => {
+        if (!decoded) {
+            toast.warning('Vui lòng đăng nhập để thực hiện thao tác này');
+            return;
+        }
         await commentService.removeReply(id);
         setIsLoading(!isLoading);
     };
@@ -105,11 +129,15 @@ function Detail() {
             </>
         );
     };
-    const token = localStorage.getItem('token');
-    const decoded = jwt_decode(token);
     const OnBuy = async () => {
         if (isOutOfStock) {
             toast.warning('Sản phẩm đã hết hàng với lựa chọn hiện tại');
+            return;
+        }
+
+        if (!decoded) {
+            toast.warning('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
+            navigate('/login');
             return;
         }
 
@@ -134,7 +162,7 @@ function Detail() {
     };
 
     function calculateAverageRating(commentDTOs) {
-        if (commentDTOs.length === 0) {
+        if (!commentDTOs || commentDTOs.length === 0) {
             return 0;
         }
 
@@ -175,7 +203,7 @@ function Detail() {
     };
     const handlEditOff = async (id) => {
         setIsEdit(false);
-        if (decoded.role === 1) {
+        if (currentRole === 1) {
             const reply = replyAd;
             const adminId = decoded.id;
             await commentService.changeRep({ id, reply, adminId });
@@ -203,7 +231,7 @@ function Detail() {
         setReplyAd(e.target.value);
     };
 
-    if (!product) return <div>Loading...</div>;
+    if (!product) return <div>Đang tải dữ liệu...</div>;
 
     return (
         <div className={cx('container')}>
@@ -277,10 +305,10 @@ function Detail() {
                             : `Còn ${availableQuantity} sản phẩm cho lựa chọn ${selectedColor} - ${selectedMemory}`}
                     </div>
                     <Button
-                        className={cx('btn-buynow', decoded.role !== 0 ? 'disabled' : '')}
+                        className={cx('btn-buynow', currentRole !== 0 ? 'disabled' : '')}
                         onClick={() => OnBuy()}
                         type="primary"
-                        disabled={decoded.role !== 0 || isOutOfStock}
+                        disabled={currentRole !== 0 || isOutOfStock}
                     >
                         MUA NGAY
                     </Button>
@@ -340,7 +368,7 @@ function Detail() {
                                                 <div className={cx('time')}>
                                                     {calculateElapsedTime(comment.timeCmt)}
                                                 </div>
-                                                {decoded.role === 0 && decoded.username === userName && (
+                                                {currentRole === 0 && currentUsername === userName && (
                                                     <label htmlFor={`comment_user${id}`}>
                                                         <div
                                                             onClick={() => handlEdit(comment.comment)}
@@ -350,7 +378,7 @@ function Detail() {
                                                         </div>
                                                     </label>
                                                 )}
-                                                {(decoded.role === 1 || decoded.username === userName) && (
+                                                {(currentRole === 1 || currentUsername === userName) && (
                                                     <div onClick={() => deleteComment(id)} className={cx('ft')}>
                                                         Xóa
                                                     </div>
@@ -376,7 +404,7 @@ function Detail() {
                                                     onChange={(e) => handleEditCmtAdChange(e)}
                                                     onBlur={() => handlEditOff(id)}
                                                 />
-                                                {decoded.role === 1 && decoded.username === adminName && (
+                                                {currentRole === 1 && currentUsername === adminName && (
                                                     <div className={cx('feature_admin')}>
                                                         <div className={cx('time')}>
                                                             {calculateElapsedTime(comment.timeRep)}
@@ -394,7 +422,7 @@ function Detail() {
                                             </div>
                                         </div>
                                     )}
-                                    {(reply === '' || reply === null) && decoded.role === 1 && (
+                                    {(reply === '' || reply === null) && currentRole === 1 && (
                                         <div className={cx('type_rep')}>
                                             <input
                                                 type="text"

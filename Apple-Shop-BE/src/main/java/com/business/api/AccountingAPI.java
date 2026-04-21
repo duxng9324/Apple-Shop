@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.business.dto.AccountItemDTO;
+import com.business.dto.AccountingDashboardDTO;
 import com.business.dto.AccountingReportDTO;
+import com.business.dto.AccountingVoucherDTO;
 import com.business.dto.JournalEntryViewDTO;
 import com.business.dto.PayableAgingDTO;
 import com.business.dto.ReceivableAgingDTO;
@@ -59,5 +61,26 @@ public class AccountingAPI {
     @GetMapping(value = "/api/accounting/reconciliation")
     public ReconciliationSummaryDTO getReconciliationSummary() {
         return accountingService.getReconciliationSummary();
+    }
+
+    @GetMapping(value = "/api/accounting/cash-receipts")
+    public List<AccountingVoucherDTO> getCashReceipts(
+            @RequestParam(value = "from", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            @RequestParam(value = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate) {
+        return accountingService.getCashReceipts(fromDate, toDate);
+    }
+
+    @GetMapping(value = "/api/accounting/cash-payments")
+    public List<AccountingVoucherDTO> getCashPayments(
+            @RequestParam(value = "from", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            @RequestParam(value = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate) {
+        return accountingService.getCashPayments(fromDate, toDate);
+    }
+
+    @GetMapping(value = "/api/accounting/dashboard")
+    public AccountingDashboardDTO getDashboard(
+            @RequestParam(value = "from", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+            @RequestParam(value = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate) {
+        return accountingService.getDashboard(fromDate, toDate);
     }
 }

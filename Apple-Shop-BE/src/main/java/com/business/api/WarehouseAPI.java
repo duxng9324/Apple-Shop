@@ -3,7 +3,6 @@ package com.business.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,20 +25,12 @@ public class WarehouseAPI {
 
     @PostMapping(value = "/api/warehouse")
     public ResponseEntity<WarehouseDTO> create(@RequestBody WarehouseDTO model) {
-        try {
-            return ResponseEntity.ok(warehouseService.save(model));
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        return ResponseEntity.ok(warehouseService.save(model));
     }
 
     @PutMapping(value = "/api/warehouse/{id}")
     public ResponseEntity<WarehouseDTO> update(@PathVariable Long id, @RequestBody WarehouseDTO model) {
-        try {
-            return ResponseEntity.ok(warehouseService.update(id, model));
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        return ResponseEntity.ok(warehouseService.update(id, model));
     }
 
     @GetMapping(value = "/api/warehouse")
@@ -54,11 +45,7 @@ public class WarehouseAPI {
 
     @DeleteMapping(value = "/api/warehouse/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        try {
-            warehouseService.delete(id);
-            return ResponseEntity.ok("Deleted");
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Delete failed");
-        }
+        warehouseService.delete(id);
+        return ResponseEntity.ok("Xóa thành công");
     }
 }

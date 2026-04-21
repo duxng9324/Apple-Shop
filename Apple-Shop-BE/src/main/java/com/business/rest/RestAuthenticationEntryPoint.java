@@ -13,6 +13,6 @@ public final class RestAuthenticationEntryPoint implements AuthenticationEntryPo
   public void commence(HttpServletRequest request, HttpServletResponse response,
       AuthenticationException authException) throws IOException {
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    response.getWriter().write("Unauthorized");
+    response.getWriter().write("Bạn chưa đăng nhập");
   }
 }

@@ -11,10 +11,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.business.converter.OrderConverter;
 import com.business.converter.OrderItemConverter;
@@ -25,13 +24,13 @@ import com.business.entity.InventoryEntity;
 import com.business.entity.OrderEntity;
 import com.business.entity.OrderItemEntity;
 import com.business.entity.ProductEntity;
-import com.business.repository.InventoryRepository;
+import com.business.entity.StockReceiptItemEntity;
 import com.business.repository.ColorRepository;
+import com.business.repository.InventoryRepository;
 import com.business.repository.OrderItemRepository;
 import com.business.repository.OrderRepository;
 import com.business.repository.ProductRepository;
 import com.business.repository.StockReceiptItemRepository;
-import com.business.entity.StockReceiptItemEntity;
 import com.business.service.IOrderService;
 
 @Service
@@ -108,11 +107,20 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
+	public OrderDTO getOrderById(Long id) {
+		OrderEntity orderEntity = orderRepository.findById(id).orElse(null);
+		if (orderEntity == null) {
+			throw new RuntimeException("Không tìm thấy đơn hàng");
+		}
+		return orderConverter.toDTO(orderEntity);
+	}
+
+	@Override
 	@Transactional
 	public OrderDTO updateStatusOrder(Long id, String status, String paymentStatus, String strategy) {
 		   OrderEntity orderEntity = orderRepository.findById(id).orElse(null);
 		if (orderEntity == null) {
-			throw new RuntimeException("Order not found");
+			throw new RuntimeException("Không tìm thấy đơn hàng");
 		}
 
 		String nextStatus = normalizeStatus(status);
@@ -156,7 +164,7 @@ public class OrderService implements IOrderService {
 	public String changeCheck(Long id) {
 		OrderEntity orderEntity = orderRepository.findById(id).orElse(null);
 		if (orderEntity == null) {
-			throw new RuntimeException("Order not found");
+			throw new RuntimeException("Không tìm thấy đơn hàng");
 		}
 		orderEntity.setCheckCmt(1);
 		orderRepository.save(orderEntity);
@@ -168,7 +176,7 @@ public class OrderService implements IOrderService {
 	public OrderDTO markOrderPaid(Long id) {
 		OrderEntity orderEntity = orderRepository.findById(id).orElse(null);
 		if (orderEntity == null) {
-			throw new RuntimeException("Order not found");
+			throw new RuntimeException("Không tìm thấy đơn hàng");
 		}
 
 		if (STATUS_CANCELLED.equalsIgnoreCase(normalizeStatus(orderEntity.getStatus()))) {
@@ -227,14 +235,14 @@ public class OrderService implements IOrderService {
 
 	private String normalizeStatus(String status) {
 		if (status == null) {
-			throw new RuntimeException("Order status is required");
+			throw new RuntimeException("Trạng thái đơn hàng là bắt buộc");
 		}
 		return status.trim();
 	}
 
 	private void validateStatusTransition(String currentStatus, String nextStatus) {
 		if (nextStatus == null || nextStatus.isEmpty()) {
-			throw new RuntimeException("Order status is required");
+			throw new RuntimeException("Trạng thái đơn hàng là bắt buộc");
 		}
 
 		if (currentStatus == null || currentStatus.trim().isEmpty() || currentStatus.equals(nextStatus)) {
@@ -243,7 +251,7 @@ public class OrderService implements IOrderService {
 
 		Set<String> allowedNextStatuses = ALLOWED_STATUS_TRANSITIONS.get(currentStatus.trim());
 		if (allowedNextStatuses == null || !allowedNextStatuses.contains(nextStatus)) {
-			throw new RuntimeException("Invalid order status transition from " + currentStatus + " to " + nextStatus);
+			throw new RuntimeException("Không thể chuyển trạng thái từ " + currentStatus + " sang " + nextStatus);
 		}
 	}
 
@@ -315,7 +323,7 @@ public class OrderService implements IOrderService {
 				}
 
 				if (selected == null) {
-					throw new RuntimeException("Insufficient inventory for product " + product.getCode() + " - " + memoryType);
+						throw new RuntimeException("Tồn kho không đủ cho sản phẩm " + product.getCode() + " - " + memoryType);
 				}
 
 				selected.setQuantity(selected.getQuantity() - qty);
@@ -332,7 +340,7 @@ public class OrderService implements IOrderService {
 			}
 
 			if (totalLayerQty < qty) {
-				throw new RuntimeException("Insufficient inventory for product " + product.getCode() + " - " + memoryType);
+				throw new RuntimeException("Tồn kho không đủ cho sản phẩm " + product.getCode() + " - " + memoryType);
 			}
 
 			int required = qty;

@@ -5,6 +5,11 @@ export class OrderService extends ServiceBase {
         const { userId } = params;
         return this.get(`/order/user/${userId}`);
     };
+
+    viewById = async (params) => {
+        const { id } = params;
+        return this.get(`/order/${id}`);
+    };
     add = async (params) => {
         return this.post(`/order`, params);
     };

@@ -23,7 +23,7 @@ function PopupComment(props) {
         }));
     };
 
-    const handleComplete = () => {
+    const handleComplete = async () => {
         const comments = [];
 
         let isFormValid = true;
@@ -50,18 +50,8 @@ function PopupComment(props) {
 
         if (isFormValid) {
             setValidForm(true);
-            comments.map((comment) => {
-                const fetchData = async function () {
-                    const res = await commentService.add(comment);
-                    return res;
-                };
-                fetchData();
-            });
-            const fetchData = async () => {
-                const res = await orderService.changeCheckOrder({ orderId });
-                return res;
-            };
-            fetchData();
+            await Promise.all(comments.map((comment) => commentService.add(comment)));
+            await orderService.changeCheckOrder({ orderId });
             close();
             loading();
         } else {

@@ -28,16 +28,16 @@ function ColorAd() {
       dataIndex: "id",
     },
     {
-      title: "Color",
+      title: "Màu sắc",
       dataIndex: "color",
     },
     {
-      title: "Code",
+      title: "Mã màu",
       dataIndex: "code",
       render: (code) => <Tag color={code}>{code}</Tag>,
     },
     {
-      title: "Action",
+      title: "Thao tác",
       render: (_, record) => (
         <Space>
           <Button
@@ -64,14 +64,14 @@ function ColorAd() {
           justifyContent: "space-between",
         }}
       >
-        <h3>Color Management</h3>
+        <h3>Quản lý màu sắc</h3>
 
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => setVisibleAdd(true)}
         >
-          Add Color
+          Thêm màu
         </Button>
       </Space>
 

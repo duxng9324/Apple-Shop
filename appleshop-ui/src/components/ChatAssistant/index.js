@@ -217,7 +217,7 @@ function ChatAssistant() {
                 className={cx('floatingButton', { hidden: isOpen })}
                 onClick={() => setIsOpen(true)}
                 type="button"
-                aria-label="Open AppleShop Assistant"
+                aria-label="Mở trợ lý AppleShop"
             >
                 <span className={cx('floatingDot')} />
                 Trợ lý Apple
@@ -233,7 +233,7 @@ function ChatAssistant() {
             <aside className={cx('chatPanel', { open: isOpen })} aria-hidden={!isOpen}>
                 <div className={cx('chatHeader')}>
                     <div className={cx('headerText')}>
-                        <h4>AppleShop Assistant</h4>
+                        <h4>Trợ lý AppleShop</h4>
                         <span>Tư vấn sản phẩm, đặt hàng, hướng dẫn website</span>
                     </div>
                     <div className={cx('headerActions')}>

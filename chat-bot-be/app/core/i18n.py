@@ -114,7 +114,7 @@ def format_product_card(product, index, lang="vi", product_url=None):
     labels = MESSAGES.get(lang, MESSAGES["vi"])["labels"]
 
     code = product.get("code", "N/A")
-    name = product.get("name", "Apple Product")
+    name = product.get("name", "Sản phẩm Apple")
     category = product.get("categoryCode", "")
     memories = _extract_memories(product)
     memory_text = ", ".join(memories[:3]) if memories else "N/A"

@@ -10,12 +10,12 @@ function Action(props) {
     const { edit, remove } = props;
     return (
         <div className={cx('action')}>
-            <Tippy content={'Edit'}>
+            <Tippy content={'Sửa'}>
                 <i>
                     <FaPen color="#ffc107" onClick={edit} />
                 </i>
             </Tippy>
-            <Tippy content={'Delete'}>
+            <Tippy content={'Xóa'}>
                 <i>
                     <FaTrash color="#e34724" onClick={remove} />
                 </i>

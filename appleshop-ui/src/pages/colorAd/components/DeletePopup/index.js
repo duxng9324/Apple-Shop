@@ -6,9 +6,9 @@ const colorService = new ColorService();
 export const confirmDeleteColor = (record, refresh) => {
   Modal.confirm({
     centered: true,
-    title: "Delete Color",
-    content: `Are you sure to delete ${record.color}?`,
-    okText: "Delete",
+    title: "Xóa màu",
+    content: `Bạn có chắc muốn xóa màu ${record.color}?`,
+    okText: "Xóa",
     okType: "danger",
     afterClose: () => {
       document.body.style.overflow = "";

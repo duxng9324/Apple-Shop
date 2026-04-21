@@ -38,12 +38,12 @@ public class UserAPI {
 	private UserEntity getCurrentUserOrThrow() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || authentication.getName() == null) {
-			throw new RuntimeException("Unauthorized");
+			throw new RuntimeException("Bạn chưa đăng nhập");
 		}
 
 		UserEntity currentUser = userRepository.findByUsername(authentication.getName());
 		if (currentUser == null) {
-			throw new RuntimeException("Unauthorized");
+			throw new RuntimeException("Bạn chưa đăng nhập");
 		}
 		return currentUser;
 	}
@@ -98,7 +98,7 @@ public class UserAPI {
 		try {
 			UserEntity currentUser = getCurrentUserOrThrow();
 			if (!isAdmin(currentUser) && !currentUser.getId().equals(id)) {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bạn không có quyền truy cập");
 			}
 			return ResponseEntity.ok(userService.getUserById(id));
 		} catch (RuntimeException ex) {
@@ -115,7 +115,7 @@ public class UserAPI {
 	public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
 		try {
 			userService.delete(id);
-			return ResponseEntity.ok("Deleted");
+			return ResponseEntity.ok("Xóa thành công");
 		} catch (RuntimeException ex) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 		}
@@ -126,7 +126,7 @@ public class UserAPI {
 		try {
 			UserEntity currentUser = getCurrentUserOrThrow();
 			if (!isAdmin(currentUser) && !currentUser.getId().equals(id)) {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bạn không có quyền truy cập");
 			}
 			return userService.changeInfo(model, id);
 		} catch (RuntimeException ex) {
@@ -139,7 +139,7 @@ public class UserAPI {
 		try {
 			UserEntity currentUser = getCurrentUserOrThrow();
 			if (!isAdmin(currentUser)) {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bạn không có quyền truy cập");
 			}
 			return userService.updateRole(id, model.getRole());
 		} catch (RuntimeException ex) {
@@ -152,7 +152,7 @@ public class UserAPI {
 		try {
 			UserEntity currentUser = getCurrentUserOrThrow();
 			if (!isAdmin(currentUser)) {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bạn không có quyền truy cập");
 			}
 			return userService.updateRoleBatch(updates);
 		} catch (RuntimeException ex) {

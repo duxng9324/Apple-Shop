@@ -1,0 +1,167 @@
+TAI LIEU PHAN TICH NGHIEP VU VA KY THUAT - DU AN APPLESHOP
+
+1) TONG QUAN
+- Du an gom 3 thanh phan: React Frontend, Java Spring Boot Backend, Python FastAPI Chatbot.
+- Muc tieu: ban hang online + van hanh kho + nghiep vu ke toan co ban + chatbot AI.
+
+2) NGHIEP VU CHINH
+- Quan ly nguoi dung va phan quyen.
+- Quan ly danh muc san pham: category, color, memory, product.
+- Gio hang, dat hang, cap nhat thanh toan.
+- Kho: lap phieu nhap, phieu xuat, dieu chinh ton kho, tru ton FIFO/LIFO.
+- Ke toan: report, journal, AR/AP aging, reconciliation, phieu thu, phieu chi, dashboard.
+- Chatbot AI: tu van san pham va huong dan mua hang.
+
+3) USE CASE CHINH
+- Customer: dang nhap, xem san pham, them gio, dat hang, thanh toan, chat AI.
+- Product Manager: CRUD danh muc va san pham.
+- Warehouse Manager: nhap xuat kho, dieu chinh ton, xac nhan don.
+- Accountant: xem bao cao, cong no, nhat ky, xuat excel.
+- Admin: quan tri tong the va phan quyen.
+
+4) THIET KE DATABASE (TOM TAT)
+- Nhom ban hang: user, product, category, color, memory, product_memory, product_image, cart, orders, order_item.
+- Nhom kho: warehouse, inventory, stock_receipt, stock_receipt_item, stock_issue, stock_issue_item, inventory_movement_ledger.
+- Nhom ke toan: chart_of_account, journal_entry, journal_line, receivable, payable, payment_transaction, expense_voucher.
+- Quan he chinh:
+  + user 1-n orders
+  + orders 1-n order_item
+  + warehouse 1-n inventory
+  + stock_receipt 1-n stock_receipt_item
+  + stock_issue 1-n stock_issue_item
+  + journal_entry 1-n journal_line
+
+5) KY THUAT CHINH
+- Frontend: React, Ant Design, Recharts, Axios, XLSX.
+- Backend: Spring Boot, Spring Security, JPA, MySQL, JWT.
+- Chatbot: FastAPI, Redis, Ollama.
+- Bao mat: role-based access control + JWT.
+
+6) TEST CASE GOI Y
+- Chuc nang:
+  + Dang nhap dung sai.
+  + Tao don hang.
+  + Confirm don theo FIFO/LIFO.
+  + Kiem tra ton kho khong am.
+  + Bao cao ke toan theo ngay.
+  + Xuat excel phieu thu phieu chi.
+- Bao mat:
+  + Khong token -> 401.
+  + Sai quyen -> 403.
+- Dong bo:
+  + Hai nguoi cung cap nhat ton kho -> conflict co kiem soat.
+
+7) CAC BIEU DO KY THUAT NEN DUA VAO BAO CAO
+- Use case diagram tong quan actor va nghiep vu.
+- Architecture diagram frontend backend chatbot redis mysql.
+- Sequence diagram dat hang va tru ton FIFO/LIFO.
+- Sequence diagram dashboard ke toan.
+- ERD tong quan quan he bang du lieu.
+
+8) TAI LIEU KY THUAT CAN KEM
+- Mo ta API theo nhom module.
+- Mo ta role permission.
+- Mo ta quy tac tinh doanh thu gia von loi nhuan.
+- Mo ta quy trinh xuat bao cao excel.
+- Mo ta quy trinh chatbot va session memory Redis.
+
+9) HUONG MO RONG
+- Duyet phieu thu chi 2 buoc.
+- Khoa so theo thang.
+- Bao cao loi nhuan theo danh muc, theo kho.
+- Bao cao dong tien theo kenh thanh toan.
+
+Tham khao ban day du co bieu do trong file:
+- docs/phan-tich-nghiep-vu-va-ky-thuat.md
+
+10) PHAN TICH CHI TIET TUNG USE CASE
+
+UC01 Dang ky dang nhap
+- Muc tieu: tao tai khoan va dang nhap an toan bang JWT.
+- Tien dieu kien: thong tin dang ky hop le.
+- Luong chinh: nhap thong tin -> validate -> xac thuc -> cap token.
+- Ngoai le: trung tai khoan, sai mat khau, token het han.
+
+UC02 Xem tim kiem san pham
+- Muc tieu: tim san pham theo bo loc.
+- Tien dieu kien: co du lieu product va danh muc.
+- Luong chinh: mo danh sach -> loc/tim -> xem ket qua phan trang.
+- Ngoai le: khong co ket qua, loi API.
+
+UC03 Quan ly gio hang
+- Muc tieu: them sua xoa san pham trong gio.
+- Tien dieu kien: da dang nhap.
+- Luong chinh: chon bien the -> them gio -> cap nhat so luong -> tinh tong tien.
+- Ngoai le: vuot ton kho, san pham ngung ban.
+
+UC04 Dat hang
+- Muc tieu: tao don tu gio hang.
+- Tien dieu kien: gio hang khong rong.
+- Luong chinh: nhap thong tin nhan -> tao order -> tao order_item -> tra ket qua.
+- Ngoai le: thieu thong tin giao nhan, gio hang khong hop le.
+
+UC05 Xac nhan thanh toan
+- Muc tieu: cap nhat payment_status va giao dich thu tien.
+- Tien dieu kien: don da tao.
+- Luong chinh: nhan ket qua thanh toan -> xac thuc -> ghi payment_transaction.
+- Ngoai le: ma giao dich trung, amount sai.
+
+UC06 Quan ly danh muc san pham
+- Muc tieu: CRUD category color memory product.
+- Tien dieu kien: co quyen PRODUCT hoac ADMIN.
+- Luong chinh: tao/sua/xoa danh muc -> tao/sua product.
+- Ngoai le: trung ma, xoa du lieu dang duoc tham chieu.
+
+UC07 Lap phieu nhap kho
+- Muc tieu: tang ton kho theo phieu nhap.
+- Tien dieu kien: co kho va item hop le.
+- Luong chinh: tao phieu -> validate item -> luu phieu -> cap nhat inventory.
+- Ngoai le: so luong am, kho khong ton tai.
+
+UC08 Lap phieu xuat kho
+- Muc tieu: giam ton kho theo phieu xuat.
+- Tien dieu kien: ton kho du.
+- Luong chinh: tao phieu -> kiem tra ton -> luu phieu -> tru ton.
+- Ngoai le: ton kho khong du.
+
+UC09 Dieu chinh ton kho
+- Muc tieu: sua ton khi kiem ke chenh lech.
+- Tien dieu kien: co bien ban dieu chinh.
+- Luong chinh: chon ban ghi ton -> nhap muc dieu chinh -> cap nhat ton -> luu log.
+- Ngoai le: ton am sau dieu chinh, thieu ly do.
+
+UC10 Xac nhan don va tru ton FIFO/LIFO
+- Muc tieu: chot don va tru ton theo chien luoc.
+- Tien dieu kien: don cho xac nhan va ton du.
+- Luong chinh: chon FIFO/LIFO -> phan bo lot -> tao phieu xuat -> cap nhat order.
+- Ngoai le: khong du lot, xung dot cap nhat dong thoi.
+
+UC11 Xem bao cao ke toan
+- Muc tieu: theo doi revenue cogs expense profit.
+- Tien dieu kien: co du lieu phat sinh.
+- Luong chinh: chon khoang ngay -> tong hop KPI -> hien thi bieu do.
+- Ngoai le: ngay khong hop le, khong co du lieu.
+
+UC12 Xem cong no AR/AP
+- Muc tieu: theo doi phai thu phai tra theo tuoi no.
+- Tien dieu kien: co receivable payable dang mo.
+- Luong chinh: chon asOfDate -> tinh overdue -> gom bucket -> hien thi danh sach.
+- Ngoai le: du lieu den han thieu hoac khong hop le.
+
+UC13 Xem nhat ky ke toan
+- Muc tieu: doi soat but toan no co.
+- Tien dieu kien: co journal entry line.
+- Luong chinh: loc theo ngay/chung tu/tai khoan -> hien thi no co.
+- Ngoai le: but toan mat can doi.
+
+UC14 Xuat excel phieu thu chi va bao cao
+- Muc tieu: xuat file excel de doi soat va nop bao cao.
+- Tien dieu kien: co du lieu dashboard va voucher.
+- Luong chinh: chon loai xuat -> lay du lieu -> tao workbook -> tai file.
+- Ngoai le: loi API, khong co du lieu.
+
+UC15 Tu van AI
+- Muc tieu: hoi dap nhanh ve san pham mua hang.
+- Tien dieu kien: chatbot, redis, llm hoat dong.
+- Luong chinh: gui cau hoi -> phan tich intent -> lay memory -> goi llm -> tra loi.
+- Ngoai le: mat ket noi redis/llm, cau hoi ngoai pham vi.

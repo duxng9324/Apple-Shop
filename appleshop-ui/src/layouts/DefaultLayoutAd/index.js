@@ -54,62 +54,62 @@ function DefaultLayoutAd() {
             ? {
                   key: '/admin/category',
                   icon: <AppstoreOutlined />,
-                  label: 'Category',
+                                    label: 'Danh mục',
               }
             : null,
         canManageProduct
             ? {
                   key: '/admin/color',
                   icon: <BgColorsOutlined />,
-                  label: 'Color',
+                                    label: 'Màu sắc',
               }
             : null,
         canManageProduct
             ? {
                   key: '/admin/memory',
                   icon: <DatabaseOutlined />,
-                  label: 'Memory',
+                                    label: 'Bộ nhớ',
               }
             : null,
         canManageProduct
             ? {
                   key: '/admin/product',
                   icon: <ShoppingOutlined />,
-                  label: 'Product',
+                                    label: 'Sản phẩm',
               }
             : null,
         canManageWarehouse || canManageAccounting
             ? {
                   key: '/admin/order',
                   icon: <InboxOutlined />,
-                  label: 'Order',
+                                    label: 'Đơn hàng',
               }
             : null,
         canManageWarehouse
             ? {
                   key: '/admin/operations',
                   icon: <DeploymentUnitOutlined />,
-                  label: 'Warehouse & PnL',
+                                    label: 'Kho và Lãi lỗ',
               }
             : null,
         canManageAccounting
             ? {
                   key: '/admin/accounting',
                   icon: <AuditOutlined />,
-                  label: 'Accounting',
+                                    label: 'Kế toán',
               }
             : null,
         role === 1
             ? {
                   key: '/admin/user-admin',
                   icon: <TeamOutlined />,
-                  label: 'User Admin',
+                                    label: 'Quản trị người dùng',
               }
             : null,
         {
             key: '/',
             icon: <UserOutlined />,
-            label: 'View Web Client',
+            label: 'Xem trang người dùng',
         },
     ].filter(Boolean);
 
@@ -122,12 +122,12 @@ function DefaultLayoutAd() {
         items: [
             {
                 key: 'profile',
-                label: 'Profile',
+                label: 'Tài khoản',
                 onClick: () => {navigate('/user')}
             },
             {
                 key: 'logout',
-                label: 'Logout',
+                label: 'Đăng xuất',
                 onClick: handleLogout,
             },
         ],
@@ -159,7 +159,7 @@ function DefaultLayoutAd() {
                         fontWeight: 'bold',
                     }}
                 >
-                    WEB ADMIN
+                    QUẢN TRỊ
                 </div>
 
                 <Menu

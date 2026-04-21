@@ -61,7 +61,9 @@ function UserGroupPermissionAd() {
             setTargetRole(null);
             fetchUsers();
         } catch (error) {
-            message.error(error?.response?.data || 'Cập nhật vai trò thất bại');
+            const apiError = error?.response?.data;
+            const errorMessage = typeof apiError === 'string' ? apiError : apiError?.message;
+            message.error(errorMessage || 'Cập nhật vai trò thất bại');
         } finally {
             setLoading(false);
         }

@@ -38,7 +38,7 @@ public class OrderConverter {
 	public OrderEntity toEntity(OrderDTO dto) {
 		OrderEntity entity = new OrderEntity();
 		String paymentMethod = dto.getPaymentMethod() != null ? dto.getPaymentMethod() : "COD";
-		boolean isOnlinePaid = !"COD".equalsIgnoreCase(paymentMethod);
+		boolean isOnlinePaid = "BANK_TRANSFER".equalsIgnoreCase(paymentMethod);
 		entity.setSku(generateSku());
 		entity.setFullName(dto.getFullName());
 		entity.setSex(dto.getSex());

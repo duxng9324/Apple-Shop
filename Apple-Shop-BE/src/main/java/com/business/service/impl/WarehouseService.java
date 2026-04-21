@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.business.dto.WarehouseDTO;
 import com.business.entity.WarehouseEntity;
+import com.business.exception.NotFoundException;
 import com.business.repository.WarehouseRepository;
 import com.business.service.IWarehouseService;
 
@@ -31,7 +32,7 @@ public class WarehouseService implements IWarehouseService {
     public WarehouseDTO update(Long id, WarehouseDTO warehouseDTO) {
         WarehouseEntity entity = warehouseRepository.findById(id).orElse(null);
         if (entity == null) {
-            throw new RuntimeException("Warehouse not found");
+            throw new NotFoundException("Không tìm thấy kho");
         }
 
         if (warehouseDTO.getCode() != null) {
@@ -64,7 +65,7 @@ public class WarehouseService implements IWarehouseService {
     public WarehouseDTO findById(Long id) {
         WarehouseEntity entity = warehouseRepository.findById(id).orElse(null);
         if (entity == null) {
-            throw new RuntimeException("Warehouse not found");
+            throw new NotFoundException("Không tìm thấy kho");
         }
         return toDTO(entity);
     }

@@ -13,8 +13,15 @@ function Order() {
     const location = useLocation();
     let isScroll = location.state;
     const token = localStorage.getItem('token');
-    const decode = jwt_decode(token);
-    const userId = decode.id;
+    const decode = (() => {
+        if (!token) return null;
+        try {
+            return jwt_decode(token);
+        } catch {
+            return null;
+        }
+    })();
+    const userId = decode?.id;
     const [orders, setOrders] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const scrollRef = useRef(null);
@@ -22,6 +29,11 @@ function Order() {
     const [visibleComment, setVisibleComment] = useState();
 
     useEffect(() => {
+        if (!userId) {
+            setOrders([]);
+            return;
+        }
+
         const orderService = new OrderService();
         const fetchData = async function () {
             const res = await orderService.view({ userId });
@@ -68,6 +80,9 @@ function Order() {
     };
 
     const handleOpenPopupCmt = (listProduct, orderId) => {
+        if (!userId) {
+            return;
+        }
         setVisibleComment({ listProduct, userId, orderId });
         document.body.style.overflow = 'hidden';
     };

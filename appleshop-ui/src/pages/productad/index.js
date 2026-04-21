@@ -66,15 +66,15 @@ function ProductAd() {
       width: 70
     },
     {
-      title: "Name",
+      title: "Tên sản phẩm",
       dataIndex: "name"
     },
     {
-      title: "Code",
+      title: "Mã sản phẩm",
       dataIndex: "code"
     },
     {
-      title: "Images",
+      title: "Hình ảnh",
       dataIndex: "imgLinks",
       render: (imgLinks) => {
         const links = imgLinks || [];
@@ -89,7 +89,7 @@ function ProductAd() {
       }
     },
     {
-      title: "Memory Price",
+      title: "Giá theo bộ nhớ",
       dataIndex: "list",
       render: (list) => (
         <Space direction="vertical">
@@ -103,7 +103,7 @@ function ProductAd() {
       )
     },
     {
-      title: "Color",
+      title: "Màu sắc",
       dataIndex: "colorDTOs",
       render: (colors) => (
         <Space>
@@ -114,12 +114,12 @@ function ProductAd() {
       )
     },
     {
-      title: "Category",
+      title: "Danh mục",
       dataIndex: "categoryDTO",
       render: (c) => c?.name
     },
     {
-      title: "Action",
+      title: "Thao tác",
       render: (_, record) => (
         <Space>
           <Button
@@ -128,7 +128,7 @@ function ProductAd() {
           />
 
           <Popconfirm
-            title="Delete product?"
+            title="Xóa sản phẩm này?"
             onConfirm={() => handleDelete(record.id)}
           >
             <Button danger icon={<DeleteOutlined />} />
@@ -147,14 +147,14 @@ function ProductAd() {
           justifyContent: "space-between"
         }}
       >
-        <h3>Products</h3>
+        <h3>Quản lý sản phẩm</h3>
 
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={() => setVisibleAdd(true)}
         >
-          Publish Product
+          Đăng bán sản phẩm
         </Button>
       </Space>
 

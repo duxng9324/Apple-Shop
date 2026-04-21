@@ -6,9 +6,9 @@ const memoryService = new MemoryService();
 export const confirmDeleteMemory = (record, refresh) => {
   Modal.confirm({
     centered: true,
-    title: "Delete Memory",
-    content: `Are you sure delete ${record.type}?`,
-    okText: "Delete",
+    title: "Xóa bộ nhớ",
+    content: `Bạn có chắc muốn xóa bộ nhớ ${record.type}?`,
+    okText: "Xóa",
     okType: "danger",
     afterClose: () => {
       document.body.style.overflow = "";

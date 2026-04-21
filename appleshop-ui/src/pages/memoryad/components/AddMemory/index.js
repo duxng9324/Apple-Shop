@@ -14,19 +14,19 @@ function AddMemoryModal({ open, onClose, refresh }) {
   const onSubmit = async (data) => {
     try {
       await memoryService.add(data);
-      message.success("Memory added successfully");
+      message.success("Thêm bộ nhớ thành công");
       refresh();
       reset();
       onClose();
     } catch (error) {
-      message.error("Add memory failed");
+      message.error("Thêm bộ nhớ thất bại");
     }
   };
 
   return (
     <Modal
       open={open}
-      title="Add Memory"
+      title="Thêm bộ nhớ"
       footer={null}
       centered
       onCancel={onClose}
@@ -37,18 +37,18 @@ function AddMemoryModal({ open, onClose, refresh }) {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Item label="Memory Type">
+        <Form.Item label="Loại bộ nhớ">
           <Controller
             name="type"
             control={control}
             render={({ field }) => (
-              <Input {...field} placeholder="Ex: 8GB / 16GB" />
+              <Input {...field} placeholder="Ví dụ: 8GB / 16GB" />
             )}
           />
         </Form.Item>
 
         <Button type="primary" htmlType="submit" block>
-          Add Memory
+          Thêm bộ nhớ
         </Button>
       </form>
     </Modal>

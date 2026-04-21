@@ -61,6 +61,7 @@ com\business\converter\OrderConverter.class
 com\business\service\IUserService.class
 com\business\service\IImageService.class
 com\business\entity\ColorEntity.class
+com\business\dto\PaymentMethodSummaryDTO.class
 com\business\repository\MemoryRepository.class
 com\business\repository\ProductRepository.class
 com\business\dto\CategoryDTO.class

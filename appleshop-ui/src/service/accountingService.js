@@ -28,4 +28,19 @@ export class AccountingService extends ServiceBase {
     getReconciliationSummary = async () => {
         return this.get('/accounting/reconciliation');
     };
+
+    getCashReceipts = async (params) => {
+        const { from, to } = params || {};
+        return this.get('/accounting/cash-receipts', { from, to });
+    };
+
+    getCashPayments = async (params) => {
+        const { from, to } = params || {};
+        return this.get('/accounting/cash-payments', { from, to });
+    };
+
+    getDashboard = async (params) => {
+        const { from, to } = params || {};
+        return this.get('/accounting/dashboard', { from, to });
+    };
 }

@@ -37,7 +37,7 @@ function EditColorModal({ open, onClose, data, refresh }) {
   return (
     <Modal
       open={open}
-      title="Edit Color"
+      title="Sửa màu"
       footer={null}
       centered
       onCancel={onClose}
@@ -48,17 +48,17 @@ function EditColorModal({ open, onClose, data, refresh }) {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Item label="Color">
+        <Form.Item label="Tên màu">
           <Controller
             name="color"
             control={control}
             render={({ field }) => (
-              <Input {...field} placeholder="Enter color name" />
+              <Input {...field} placeholder="Nhập tên màu" />
             )}
           />
         </Form.Item>
 
-        <Form.Item label="Color Code">
+        <Form.Item label="Mã màu">
           <Controller
             name="code"
             control={control}
@@ -69,7 +69,7 @@ function EditColorModal({ open, onClose, data, refresh }) {
         </Form.Item>
 
         <Button type="primary" htmlType="submit" block>
-          Update Color
+          Cập nhật màu
         </Button>
       </form>
     </Modal>

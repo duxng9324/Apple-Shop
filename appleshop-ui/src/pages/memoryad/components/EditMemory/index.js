@@ -28,18 +28,18 @@ function EditMemoryModal({ open, onClose, data, refresh }) {
 
     try {
       await memoryService.edit(payload);
-      message.success("Memory updated successfully");
+      message.success("Cập nhật bộ nhớ thành công");
       refresh();
       onClose();
     } catch (error) {
-      message.error("Update failed");
+      message.error("Cập nhật bộ nhớ thất bại");
     }
   };
 
   return (
     <Modal
       open={open}
-      title="Edit Memory"
+      title="Sửa bộ nhớ"
       footer={null}
       centered
       onCancel={onClose}
@@ -50,7 +50,7 @@ function EditMemoryModal({ open, onClose, data, refresh }) {
       }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Item label="Memory Type">
+        <Form.Item label="Loại bộ nhớ">
           <Controller
             name="type"
             control={control}
@@ -61,7 +61,7 @@ function EditMemoryModal({ open, onClose, data, refresh }) {
         </Form.Item>
 
         <Button type="primary" htmlType="submit" block>
-          Update Memory
+          Cập nhật bộ nhớ
         </Button>
       </form>
     </Modal>

@@ -49,15 +49,15 @@ public class StockIssueService implements IStockIssueService {
     @Transactional
     public StockIssueDTO createVoucher(StockIssueDTO stockIssueDTO) {
         if (stockIssueDTO.getWarehouseId() == null) {
-            throw new RuntimeException("warehouseId is required");
+            throw new RuntimeException("warehouseId là bắt buộc");
         }
         if (stockIssueDTO.getItems() == null || stockIssueDTO.getItems().isEmpty()) {
-            throw new RuntimeException("Stock issue must contain at least one item");
+            throw new RuntimeException("Phiếu xuất phải có ít nhất một dòng hàng");
         }
 
         WarehouseEntity warehouse = warehouseRepository.findById(stockIssueDTO.getWarehouseId()).orElse(null);
         if (warehouse == null) {
-            throw new RuntimeException("Warehouse not found");
+            throw new RuntimeException("Không tìm thấy kho");
         }
 
         StockIssueEntity issue = new StockIssueEntity();
@@ -72,7 +72,7 @@ public class StockIssueService implements IStockIssueService {
 
         for (StockIssueItemDTO itemDTO : stockIssueDTO.getItems()) {
             if (itemDTO.getProductId() == null || itemDTO.getQuantity() == null || itemDTO.getQuantity() <= 0) {
-                throw new RuntimeException("Invalid stock issue line item");
+                throw new RuntimeException("Dòng hàng trong phiếu xuất không hợp lệ");
             }
 
             String memoryType = itemDTO.getMemoryType() == null ? "DEFAULT" : itemDTO.getMemoryType().trim().toUpperCase();
@@ -83,7 +83,7 @@ public class StockIssueService implements IStockIssueService {
 
             ProductEntity product = productRepository.findById(itemDTO.getProductId()).orElse(null);
             if (product == null) {
-                throw new RuntimeException("Product not found: " + itemDTO.getProductId());
+                throw new RuntimeException("Không tìm thấy sản phẩm: " + itemDTO.getProductId());
             }
 
             InventoryEntity inventory;
@@ -99,7 +99,7 @@ public class StockIssueService implements IStockIssueService {
             }
 
             if (inventory == null || inventory.getQuantity() == null || inventory.getQuantity() < itemDTO.getQuantity()) {
-                throw new RuntimeException("Insufficient inventory for product " + product.getCode() + " - " + memoryType);
+                throw new RuntimeException("Tồn kho không đủ cho sản phẩm " + product.getCode() + " - " + memoryType);
             }
 
             BigDecimal unitCost = itemDTO.getUnitCost() != null

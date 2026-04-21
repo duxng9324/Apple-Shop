@@ -3,7 +3,6 @@ package com.business.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +24,7 @@ public class InventoryAPI {
 
     @PostMapping(value = "/api/inventory/adjust")
     public ResponseEntity<?> adjust(@RequestBody InventoryAdjustDTO model) {
-        try {
-            return ResponseEntity.ok(inventoryService.adjustStock(model));
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
+        return ResponseEntity.ok(inventoryService.adjustStock(model));
     }
 
     @GetMapping(value = "/api/inventory")

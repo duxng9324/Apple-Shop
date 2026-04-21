@@ -3,10 +3,10 @@ package com.business.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,12 +33,12 @@ public class OrderAPI {
 	private UserEntity getCurrentUserOrThrow() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || authentication.getName() == null) {
-			throw new RuntimeException("Unauthorized");
+			throw new RuntimeException("Bạn chưa đăng nhập");
 		}
 
 		UserEntity currentUser = userRepository.findByUsername(authentication.getName());
 		if (currentUser == null) {
-			throw new RuntimeException("Unauthorized");
+			throw new RuntimeException("Bạn chưa đăng nhập");
 		}
 		return currentUser;
 	}
@@ -90,10 +90,24 @@ public class OrderAPI {
 		try {
 			UserEntity currentUser = getCurrentUserOrThrow();
 			if (!isAdmin(currentUser) && !currentUser.getId().equals(id)) {
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bạn không có quyền truy cập");
 			}
 
 			return ResponseEntity.ok(orderService.getOrderByUserId(id));
+		} catch (RuntimeException ex) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+		}
+	}
+
+	@GetMapping(value = "/api/order/{id}")
+	public ResponseEntity<?> getOrderById(@PathVariable long id) {
+		try {
+			UserEntity currentUser = getCurrentUserOrThrow();
+			OrderDTO orderDTO = orderService.getOrderById(id);
+			if (!isAdmin(currentUser) && orderDTO.getUserId() != null && !currentUser.getId().equals(orderDTO.getUserId())) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bạn không có quyền truy cập");
+			}
+			return ResponseEntity.ok(orderDTO);
 		} catch (RuntimeException ex) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 		}

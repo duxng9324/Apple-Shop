@@ -19,6 +19,8 @@ import com.business.entity.PaymentTransactionEntity;
 import com.business.entity.ReceivableEntity;
 import com.business.entity.StockIssueEntity;
 import com.business.entity.StockReceiptEntity;
+import com.business.exception.BadRequestException;
+import com.business.exception.NotFoundException;
 import com.business.repository.ChartOfAccountRepository;
 import com.business.repository.JournalEntryRepository;
 import com.business.repository.PayableRepository;
@@ -212,7 +214,7 @@ public class AccountingPostingService {
     private ChartOfAccountEntity getAccountOrThrow(String code) {
         ChartOfAccountEntity account = chartOfAccountRepository.findByAccountCode(code);
         if (account == null) {
-            throw new RuntimeException("Missing chart of account: " + code);
+            throw new NotFoundException("Missing chart of account: " + code);
         }
         return account;
     }
@@ -275,7 +277,7 @@ public class AccountingPostingService {
         }
 
         if (debit.compareTo(credit) != 0) {
-            throw new RuntimeException("Unbalanced journal entry in runtime posting");
+            throw new BadRequestException("Unbalanced journal entry in runtime posting");
         }
     }
 

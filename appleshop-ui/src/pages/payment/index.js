@@ -1,11 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { Alert, Button, Card, Col, Divider, Row, Space, Typography, message } from 'antd';
-import { ArrowLeftOutlined, QrcodeOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, PayCircleOutlined } from '@ant-design/icons';
 import styles from './Payment.module.scss';
-import { OrderService } from '~/service/orderService';
-import { CartService } from '~/service/cartService';
+import { VnpayService } from '~/service/vnpayService';
 
 const cx = classNames.bind(styles);
 
@@ -15,53 +14,33 @@ function Payment() {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const checkoutData = location.state?.checkoutData;
-
-    const paymentPayload = useMemo(() => {
-        if (!checkoutData) return null;
-
-        return {
-            ...checkoutData,
-            paymentMethod: 'VNPAY_QR',
-        };
-    }, [checkoutData]);
-
-    const orderCode = useMemo(() => {
-        return `AS-${Date.now()}`;
-    }, []);
-
-    const qrContent = useMemo(() => {
-        if (!paymentPayload) return '';
-
-        const amount = Number(paymentPayload.totalPrice || 0);
-        const text = `VNPAY|APPLESHOP|${orderCode}|${amount}|${paymentPayload.fullName || ''}`;
-        return encodeURIComponent(text);
-    }, [paymentPayload, orderCode]);
-
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${qrContent}`;
+    const paymentPayload = checkoutData
+        ? {
+              ...checkoutData,
+              paymentMethod: 'VNPAY_QR',
+          }
+        : null;
 
     const handleConfirmPaid = async () => {
         if (!paymentPayload) return;
 
-        const orderService = new OrderService();
-        const cartService = new CartService();
+        const vnpayService = new VnpayService();
 
         try {
             setIsSubmitting(true);
-            const normalizedPayload = {
-                ...paymentPayload,
-                orderItemDTOs: (paymentPayload.orderItemDTOs || []).map((item) => ({
-                    ...item,
-                    productId: item.productId,
-                    productCode: item.productCode,
-                })),
-            };
+            const returnUrl = `${window.location.origin}/payment-result`;
+            const response = await vnpayService.createPaymentUrl({
+                order: paymentPayload,
+                returnUrl,
+            });
 
-            await orderService.add(normalizedPayload);
-            await cartService.removeAll(paymentPayload.userId);
-            message.success('Xác nhận thanh toán thành công, đơn hàng đã được tạo.');
-            navigate('/order', { state: true });
+            if (!response?.data?.paymentUrl) {
+                throw new Error('Không thể tạo đường dẫn thanh toán VNPay');
+            }
+
+            window.location.assign(response.data.paymentUrl);
         } catch {
-            message.error('Không thể tạo đơn hàng sau thanh toán. Vui lòng thử lại.');
+            message.error('Không thể khởi tạo thanh toán VNPay. Vui lòng thử lại.');
         } finally {
             setIsSubmitting(false);
         }
@@ -95,19 +74,21 @@ function Payment() {
                 <Col xs={24} lg={14}>
                     <Card className={cx('card')}>
                         <Space align="center" size={8} className={cx('titleWrap')}>
-                            <QrcodeOutlined />
-                            <Typography.Title level={4}>Thanh toán VNPay qua QR</Typography.Title>
+                            <PayCircleOutlined />
+                            <Typography.Title level={4}>Thanh toán VNPay Sandbox</Typography.Title>
                         </Space>
 
                         <Typography.Paragraph>
-                            Quét mã QR bên dưới bằng ứng dụng ngân hàng hoặc ví có hỗ trợ VNPay để hoàn tất thanh toán.
+                            Hệ thống sẽ tạo đơn hàng trước, sau đó chuyển thẳng sang cổng thanh toán VNPay sandbox để bạn
+                            hoàn tất giao dịch.
                         </Typography.Paragraph>
 
-                        <div className={cx('qrWrap')}>
-                            <img src={qrUrl} alt="QR thanh toán VNPay" className={cx('qrImage')} />
-                        </div>
-
-                        <Typography.Text type="secondary">Nội dung chuyển khoản: {orderCode}</Typography.Text>
+                        <Alert
+                            type="info"
+                            showIcon
+                            message="Môi trường thử nghiệm"
+                            description="Bạn sẽ được chuyển đến trang test của VNPAY với thông tin Sandbox đã cung cấp."
+                        />
                     </Card>
                 </Col>
 
@@ -136,7 +117,7 @@ function Payment() {
 
                         <div className={cx('actionWrap')}>
                             <Button type="primary" size="large" loading={isSubmitting} onClick={handleConfirmPaid}>
-                                Tôi đã thanh toán
+                                Thanh toán với VNPay
                             </Button>
                             <Button size="large" onClick={() => navigate('/cart')}>
                                 Đổi phương thức thanh toán

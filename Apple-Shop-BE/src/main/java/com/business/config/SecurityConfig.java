@@ -1,5 +1,7 @@
 package com.business.config;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,8 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 import com.business.rest.CustomAccessDeniedHandler;
 import com.business.rest.JwtAuthenticationTokenFilter;
@@ -63,6 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 	        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 	        .antMatchers("/api/login**", "/api/signup**").permitAll()
+	        .antMatchers(HttpMethod.GET, "/api/vnpay/ipn").permitAll()
+	        .antMatchers(HttpMethod.POST, "/api/vnpay/ipn").permitAll()
 	        .antMatchers(HttpMethod.GET, "/api/product", "/api/product/*", "/api/product/code/*").permitAll()
 	        .antMatchers("/api/warehouse/**", "/api/inventory/**", "/api/stock-receipt/**", "/api/stock-issue/**")
 	            .hasAnyAuthority("ROLE_ADMIN", "PERM_WAREHOUSE")
