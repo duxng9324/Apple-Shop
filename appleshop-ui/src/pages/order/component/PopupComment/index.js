@@ -4,13 +4,13 @@ import Button from '~/components/Button';
 import { FaStar, FaTimes } from 'react-icons/fa';
 import { createPortal } from 'react-dom';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { CommentService } from '~/service/commentService';
-import { OrderService } from '~/service/orderService';
 
 const cx = classNames.bind(styles);
 
 function PopupComment(props) {
-    const { listProduct, userId, orderId } = props.props;
+    const { listProduct, userId } = props.props;
     const close = props.remove;
     const loading = props.loading;
     const [productRatings, setProductRatings] = useState({});
@@ -28,7 +28,6 @@ function PopupComment(props) {
 
         let isFormValid = true;
         const commentService = new CommentService();
-        const orderService = new OrderService();
         listProduct.forEach((product) => {
             const { id, name } = product;
             const rating = productRatings[id] || 1;
@@ -51,7 +50,7 @@ function PopupComment(props) {
         if (isFormValid) {
             setValidForm(true);
             await Promise.all(comments.map((comment) => commentService.add(comment)));
-            await orderService.changeCheckOrder({ orderId });
+            toast.success('Đánh giá thành công!');
             close();
             loading();
         } else {

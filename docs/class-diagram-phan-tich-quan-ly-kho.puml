@@ -1,0 +1,328 @@
+@startuml ClassDiagram_QuanLyKho
+skinparam classAttributeIconSize 0
+skinparam classBorderColor #4A90D9
+skinparam classBackgroundColor #EEF2FF
+skinparam classHeaderBackgroundColor #4A90D9
+skinparam classHeaderFontColor #FFFFFF
+skinparam arrowColor #555
+skinparam roundcorner 8
+skinparam linetype ortho
+title Biểu đồ lớp phân tích – Quản lý Kho (AppleShop)
+
+' ==================== BOUNDARY ====================
+package "Boundary (UI / API)" #FFF8E1 {
+
+    class WarehouseAd <<boundary>> {
+        - warehouses: List
+        - inventories: List
+        - stockReceipts: List
+        - stockIssues: List
+        --
+        + loadWarehouses()
+        + loadInventory(warehouseId)
+        + submitReceipt(form)
+        + submitIssue(form)
+        + adjustInventory(form)
+    }
+
+    class WarehouseAPI <<boundary>> {
+        + create(WarehouseDTO): WarehouseDTO
+        + update(id, WarehouseDTO): WarehouseDTO
+        + getAll(): List<WarehouseDTO>
+        + delete(id): void
+    }
+
+    class StockReceiptAPI <<boundary>> {
+        + create(StockReceiptDTO): StockReceiptDTO
+        + getAll(): List<StockReceiptDTO>
+        + getByWarehouse(warehouseId): List<StockReceiptDTO>
+    }
+
+    class StockIssueAPI <<boundary>> {
+        + create(StockIssueDTO): StockIssueDTO
+        + getAll(): List<StockIssueDTO>
+        + getByWarehouse(warehouseId): List<StockIssueDTO>
+    }
+
+    class InventoryAPI <<boundary>> {
+        + adjust(InventoryAdjustDTO): InventoryDTO
+        + getAll(): List<InventoryDTO>
+        + getByWarehouse(warehouseId): List<InventoryDTO>
+    }
+}
+
+' ==================== CONTROL ====================
+package "Control (Service)" #E8F5E9 {
+
+    class WarehouseService <<control>> {
+        + save(WarehouseDTO): WarehouseDTO
+        + update(id, WarehouseDTO): WarehouseDTO
+        + findAll(): List<WarehouseDTO>
+        + findById(id): WarehouseDTO
+        + delete(id): void
+        - toDTO(entity): WarehouseDTO
+    }
+
+    class StockReceiptService <<control>> {
+        + createVoucher(dto): StockReceiptDTO
+        - generateReceiptCode(): String
+        - resolveOrCreateProduct(dto): ProductEntity
+        - resolveColor(colorId, colorName): ColorEntity
+        - ensureProductMemory(product, memoryType): void
+        - ensureProductColor(product, color): void
+    }
+
+    class StockIssueService <<control>> {
+        + createVoucher(dto): StockIssueDTO
+        - generateIssueCode(): String
+        - validateStock(inventory, qty): void
+    }
+
+    class InventoryService <<control>> {
+        + adjustStock(dto): InventoryDTO
+        + findAll(): List<InventoryDTO>
+        + findByWarehouse(warehouseId): List<InventoryDTO>
+        - normalizeMemoryType(type): String
+        - toDTO(entity): InventoryDTO
+    }
+
+    class AccountingPostingService <<control>> {
+        + postStockReceipt(receipt): void
+        + postStockIssue(issue): void
+    }
+}
+
+' ==================== ENTITY ====================
+package "Entity (Domain Model)" #FBE9E7 {
+
+    class WarehouseEntity <<entity>> {
+        - id: Long
+        - code: String <<unique>>
+        - name: String
+        - address: String
+        - active: Boolean
+    }
+
+    class InventoryEntity <<entity>> {
+        - id: Long
+        - memoryType: String
+        - quantity: Integer
+        - unitCost: BigDecimal
+        - version: Integer <<optimistic lock>>
+        --
+        + stockValue(): BigDecimal
+    }
+
+    class StockReceiptEntity <<entity>> {
+        - id: Long
+        - code: String <<PNK-...>>
+        - receiptDate: Date
+        - supplier: String
+        - note: String
+        - totalCost: BigDecimal
+    }
+
+    class StockReceiptItemEntity <<entity>> {
+        - id: Long
+        - memoryType: String
+        - quantity: Integer
+        - remainingQuantity: Integer
+        - unitCost: BigDecimal
+        - lineTotal: BigDecimal
+    }
+
+    class StockIssueEntity <<entity>> {
+        - id: Long
+        - code: String <<PXK-...>>
+        - issueDate: Date
+        - note: String
+        - totalCost: BigDecimal
+    }
+
+    class StockIssueItemEntity <<entity>> {
+        - id: Long
+        - memoryType: String
+        - quantity: Integer
+        - unitCost: BigDecimal
+        - lineTotal: BigDecimal
+    }
+
+    class ProductEntity <<entity>> {
+        - id: Long
+        - code: String
+        - name: String
+        - description: String
+        - price: BigDecimal
+    }
+
+    class ColorEntity <<entity>> {
+        - id: Long
+        - color: String
+        - code: String
+    }
+
+    class InventoryMovementLedgerEntity <<entity>> {
+        - id: Long
+        - movementDate: Date
+        - movementType: String
+        - sourceType: String
+        - sourceCode: String
+        - memoryType: String
+        - quantityDelta: Integer
+        - unitCost: BigDecimal
+        - totalCost: BigDecimal
+        - note: String
+    }
+
+    class JournalEntryEntity <<entity>> {
+        - id: Long
+        - entryNumber: String
+        - entryDate: Date
+        - entryType: String
+        - sourceType: String
+        - description: String
+        - totalDebit: BigDecimal
+        - totalCredit: BigDecimal
+        - postingStatus: String
+    }
+}
+
+' ==================== DTO ====================
+package "DTO (Data Transfer)" #F3E5F5 {
+
+    class StockReceiptDTO <<dto>> {
+        + warehouseId: Long
+        + supplier: String
+        + note: String
+        + items: List<StockReceiptItemDTO>
+    }
+
+    class StockIssueDTO <<dto>> {
+        + warehouseId: Long
+        + note: String
+        + items: List<StockIssueItemDTO>
+    }
+
+    class InventoryAdjustDTO <<dto>> {
+        + warehouseId: Long
+        + productId: Long
+        + colorId: Long
+        + memoryType: String
+        + quantityDelta: Integer <<< 0>>
+        + note: String
+    }
+
+    class InventoryDTO <<dto>> {
+        + warehouseCode: String
+        + productName: String
+        + colorName: String
+        + memoryType: String
+        + quantity: Integer
+        + unitCost: BigDecimal
+        + stockValue: BigDecimal
+    }
+}
+
+' ==================== REPOSITORY ====================
+package "Repository (Data Access)" #ECEFF1 {
+
+    class WarehouseRepository <<repository>> {
+        + findByCode(code): Optional<WarehouseEntity>
+    }
+
+    class InventoryRepository <<repository>> {
+        + findByWarehouseId(id): List<InventoryEntity>
+        + findByWarehouseIdAndProductIdAndColorIdAndMemoryType(...): Optional<InventoryEntity>
+        + existsByProductIdAndQuantityGreaterThan(...): boolean
+    }
+
+    class StockReceiptRepository <<repository>> {
+        + findByWarehouseId(id): List<StockReceiptEntity>
+        + findByReceiptDateBetween(from, to): List<StockReceiptEntity>
+    }
+
+    class StockReceiptItemRepository <<repository>> {
+        + findByProductIdAndColorIdAndMemoryTypeAndRemainingQtyGT_OrderByDateAsc(...): List
+        + findByProductIdAndColorIdAndMemoryTypeAndRemainingQtyGT_OrderByDateDesc(...): List
+    }
+
+    class StockIssueRepository <<repository>> {
+        + findByWarehouseId(id): List<StockIssueEntity>
+        + findByIssueDateBetween(from, to): List<StockIssueEntity>
+    }
+}
+
+' ==================== RELATIONSHIPS ====================
+
+' Boundary → Control
+WarehouseAd ..> StockReceiptAPI : calls
+WarehouseAd ..> StockIssueAPI : calls
+WarehouseAd ..> InventoryAPI : calls
+WarehouseAd ..> WarehouseAPI : calls
+
+StockReceiptAPI ..> StockReceiptService : delegates
+StockIssueAPI ..> StockIssueService : delegates
+InventoryAPI ..> InventoryService : delegates
+WarehouseAPI ..> WarehouseService : delegates
+
+' Control → Repository
+StockReceiptService ..> StockReceiptRepository : uses
+StockReceiptService ..> InventoryRepository : uses
+StockReceiptService ..> AccountingPostingService : calls
+StockIssueService ..> StockIssueRepository : uses
+StockIssueService ..> InventoryRepository : uses
+StockIssueService ..> AccountingPostingService : calls
+InventoryService ..> InventoryRepository : uses
+WarehouseService ..> WarehouseRepository : uses
+
+' Control → DTO
+StockReceiptService ..> StockReceiptDTO : accepts/returns
+StockIssueService ..> StockIssueDTO : accepts/returns
+InventoryService ..> InventoryAdjustDTO : accepts
+InventoryService ..> InventoryDTO : returns
+
+' Repository → Entity
+WarehouseRepository --> WarehouseEntity : manages
+InventoryRepository --> InventoryEntity : manages
+StockReceiptRepository --> StockReceiptEntity : manages
+StockReceiptItemRepository --> StockReceiptItemEntity : manages
+StockIssueRepository --> StockIssueEntity : manages
+
+' Entity Relationships (domain)
+WarehouseEntity "1" --o{ "N" InventoryEntity : contains
+WarehouseEntity "1" --o{ "N" StockReceiptEntity : has
+WarehouseEntity "1" --o{ "N" StockIssueEntity : has
+
+StockReceiptEntity "1" *--{ "N" StockReceiptItemEntity : composed of
+StockIssueEntity "1" *--{ "N" StockIssueItemEntity : composed of
+
+ProductEntity "1" --o{ "N" InventoryEntity : tracked in
+ProductEntity "1" --o{ "N" StockReceiptItemEntity : referenced by
+ProductEntity "1" --o{ "N" StockIssueItemEntity : referenced by
+
+ColorEntity "0..1" --o{ "N" InventoryEntity : specifies
+ColorEntity "0..1" --o{ "N" StockReceiptItemEntity : specifies
+ColorEntity "0..1" --o{ "N" StockIssueItemEntity : specifies
+
+AccountingPostingService ..> JournalEntryEntity : creates
+StockReceiptEntity ..> InventoryMovementLedgerEntity : logged in
+StockIssueEntity ..> InventoryMovementLedgerEntity : logged in
+
+note top of InventoryEntity
+  Unique: (warehouse_id, product_id,
+  color_id, memory_type)
+  version: Optimistic Locking
+  stockValue = unitCost × quantity
+end note
+
+note top of StockReceiptItemEntity
+  remainingQuantity: dùng cho FIFO
+  Giảm dần khi có phiếu xuất tương ứng
+end note
+
+note right of InventoryService
+  quantityDelta < 0 (chỉ giảm)
+  Tăng tồn kho chỉ qua StockReceipt
+end note
+
+@enduml

@@ -25,7 +25,7 @@ public class PayableEntity extends BaseEntity {
     private String supplierName;
 
     @ManyToOne
-    @JoinColumn(name = "stock_receipt_id", referencedColumnName = "id")
+    @JoinColumn(name = "stock_receipt_id", referencedColumnName = "id", nullable = false)
     private StockReceiptEntity stockReceipt;
 
     @Temporal(TemporalType.TIMESTAMP)

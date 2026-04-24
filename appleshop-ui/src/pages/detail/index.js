@@ -53,17 +53,29 @@ function Detail() {
     const imageArray = imgLinks || [];
     const selectedMemory = list?.[priceSelect]?.type || '';
     const selectedColor = colorDTOs?.[colorSelect]?.color || '';
-    const selectedVariantStock = useMemo(() => {
+    const availableQuantity = useMemo(() => {
         const stocks = product?.variantStocks || [];
-        return (
-            stocks.find(
-                (item) =>
-                    (item?.memoryType || '').toUpperCase() === selectedMemory.toUpperCase() &&
-                    (item?.colorName || '').toLowerCase() === selectedColor.toLowerCase(),
-            ) || null
-        );
+        const normalizeMemory = (value) => (value || '').toString().trim().replace(/\s+/g, '').toUpperCase();
+        const normalizedMemory = normalizeMemory(selectedMemory);
+        const normalizedColor = selectedColor.toLowerCase();
+
+        const matchedStocks = stocks.filter((item) => {
+            const memoryMatched = normalizeMemory(item?.memoryType) === normalizedMemory;
+            if (!memoryMatched) {
+                return false;
+            }
+
+            const stockColor = (item?.colorName || '').toLowerCase();
+            if (!stockColor) {
+                // Some old inventory rows may not have color set; treat as compatible fallback.
+                return true;
+            }
+
+            return stockColor === normalizedColor;
+        });
+
+        return matchedStocks.reduce((sum, item) => sum + Number(item?.quantity || 0), 0);
     }, [product, selectedColor, selectedMemory]);
-    const availableQuantity = Number(selectedVariantStock?.quantity || 0);
     const isOutOfStock = availableQuantity <= 0;
 
     const commentService = new CommentService();
@@ -89,6 +101,7 @@ function Detail() {
             return;
         }
         await commentService.remove(id);
+        toast.success('Đã xóa đánh giá');
         setIsLoading(!isLoading);
     };
     const deleteReply = async (id) => {
@@ -97,6 +110,7 @@ function Detail() {
             return;
         }
         await commentService.removeReply(id);
+        toast.success('Đã xóa phản hồi');
         setIsLoading(!isLoading);
     };
 
@@ -207,10 +221,12 @@ function Detail() {
             const reply = replyAd;
             const adminId = decoded.id;
             await commentService.changeRep({ id, reply, adminId });
+            toast.success('Đã cập nhật phản hồi');
             setIsLoading(!isLoading);
         } else {
             const comment = replyAd;
             await commentService.changeCmt({ id, comment });
+            toast.success('Đã cập nhật đánh giá');
             setIsLoading(!isLoading);
         }
     };

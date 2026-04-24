@@ -1,0 +1,156 @@
+@startuml Sequence_QuanLyKho
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 8
+skinparam sequenceBoxBorderColor #666
+skinparam sequenceParticipantBackgroundColor #EEF2FF
+skinparam sequenceLifeLineBorderColor #888
+skinparam noteBorderColor #FFCC00
+skinparam noteBackgroundColor #FFFDE7
+title Biểu đồ tuần tự – Quản lý Kho (AppleShop)
+
+actor "Thủ kho\n(Admin)" as Admin
+participant "WarehouseAd\n(React)" as UI
+participant "StockReceiptAPI\n/api/stock-receipt" as ReceiptAPI
+participant "StockIssueAPI\n/api/stock-issue" as IssueAPI
+participant "InventoryAPI\n/api/inventory" as InvAPI
+participant "StockReceiptService" as ReceiptSvc
+participant "StockIssueService" as IssueSvc
+participant "InventoryService" as InvSvc
+database "MySQL DB" as DB
+
+== UC1: Nhập kho ==
+
+Admin -> UI : Chọn tab "Phiếu nhập"\nĐiền: kho, sản phẩm,\nbộ nhớ, số lượng, giá vốn
+UI -> ReceiptAPI : POST /api/stock-receipt\n{warehouseId, items:[{productId,\nmemoryType, quantity, unitCost}]}
+activate ReceiptAPI
+ReceiptAPI -> ReceiptSvc : createVoucher(StockReceiptDTO)
+activate ReceiptSvc
+
+ReceiptSvc -> DB : findById(warehouseId)
+DB --> ReceiptSvc : WarehouseEntity
+
+ReceiptSvc -> ReceiptSvc : Tạo StockReceiptEntity\ncode = PNK-{timestamp}-{random}
+
+loop Mỗi item trong danh sách
+    ReceiptSvc -> DB : findById(productId)
+    DB --> ReceiptSvc : ProductEntity
+
+    alt Có colorId
+        ReceiptSvc -> DB : findById(colorId)
+        DB --> ReceiptSvc : ColorEntity
+    end
+
+    ReceiptSvc -> ReceiptSvc : normalize(memoryType)\n"64gb" → "64GB"
+
+    ReceiptSvc -> DB : ensureProductMemory(product, memoryType)
+    DB --> ReceiptSvc : ProductMemoryEntity (tạo mới nếu chưa có)
+
+    ReceiptSvc -> DB : findInventory(warehouseId,\nproductId, colorId, memoryType)
+    alt Inventory chưa tồn tại
+        ReceiptSvc -> DB : INSERT InventoryEntity (quantity=0)
+    end
+
+    ReceiptSvc -> ReceiptSvc : inventory.quantity += itemQuantity\ninventory.unitCost = itemUnitCost
+
+    ReceiptSvc -> DB : UPDATE InventoryEntity
+    ReceiptSvc -> ReceiptSvc : Tạo StockReceiptItemEntity\nremainingQuantity = quantity
+end
+
+ReceiptSvc -> DB : INSERT StockReceiptEntity
+ReceiptSvc -> DB : INSERT StockReceiptItemEntity (N dòng)
+ReceiptSvc -> DB : INSERT JournalEntryEntity\n(Ghi sổ kế toán: Nợ Hàng tồn kho)
+
+ReceiptSvc --> ReceiptAPI : StockReceiptDTO
+deactivate ReceiptSvc
+ReceiptAPI --> UI : 200 OK + StockReceiptDTO
+deactivate ReceiptAPI
+UI --> Admin : Toast "Nhập kho thành công!\nMã phiếu: PNK-..."
+
+== UC2: Xuất kho ==
+
+Admin -> UI : Chọn tab "Phiếu xuất"\nĐiền: kho, sản phẩm,\nbộ nhớ, số lượng
+UI -> IssueAPI : POST /api/stock-issue\n{warehouseId, items:[{productId,\nmemoryType, quantity}]}
+activate IssueAPI
+IssueAPI -> IssueSvc : createVoucher(StockIssueDTO)
+activate IssueSvc
+
+IssueSvc -> DB : findById(warehouseId)
+DB --> IssueSvc : WarehouseEntity
+
+IssueSvc -> IssueSvc : Tạo StockIssueEntity\ncode = PXK-{timestamp}-{random}
+
+loop Mỗi item trong danh sách
+    IssueSvc -> DB : findById(productId)
+    DB --> IssueSvc : ProductEntity
+
+    IssueSvc -> DB : findInventory(warehouseId,\nproductId, colorId, memoryType)
+    DB --> IssueSvc : InventoryEntity
+
+    alt inventory == null OR inventory.quantity < itemQuantity
+        IssueSvc --> IssueAPI : throw RuntimeException\n"Tồn kho không đủ"
+        IssueAPI --> UI : 400 Bad Request
+        UI --> Admin : Thông báo lỗi "Tồn kho không đủ"
+    else Tồn kho đủ
+        IssueSvc -> IssueSvc : inventory.quantity -= itemQuantity\nlineTotal = unitCost × quantity
+        IssueSvc -> DB : UPDATE InventoryEntity
+        IssueSvc -> IssueSvc : Tạo StockIssueItemEntity
+    end
+end
+
+IssueSvc -> DB : INSERT StockIssueEntity
+IssueSvc -> DB : INSERT StockIssueItemEntity (N dòng)
+IssueSvc -> DB : INSERT JournalEntryEntity\n(Ghi sổ: Nợ Giá vốn / Có Hàng tồn kho)
+
+IssueSvc --> IssueAPI : StockIssueDTO
+deactivate IssueSvc
+IssueAPI --> UI : 200 OK + StockIssueDTO
+deactivate IssueAPI
+UI --> Admin : Toast "Xuất kho thành công!\nMã phiếu: PXK-..."
+
+== UC3: Xem tồn kho ==
+
+Admin -> UI : Chọn kho từ dropdown
+UI -> InvAPI : GET /api/inventory/warehouse/{warehouseId}
+activate InvAPI
+InvAPI -> InvSvc : findByWarehouse(warehouseId)
+activate InvSvc
+InvSvc -> DB : findByWarehouseId(warehouseId)
+DB --> InvSvc : List<InventoryEntity>
+InvSvc -> InvSvc : Convert → InventoryDTO\nstockValue = unitCost × quantity
+InvSvc --> InvAPI : List<InventoryDTO>
+deactivate InvSvc
+InvAPI --> UI : 200 OK + List<InventoryDTO>
+deactivate InvAPI
+UI --> Admin : Hiển thị bảng tồn kho\n(sản phẩm, bộ nhớ, màu, SL, giá vốn, tổng GT)
+
+== UC4: Điều chỉnh tồn kho (giảm) ==
+
+Admin -> UI : Nhập: warehouseId, productId,\nmemoryType, quantityDelta (âm), lý do
+UI -> InvAPI : POST /api/inventory/adjust\n{warehouseId, productId,\nmemoryType, quantityDelta}
+activate InvAPI
+InvAPI -> InvSvc : adjustStock(InventoryAdjustDTO)
+activate InvSvc
+
+alt quantityDelta >= 0
+    InvSvc --> InvAPI : throw "Chỉ được giảm tồn kho"
+    InvAPI --> UI : 400 Bad Request
+    UI --> Admin : Thông báo lỗi
+else quantityDelta < 0
+    InvSvc -> DB : findInventory(warehouseId, productId,\ncolorId, memoryType)
+    DB --> InvSvc : InventoryEntity
+    InvSvc -> InvSvc : newQuantity = currentQty + delta
+    alt newQuantity < 0
+        InvSvc --> InvAPI : throw "Số lượng không đủ để giảm"
+        InvAPI --> UI : 400 Bad Request
+        UI --> Admin : Thông báo lỗi
+    else newQuantity >= 0
+        InvSvc -> DB : UPDATE InventoryEntity.quantity
+        InvSvc --> InvAPI : InventoryDTO
+        InvAPI --> UI : 200 OK
+        UI --> Admin : Cập nhật thành công
+    end
+end
+deactivate InvSvc
+deactivate InvAPI
+
+@enduml

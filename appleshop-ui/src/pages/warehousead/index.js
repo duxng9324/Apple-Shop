@@ -63,7 +63,8 @@ function WarehouseAd() {
 
     const [warehouseForm] = Form.useForm();
     const [inventoryForm] = Form.useForm();
-    const [receiptForm] = Form.useForm();
+    const [receiptCreateForm] = Form.useForm();
+    const [receiptBulkForm] = Form.useForm();
     const [issueForm] = Form.useForm();
 
     const getErrorMessage = (error, fallback) => {
@@ -124,11 +125,11 @@ function WarehouseAd() {
 
     useEffect(() => {
         if ((warehouses || []).length === 1) {
-            receiptForm.setFieldsValue({
+            receiptBulkForm.setFieldsValue({
                 bulkWarehouseId: warehouses[0].id,
             });
         }
-    }, [warehouses, receiptForm]);
+    }, [warehouses, receiptBulkForm]);
 
     const loadMonthReport = async () => {
         try {
@@ -240,8 +241,8 @@ function WarehouseAd() {
             };
             await executeWithConflictRetry(() => stockReceiptService.create(payload), 1);
             message.success('Lập phiếu nhập kho thành công');
-            receiptForm.resetFields();
-            receiptForm.setFieldsValue({ receiptMode: 'existing' });
+            receiptCreateForm.resetFields();
+            receiptCreateForm.setFieldsValue({ receiptMode: 'existing' });
             fetchData();
         } catch (error) {
             message.error(getErrorMessage(error, 'Lập phiếu nhập kho thất bại'));
@@ -324,7 +325,7 @@ function WarehouseAd() {
 
             await executeWithConflictRetry(() => stockReceiptService.create(payload), 1);
             message.success(`Đã nhập tự động ${items.length} dòng tồn kho`);
-            receiptForm.setFieldsValue({
+            receiptBulkForm.setFieldsValue({
                 bulkNote: undefined,
             });
             fetchData();
@@ -522,7 +523,7 @@ function WarehouseAd() {
                                     <Card title="Lập phiếu nhập kho">
                                         <Form
                                             layout="vertical"
-                                            form={receiptForm}
+                                            form={receiptCreateForm}
                                             onFinish={onCreateReceipt}
                                             initialValues={{ receiptMode: 'existing' }}
                                         >
@@ -547,7 +548,7 @@ function WarehouseAd() {
                                                                 <Col xs={24} md={8}><Form.Item name="categoryCode" label="Danh mục" rules={[{ required: true }]}><Select options={categoryOptions} placeholder="Chọn danh mục" /></Form.Item></Col>
                                                             </>
                                                         ) : (
-                                                            <Col xs={24} md={8}><Form.Item name="productId" label="Sản phẩm" rules={[{ required: true }]}><Select options={productOptions} onChange={handleProductChange(receiptForm)} /></Form.Item></Col>
+                                                            <Col xs={24} md={8}><Form.Item name="productId" label="Sản phẩm" rules={[{ required: true }]}><Select options={productOptions} onChange={handleProductChange(receiptCreateForm)} /></Form.Item></Col>
                                                         )
                                                     }
                                                 </Form.Item>
@@ -565,7 +566,7 @@ function WarehouseAd() {
                                     <Card title="Nhập nhanh toàn bộ sản phẩm hiện có">
                                         <Form
                                             layout="vertical"
-                                            form={receiptForm}
+                                            form={receiptBulkForm}
                                             onFinish={onBulkCreateReceipt}
                                             initialValues={{
                                                 bulkQuantity: 5,

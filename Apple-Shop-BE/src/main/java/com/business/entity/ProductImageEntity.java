@@ -14,7 +14,7 @@ public class ProductImageEntity extends BaseEntity {
     private String imageLink;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
 
     public String getImageLink() {

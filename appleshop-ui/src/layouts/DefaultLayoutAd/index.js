@@ -89,14 +89,14 @@ function DefaultLayoutAd() {
             ? {
                   key: '/admin/operations',
                   icon: <DeploymentUnitOutlined />,
-                                    label: 'Kho và Lãi lỗ',
+                                    label: 'Kho',
               }
             : null,
         canManageAccounting
             ? {
-                  key: '/admin/accounting',
+                  key: '/admin',
                   icon: <AuditOutlined />,
-                                    label: 'Kế toán',
+                  label: 'Báo cáo',
               }
             : null,
         role === 1

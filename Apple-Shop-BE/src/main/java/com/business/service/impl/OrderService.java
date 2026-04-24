@@ -32,6 +32,7 @@ import com.business.repository.OrderRepository;
 import com.business.repository.ProductRepository;
 import com.business.repository.StockReceiptItemRepository;
 import com.business.service.IOrderService;
+import com.business.util.MemoryTypeUtils;
 
 @Service
 public class OrderService implements IOrderService {
@@ -282,7 +283,7 @@ public class OrderService implements IOrderService {
 				throw new RuntimeException("Cannot resolve product for order item: " + item.getName());
 			}
 
-			String memoryType = item.getMemory() == null ? "DEFAULT" : item.getMemory().trim().toUpperCase();
+			String memoryType = MemoryTypeUtils.normalize(item.getMemory());
 			ColorEntity color = resolveColor(item.getColor());
 			int qty = item.getQuantity();
 			if (qty <= 0) {
@@ -292,28 +293,52 @@ public class OrderService implements IOrderService {
 			List<StockReceiptItemEntity> layers;
 			if (color != null) {
 				layers = "LIFO".equals(issueStrategy)
-						? stockReceiptItemRepository.findByProductIdAndColorIdAndMemoryTypeAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
-								product.getId(), color.getId(), memoryType, 0)
-						: stockReceiptItemRepository.findByProductIdAndColorIdAndMemoryTypeAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateAscIdAsc(
-								product.getId(), color.getId(), memoryType, 0);
+						? stockReceiptItemRepository.findByProductIdAndColorIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
+								product.getId(), color.getId(), 0)
+						: stockReceiptItemRepository.findByProductIdAndColorIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateAscIdAsc(
+								product.getId(), color.getId(), 0);
 			} else {
 				layers = "LIFO".equals(issueStrategy)
-						? stockReceiptItemRepository.findByProductIdAndMemoryTypeAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
-								product.getId(), memoryType, 0)
-						: stockReceiptItemRepository.findByProductIdAndMemoryTypeAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateAscIdAsc(
-								product.getId(), memoryType, 0);
+						? stockReceiptItemRepository.findByProductIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
+								product.getId(), 0)
+						: stockReceiptItemRepository.findByProductIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateAscIdAsc(
+								product.getId(), 0);
+			}
+			layers.removeIf(layer -> !MemoryTypeUtils.matches(layer.getMemoryType(), memoryType));
+
+			// If no color-specific layers found, fall back to colorless stock receipt items
+			if ((layers == null || layers.isEmpty()) && color != null) {
+				List<StockReceiptItemEntity> colorlessLayers = "LIFO".equals(issueStrategy)
+						? stockReceiptItemRepository.findByProductIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
+								product.getId(), 0)
+						: stockReceiptItemRepository.findByProductIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateAscIdAsc(
+								product.getId(), 0);
+				colorlessLayers.removeIf(layer -> layer.getColor() != null);
+				colorlessLayers.removeIf(layer -> !MemoryTypeUtils.matches(layer.getMemoryType(), memoryType));
+				layers = colorlessLayers;
 			}
 
 			if (layers == null || layers.isEmpty()) {
 				List<InventoryEntity> inventories;
 				if (color != null) {
 					inventories = inventoryRepository
-							.findByProductIdAndColorIdAndMemoryTypeAndQuantityGreaterThanOrderByQuantityDesc(product.getId(),
-									color.getId(), memoryType, 0);
+							.findByProductIdAndColorIdAndQuantityGreaterThanOrderByQuantityDesc(product.getId(),
+									color.getId(), 0);
 				} else {
 					inventories = inventoryRepository
-							.findByProductIdAndMemoryTypeAndQuantityGreaterThanOrderByQuantityDesc(product.getId(), memoryType, 0);
+							.findByProductIdAndQuantityGreaterThanOrderByQuantityDesc(product.getId(), 0);
 				}
+				inventories.removeIf(inv -> !MemoryTypeUtils.matches(inv.getMemoryType(), memoryType));
+
+				// If no color-specific inventory found, fall back to colorless inventory
+				if (inventories.isEmpty() && color != null) {
+					List<InventoryEntity> colorlessInv = inventoryRepository
+							.findByProductIdAndQuantityGreaterThanOrderByQuantityDesc(product.getId(), 0);
+					colorlessInv.removeIf(inv -> inv.getColor() != null);
+					colorlessInv.removeIf(inv -> !MemoryTypeUtils.matches(inv.getMemoryType(), memoryType));
+					inventories = colorlessInv;
+				}
+
 				InventoryEntity selected = null;
 				for (InventoryEntity inv : inventories) {
 					if (inv.getQuantity() != null && inv.getQuantity() >= qty) {
@@ -366,12 +391,19 @@ public class OrderService implements IOrderService {
 				InventoryEntity inventory;
 				if (layer.getColor() != null) {
 					inventory = inventoryRepository
-							.findByWarehouseIdAndProductIdAndColorIdAndMemoryType(warehouseId, product.getId(),
-									layer.getColor().getId(), memoryType)
+							.findByWarehouseIdAndProductIdAndColorId(warehouseId, product.getId(),
+									layer.getColor().getId())
+							.stream()
+							.filter(candidate -> MemoryTypeUtils.matches(candidate.getMemoryType(), memoryType))
+							.findFirst()
 							.orElse(null);
 				} else {
 					inventory = inventoryRepository
-							.findByWarehouseIdAndProductIdAndMemoryType(warehouseId, product.getId(), memoryType)
+							.findByWarehouseIdAndProductId(warehouseId, product.getId())
+							.stream()
+							.filter(candidate -> candidate.getColor() == null)
+							.filter(candidate -> MemoryTypeUtils.matches(candidate.getMemoryType(), memoryType))
+							.findFirst()
 							.orElse(null);
 				}
 				if (inventory == null || inventory.getQuantity() == null || inventory.getQuantity() < take) {

@@ -19,6 +19,7 @@ import com.business.repository.InventoryRepository;
 import com.business.repository.ProductRepository;
 import com.business.repository.WarehouseRepository;
 import com.business.service.IInventoryService;
+import com.business.util.MemoryTypeUtils;
 
 @Service
 public class InventoryService implements IInventoryService {
@@ -65,16 +66,22 @@ public class InventoryService implements IInventoryService {
             }
         }
 
-        String memoryType = adjustDTO.getMemoryType().trim().toUpperCase();
+        String memoryType = MemoryTypeUtils.normalize(adjustDTO.getMemoryType());
         InventoryEntity entity;
         if (color != null) {
             entity = inventoryRepository
-                    .findByWarehouseIdAndProductIdAndColorIdAndMemoryType(warehouse.getId(), product.getId(),
-                            color.getId(), memoryType)
+                    .findByWarehouseIdAndProductIdAndColorId(warehouse.getId(), product.getId(), color.getId())
+                    .stream()
+                    .filter(candidate -> MemoryTypeUtils.matches(candidate.getMemoryType(), memoryType))
+                    .findFirst()
                     .orElse(null);
         } else {
             entity = inventoryRepository
-                    .findByWarehouseIdAndProductIdAndMemoryType(warehouse.getId(), product.getId(), memoryType)
+                    .findByWarehouseIdAndProductId(warehouse.getId(), product.getId())
+                    .stream()
+                    .filter(candidate -> candidate.getColor() == null)
+                    .filter(candidate -> MemoryTypeUtils.matches(candidate.getMemoryType(), memoryType))
+                    .findFirst()
                     .orElse(null);
         }
 

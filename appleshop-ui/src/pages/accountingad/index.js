@@ -136,11 +136,21 @@ function AccountingAd() {
 
         sheets.forEach((sheet) => {
             const data = sheet?.data || [];
-            const worksheet = data.length > 0 ? XLSX.utils.json_to_sheet(data) : XLSX.utils.json_to_sheet([{ note: 'Không có dữ liệu' }]);
+            const rows = data.length > 0 ? data : [{ note: 'Không có dữ liệu' }];
+            const worksheet = XLSX.utils.json_to_sheet(rows);
             XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name);
         });
 
-        XLSX.writeFile(workbook, `${fileName}-${dayjs().format('YYYYMMDD-HHmmss')}.xlsx`);
+        const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${fileName}-${dayjs().format('YYYYMMDD-HHmmss')}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     };
 
     const exportCashReceiptExcel = () => {
@@ -337,9 +347,9 @@ function AccountingAd() {
 
     return (
         <div>
-            <Title level={3}>Trung tâm kế toán</Title>
+            <Title level={3}>Báo cáo</Title>
             <Text type="secondary">
-                Khu vực kế toán tổng hợp: dashboard lợi nhuận, phiếu thu/chi, công nợ, nhật ký và đối soát.
+                Tổng hợp: dashboard lợi nhuận, công nợ, nhật ký và đối soát.
             </Text>
 
             <Card style={{ marginTop: 16 }}>
@@ -355,8 +365,6 @@ function AccountingAd() {
                     <Button type="primary" onClick={loadData} loading={loading}>
                         Tải dữ liệu
                     </Button>
-                    <Button onClick={exportCashReceiptExcel}>Xuất Excel Phiếu Thu</Button>
-                    <Button onClick={exportCashPaymentExcel}>Xuất Excel Phiếu Chi</Button>
                     <Button type="dashed" onClick={exportFullAccountingReport}>Xuất báo cáo tổng hợp</Button>
                 </Space>
             </Card>
@@ -406,16 +414,6 @@ function AccountingAd() {
                 <Col xs={24} md={8}>
                     <Card>
                         <Statistic title="Tổng phải trả (AP)" value={totalAP} precision={0} formatter={(v) => formatMoney(v)} />
-                    </Card>
-                </Col>
-                <Col xs={24} md={8}>
-                    <Card>
-                        <Statistic title="Tổng phiếu thu" value={totalCashReceipts} precision={0} formatter={(v) => formatMoney(v)} />
-                    </Card>
-                </Col>
-                <Col xs={24} md={8}>
-                    <Card>
-                        <Statistic title="Tổng phiếu chi" value={totalCashPayments} precision={0} formatter={(v) => formatMoney(v)} />
                     </Card>
                 </Col>
                 <Col xs={24} md={8}>
@@ -567,32 +565,6 @@ function AccountingAd() {
                         key: 'ap',
                         label: 'Công nợ phải trả',
                         children: <Table rowKey="documentCode" dataSource={apRows} columns={apColumns} loading={loading} />,
-                    },
-                    {
-                        key: 'receipt',
-                        label: 'Phiếu thu',
-                        children: (
-                            <Table
-                                rowKey={(row) => `${row.voucherCode}-${row.voucherDate || ''}`}
-                                dataSource={cashReceiptRows}
-                                columns={cashVoucherColumns}
-                                loading={loading}
-                                scroll={{ x: 1200 }}
-                            />
-                        ),
-                    },
-                    {
-                        key: 'payment',
-                        label: 'Phiếu chi',
-                        children: (
-                            <Table
-                                rowKey={(row) => `${row.voucherCode}-${row.voucherDate || ''}`}
-                                dataSource={cashPaymentRows}
-                                columns={cashVoucherColumns}
-                                loading={loading}
-                                scroll={{ x: 1200 }}
-                            />
-                        ),
                     },
                     {
                         key: 'reco',

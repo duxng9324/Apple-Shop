@@ -34,11 +34,11 @@ function Payment() {
                 returnUrl,
             });
 
-            if (!response?.data?.paymentUrl) {
+            if (!response?.paymentUrl) {
                 throw new Error('Không thể tạo đường dẫn thanh toán VNPay');
             }
 
-            window.location.assign(response.data.paymentUrl);
+            window.location.assign(response.paymentUrl);
         } catch {
             message.error('Không thể khởi tạo thanh toán VNPay. Vui lòng thử lại.');
         } finally {

@@ -1,0 +1,828 @@
+<mxfile host="app.diagrams.net" modified="2026-04-23" agent="Claude" version="21.0.0">
+  <diagram id="qlk_class" name="Biểu đồ lớp phân tích - Quản lý Kho">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1720" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===== LAYER BACKGROUNDS ===== -->
+        <mxCell id="bg1" value="&lt;b&gt;Boundary&lt;/b&gt;" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontSize=13;fontStyle=1;rounded=1;opacity=50;" vertex="1" parent="1">
+          <mxGeometry x="10" y="10" width="960" height="210" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg2" value="&lt;b&gt;Control&lt;/b&gt;" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontSize=13;fontStyle=1;rounded=1;opacity=50;" vertex="1" parent="1">
+          <mxGeometry x="10" y="240" width="1210" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg3" value="&lt;b&gt;Entity&lt;/b&gt;" style="text;html=1;strokeColor=#d6b656;fillColor=#ffe6cc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontSize=13;fontStyle=1;rounded=1;opacity=50;" vertex="1" parent="1">
+          <mxGeometry x="10" y="490" width="1460" height="560" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg4" value="&lt;b&gt;Repository&lt;/b&gt;" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontSize=13;fontStyle=1;rounded=1;opacity=50;" vertex="1" parent="1">
+          <mxGeometry x="10" y="1080" width="1460" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg5" value="&lt;b&gt;DTO&lt;/b&gt;" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontSize=13;fontStyle=1;rounded=1;opacity=50;" vertex="1" parent="1">
+          <mxGeometry x="10" y="1270" width="1460" height="220" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== BOUNDARY LAYER ===== -->
+
+        <!-- WarehouseAPI -->
+        <mxCell id="b_wapi" value="«boundary»&#xa;WarehouseAPI" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="25" y="30" width="210" height="174" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_wapi_1" value="+ create(dto): WarehouseDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_wapi">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_wapi_2" value="+ update(id, dto): WarehouseDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_wapi">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_wapi_3" value="+ getAll(): List&lt;WarehouseDTO&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_wapi">
+          <mxGeometry y="88" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_wapi_4" value="+ getById(id): WarehouseDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_wapi">
+          <mxGeometry y="114" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_wapi_5" value="+ delete(id): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_wapi">
+          <mxGeometry y="140" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockReceiptAPI -->
+        <mxCell id="b_srapi" value="«boundary»&#xa;StockReceiptAPI" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="255" y="30" width="220" height="122" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_srapi_1" value="POST /api/stock-receipt" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_srapi">
+          <mxGeometry y="36" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_srapi_2" value="GET /api/stock-receipt" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_srapi">
+          <mxGeometry y="62" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_srapi_3" value="GET /api/stock-receipt/warehouse/{id}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_srapi">
+          <mxGeometry y="88" width="220" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockIssueAPI -->
+        <mxCell id="b_siapi" value="«boundary»&#xa;StockIssueAPI" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="495" y="30" width="210" height="122" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_siapi_1" value="POST /api/stock-issue" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_siapi">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_siapi_2" value="GET /api/stock-issue" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_siapi">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_siapi_3" value="GET /api/stock-issue/warehouse/{id}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_siapi">
+          <mxGeometry y="88" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- InventoryAPI -->
+        <mxCell id="b_invapi" value="«boundary»&#xa;InventoryAPI" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="725" y="30" width="220" height="122" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_invapi_1" value="POST /api/inventory/adjust" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_invapi">
+          <mxGeometry y="36" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_invapi_2" value="GET /api/inventory" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_invapi">
+          <mxGeometry y="62" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b_invapi_3" value="GET /api/inventory/warehouse/{id}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="b_invapi">
+          <mxGeometry y="88" width="220" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CONTROL LAYER ===== -->
+
+        <!-- WarehouseService -->
+        <mxCell id="c_ws" value="«control»&#xa;WarehouseService" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="25" y="260" width="210" height="174" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_ws_1" value="+ save(dto): WarehouseDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_ws">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_ws_2" value="+ update(id, dto): WarehouseDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_ws">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_ws_3" value="+ findAll(): List&lt;WarehouseDTO&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_ws">
+          <mxGeometry y="88" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_ws_4" value="+ findById(id): WarehouseDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_ws">
+          <mxGeometry y="114" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_ws_5" value="+ delete(id): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_ws">
+          <mxGeometry y="140" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockReceiptService -->
+        <mxCell id="c_srs" value="«control»&#xa;StockReceiptService" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="255" y="260" width="230" height="174" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_srs_1" value="+ createVoucher(dto): StockReceiptDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_srs">
+          <mxGeometry y="36" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_srs_2" value="- generateReceiptCode(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_srs">
+          <mxGeometry y="62" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_srs_3" value="- resolveOrCreateProduct(): ProductEntity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_srs">
+          <mxGeometry y="88" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_srs_4" value="- ensureProductMemory(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_srs">
+          <mxGeometry y="114" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_srs_5" value="- resolveColor(): ColorEntity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_srs">
+          <mxGeometry y="140" width="230" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockIssueService -->
+        <mxCell id="c_sis" value="«control»&#xa;StockIssueService" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="505" y="260" width="220" height="148" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_sis_1" value="+ createVoucher(dto): StockIssueDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_sis">
+          <mxGeometry y="36" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_sis_2" value="- generateIssueCode(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_sis">
+          <mxGeometry y="62" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_sis_3" value="- validateStock(inventory, qty): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_sis">
+          <mxGeometry y="88" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_sis_4" value="+ findAll(): List&lt;StockIssueDTO&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_sis">
+          <mxGeometry y="114" width="220" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- InventoryService -->
+        <mxCell id="c_is" value="«control»&#xa;InventoryService" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="745" y="260" width="230" height="148" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_is_1" value="+ adjustStock(dto): InventoryDTO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_is">
+          <mxGeometry y="36" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_is_2" value="+ findAll(): List&lt;InventoryDTO&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_is">
+          <mxGeometry y="62" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_is_3" value="+ findByWarehouse(id): List&lt;InventoryDTO&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_is">
+          <mxGeometry y="88" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_is_4" value="- normalizeMemoryType(type): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_is">
+          <mxGeometry y="114" width="230" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- AccountingPostingService -->
+        <mxCell id="c_aps" value="«control»&#xa;AccountingPostingService" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="995" y="260" width="210" height="96" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_aps_1" value="+ postStockReceipt(receipt): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_aps">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_aps_2" value="+ postStockIssue(issue): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="c_aps">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== ENTITY LAYER - ROW 1 ===== -->
+
+        <!-- WarehouseEntity -->
+        <mxCell id="e_we" value="«entity»&#xa;WarehouseEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="25" y="510" width="200" height="166" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_we_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_we">
+          <mxGeometry y="36" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_we_2" value="- code: String [unique]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_we">
+          <mxGeometry y="62" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_we_3" value="- name: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_we">
+          <mxGeometry y="88" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_we_4" value="- address: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_we">
+          <mxGeometry y="114" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_we_5" value="- active: Boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_we">
+          <mxGeometry y="140" width="200" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- InventoryEntity -->
+        <mxCell id="e_ie" value="«entity»&#xa;InventoryEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="245" y="510" width="220" height="192" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ie_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_ie">
+          <mxGeometry y="36" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ie_2" value="- memoryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_ie">
+          <mxGeometry y="62" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ie_3" value="- quantity: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_ie">
+          <mxGeometry y="88" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ie_4" value="- unitCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_ie">
+          <mxGeometry y="114" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ie_5" value="- version: Integer [optimistic lock]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_ie">
+          <mxGeometry y="140" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ie_6" value="+ stockValue(): BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;fontStyle=3;" vertex="1" parent="e_ie">
+          <mxGeometry y="166" width="220" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockReceiptEntity -->
+        <mxCell id="e_sre" value="«entity»&#xa;StockReceiptEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="485" y="510" width="210" height="192" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sre_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sre">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sre_2" value="- code: String [PNK-...]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sre">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sre_3" value="- receiptDate: Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sre">
+          <mxGeometry y="88" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sre_4" value="- supplier: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sre">
+          <mxGeometry y="114" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sre_5" value="- note: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sre">
+          <mxGeometry y="140" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sre_6" value="- totalCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sre">
+          <mxGeometry y="166" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockIssueEntity -->
+        <mxCell id="e_sie" value="«entity»&#xa;StockIssueEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="715" y="510" width="200" height="166" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sie_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sie">
+          <mxGeometry y="36" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sie_2" value="- code: String [PXK-...]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sie">
+          <mxGeometry y="62" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sie_3" value="- issueDate: Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sie">
+          <mxGeometry y="88" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sie_4" value="- note: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sie">
+          <mxGeometry y="114" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sie_5" value="- totalCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sie">
+          <mxGeometry y="140" width="200" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ProductEntity -->
+        <mxCell id="e_pe" value="«entity»&#xa;ProductEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="935" y="510" width="200" height="166" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_pe_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_pe">
+          <mxGeometry y="36" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_pe_2" value="- code: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_pe">
+          <mxGeometry y="62" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_pe_3" value="- name: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_pe">
+          <mxGeometry y="88" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_pe_4" value="- description: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_pe">
+          <mxGeometry y="114" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_pe_5" value="- price: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_pe">
+          <mxGeometry y="140" width="200" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ColorEntity -->
+        <mxCell id="e_ce" value="«entity»&#xa;ColorEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1155" y="510" width="180" height="114" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ce_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_ce">
+          <mxGeometry y="36" width="180" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ce_2" value="- color: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_ce">
+          <mxGeometry y="62" width="180" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ce_3" value="- code: String (hex)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_ce">
+          <mxGeometry y="88" width="180" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== ENTITY LAYER - ROW 2 ===== -->
+
+        <!-- StockReceiptItemEntity -->
+        <mxCell id="e_sritem" value="«entity»&#xa;StockReceiptItemEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="25" y="740" width="230" height="192" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sritem_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sritem">
+          <mxGeometry y="36" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sritem_2" value="- memoryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sritem">
+          <mxGeometry y="62" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sritem_3" value="- quantity: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sritem">
+          <mxGeometry y="88" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sritem_4" value="- remainingQuantity: Integer [FIFO]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sritem">
+          <mxGeometry y="114" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sritem_5" value="- unitCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sritem">
+          <mxGeometry y="140" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_sritem_6" value="- lineTotal: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_sritem">
+          <mxGeometry y="166" width="230" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockIssueItemEntity -->
+        <mxCell id="e_siitem" value="«entity»&#xa;StockIssueItemEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="275" y="740" width="210" height="166" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_siitem_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_siitem">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_siitem_2" value="- memoryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_siitem">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_siitem_3" value="- quantity: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_siitem">
+          <mxGeometry y="88" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_siitem_4" value="- unitCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_siitem">
+          <mxGeometry y="114" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_siitem_5" value="- lineTotal: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_siitem">
+          <mxGeometry y="140" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- InventoryMovementLedgerEntity -->
+        <mxCell id="e_iml" value="«entity»&#xa;InventoryMovementLedgerEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="505" y="740" width="260" height="270" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="36" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_2" value="- movementDate: Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="62" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_3" value="- movementType: String (RECEIPT/ISSUE/ADJ)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="88" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_4" value="- sourceType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="114" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_5" value="- sourceCode: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="140" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_6" value="- memoryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="166" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_7" value="- quantityDelta: Integer (+/-)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="192" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_8" value="- unitCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="218" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_iml_9" value="- totalCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_iml">
+          <mxGeometry y="244" width="260" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- JournalEntryEntity -->
+        <mxCell id="e_je" value="«entity»&#xa;JournalEntryEntity" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="785" y="740" width="220" height="270" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_1" value="- id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="36" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_2" value="- entryNumber: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="62" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_3" value="- entryDate: Date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="88" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_4" value="- entryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="114" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_5" value="- sourceType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="140" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_6" value="- description: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="166" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_7" value="- postingStatus: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="192" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_8" value="- totalDebit: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="218" width="220" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_je_9" value="- totalCredit: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="e_je">
+          <mxGeometry y="244" width="220" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== REPOSITORY LAYER ===== -->
+
+        <!-- WarehouseRepository -->
+        <mxCell id="r_wr" value="«repository»&#xa;WarehouseRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="25" y="1100" width="210" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_wr_1" value="+ findByCode(code): Optional" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_wr">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- InventoryRepository -->
+        <mxCell id="r_ir" value="«repository»&#xa;InventoryRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="255" y="1100" width="260" height="114" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_ir_1" value="+ findByWarehouseId(id): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_ir">
+          <mxGeometry y="36" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_ir_2" value="+ findByWarehouseId_ProductId_Color_Memory(...)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_ir">
+          <mxGeometry y="62" width="260" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_ir_3" value="+ existsByProductIdAndQtyGT(id, qty): boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_ir">
+          <mxGeometry y="88" width="260" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockReceiptRepository -->
+        <mxCell id="r_srr" value="«repository»&#xa;StockReceiptRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="535" y="1100" width="240" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_srr_1" value="+ findByWarehouseId(id): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_srr">
+          <mxGeometry y="36" width="240" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_srr_2" value="+ findByReceiptDateBetween(from,to): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_srr">
+          <mxGeometry y="62" width="240" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockReceiptItemRepository -->
+        <mxCell id="r_srir" value="«repository»&#xa;StockReceiptItemRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="795" y="1100" width="280" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_srir_1" value="+ findBy...OrderByReceiptDateAsc (FIFO)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_srir">
+          <mxGeometry y="36" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_srir_2" value="+ findBy...OrderByReceiptDateDesc (LIFO)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_srir">
+          <mxGeometry y="62" width="280" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockIssueRepository -->
+        <mxCell id="r_sir" value="«repository»&#xa;StockIssueRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1095" y="1100" width="240" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_sir_1" value="+ findByWarehouseId(id): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_sir">
+          <mxGeometry y="36" width="240" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_sir_2" value="+ findByIssueDateBetween(from,to): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_sir">
+          <mxGeometry y="62" width="240" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ProductRepository -->
+        <mxCell id="r_pr" value="&lt;&lt;repository&gt;&gt;&#xa;ProductRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="25" y="1175" width="240" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_pr_1" value="+ findByCode(code): ProductEntity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_pr">
+          <mxGeometry y="36" width="240" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_pr_2" value="+ findByName(name): ProductEntity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_pr">
+          <mxGeometry y="62" width="240" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ColorRepository -->
+        <mxCell id="r_cr" value="&lt;&lt;repository&gt;&gt;&#xa;ColorRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="285" y="1175" width="230" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_cr_1" value="+ findByColorIgnoreCase(color): ColorEntity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_cr">
+          <mxGeometry y="36" width="230" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_cr_2" value="+ findByCodeIgnoreCase(code): ColorEntity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_cr">
+          <mxGeometry y="62" width="230" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- JournalEntryRepository -->
+        <mxCell id="r_jer" value="&lt;&lt;repository&gt;&gt;&#xa;JournalEntryRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="535" y="1175" width="280" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_jer_1" value="+ existsBySourceTypeAndSourceIdAndEntryType(...)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_jer">
+          <mxGeometry y="36" width="280" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_jer_2" value="+ findByEntryDateBetween(from,to): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_jer">
+          <mxGeometry y="62" width="280" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- InventoryMovementLedgerRepository -->
+        <mxCell id="r_imlr" value="&lt;&lt;repository&gt;&gt;&#xa;InventoryMovementLedgerRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="835" y="1175" width="300" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_imlr_1" value="+ findByMovementDateBetween(from,to): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_imlr">
+          <mxGeometry y="36" width="300" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockIssueItemRepository -->
+        <mxCell id="r_siir" value="&lt;&lt;repository&gt;&gt;&#xa;StockIssueItemRepository" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1155" y="1175" width="240" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="r_siir_1" value="+ save(item): StockIssueItemEntity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="r_siir">
+          <mxGeometry y="36" width="240" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== DTO LAYER ===== -->
+
+        <!-- StockReceiptDTO -->
+        <mxCell id="d_srdto" value="«dto»&#xa;StockReceiptDTO" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="25" y="1270" width="200" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_srdto_1" value="+ warehouseId: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_srdto">
+          <mxGeometry y="36" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_srdto_2" value="+ supplier: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_srdto">
+          <mxGeometry y="62" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_srdto_3" value="+ note: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_srdto">
+          <mxGeometry y="88" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_srdto_4" value="+ items: List&lt;StockReceiptItemDTO&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_srdto">
+          <mxGeometry y="114" width="200" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockIssueDTO -->
+        <mxCell id="d_sidto" value="«dto»&#xa;StockIssueDTO" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="245" y="1270" width="200" height="114" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sidto_1" value="+ warehouseId: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sidto">
+          <mxGeometry y="36" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sidto_2" value="+ note: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sidto">
+          <mxGeometry y="62" width="200" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sidto_3" value="+ items: List&lt;StockIssueItemDTO&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sidto">
+          <mxGeometry y="88" width="200" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- InventoryAdjustDTO -->
+        <mxCell id="d_iadto" value="«dto»&#xa;InventoryAdjustDTO" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="465" y="1270" width="210" height="192" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_iadto_1" value="+ warehouseId: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_iadto">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_iadto_2" value="+ productId: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_iadto">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_iadto_3" value="+ colorId: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_iadto">
+          <mxGeometry y="88" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_iadto_4" value="+ memoryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_iadto">
+          <mxGeometry y="114" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_iadto_5" value="+ quantityDelta: Integer [&lt; 0]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_iadto">
+          <mxGeometry y="140" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_iadto_6" value="+ note: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_iadto">
+          <mxGeometry y="166" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- InventoryDTO -->
+        <mxCell id="d_idto" value="«dto»&#xa;InventoryDTO" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="695" y="1270" width="210" height="218" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_idto_1" value="+ warehouseCode: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_idto">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_idto_2" value="+ productName: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_idto">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_idto_3" value="+ colorName: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_idto">
+          <mxGeometry y="88" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_idto_4" value="+ memoryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_idto">
+          <mxGeometry y="114" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_idto_5" value="+ quantity: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_idto">
+          <mxGeometry y="140" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_idto_6" value="+ unitCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_idto">
+          <mxGeometry y="166" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_idto_7" value="+ stockValue: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_idto">
+          <mxGeometry y="192" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- WarehouseDTO -->
+        <mxCell id="d_wdto" value="&lt;&lt;dto&gt;&gt;&#xa;WarehouseDTO" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="925" y="1270" width="210" height="166" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_wdto_1" value="+ id: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_wdto">
+          <mxGeometry y="36" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_wdto_2" value="+ code: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_wdto">
+          <mxGeometry y="62" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_wdto_3" value="+ name: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_wdto">
+          <mxGeometry y="88" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_wdto_4" value="+ address: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_wdto">
+          <mxGeometry y="114" width="210" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_wdto_5" value="+ active: Boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_wdto">
+          <mxGeometry y="140" width="210" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockReceiptItemDTO -->
+        <mxCell id="d_sridto" value="&lt;&lt;dto&gt;&gt;&#xa;StockReceiptItemDTO" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1155" y="1270" width="250" height="218" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sridto_1" value="+ productId: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sridto">
+          <mxGeometry y="36" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sridto_2" value="+ productName: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sridto">
+          <mxGeometry y="62" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sridto_3" value="+ colorId/colorName" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sridto">
+          <mxGeometry y="88" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sridto_4" value="+ memoryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sridto">
+          <mxGeometry y="114" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sridto_5" value="+ quantity: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sridto">
+          <mxGeometry y="140" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sridto_6" value="+ unitCost: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sridto">
+          <mxGeometry y="166" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_sridto_7" value="+ lineTotal: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_sridto">
+          <mxGeometry y="192" width="250" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- StockIssueItemDTO -->
+        <mxCell id="d_siidto" value="&lt;&lt;dto&gt;&gt;&#xa;StockIssueItemDTO" style="swimlane;startSize=36;childLayout=stackLayout;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="25" y="1460" width="250" height="192" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_siidto_1" value="+ productId: Long" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_siidto">
+          <mxGeometry y="36" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_siidto_2" value="+ productName: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_siidto">
+          <mxGeometry y="62" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_siidto_3" value="+ colorId/colorName" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_siidto">
+          <mxGeometry y="88" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_siidto_4" value="+ memoryType: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_siidto">
+          <mxGeometry y="114" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_siidto_5" value="+ quantity: Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_siidto">
+          <mxGeometry y="140" width="250" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="d_siidto_6" value="+ lineTotal: BigDecimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;overflow=hidden;rotatable=0;" vertex="1" parent="d_siidto">
+          <mxGeometry y="166" width="250" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== EDGES - Boundary → Control (dependency, dashed) ===== -->
+        <mxCell id="e01" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_wapi" target="c_ws" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e02" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_srapi" target="c_srs" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e03" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_siapi" target="c_sis" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e04" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="b_invapi" target="c_is" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Control → Repository (dependency, dashed) -->
+        <mxCell id="e05" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="c_ws" target="r_wr" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e06" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="c_srs" target="r_srr" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e06b" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_srs" target="r_ir" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e06c" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_srs" target="r_pr" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e06d" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_srs" target="r_cr" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e07" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="c_sis" target="r_sir" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e07b" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_sis" target="r_ir" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e07c" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_sis" target="r_pr" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e07d" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_sis" target="r_cr" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e08" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="c_is" target="r_ir" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e08b" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_is" target="r_pr" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e08c" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_is" target="r_cr" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e09" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_srs" target="r_srir" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e09b" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_sis" target="r_siir" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Control → AccountingPostingService -->
+        <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_srs" target="c_aps" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_sis" target="c_aps" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Entity Relationships -->
+        <!-- WarehouseEntity to InventoryEntity -->
+        <mxCell id="e12" value="1" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERmandOne;endFill=0;startFill=0;" edge="1" source="e_we" target="e_ie" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"/>
+          </mxGeometry>
+        </mxCell>
+        <!-- WarehouseEntity to StockReceiptEntity -->
+        <mxCell id="e13" value="1" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERmandOne;endFill=0;startFill=0;" edge="1" source="e_we" target="e_sre" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- WarehouseEntity to StockIssueEntity -->
+        <mxCell id="e14" value="1" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERmandOne;endFill=0;startFill=0;" edge="1" source="e_we" target="e_sie" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- StockReceiptEntity to StockReceiptItemEntity (composition) -->
+        <mxCell id="e15" value="1" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERmandOne;endFill=0;startFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="e_sre" target="e_sritem" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- StockIssueEntity to StockIssueItemEntity (composition) -->
+        <mxCell id="e16" value="1" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERmandOne;endFill=0;startFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="e_sie" target="e_siitem" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- ProductEntity to InventoryEntity -->
+        <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERmandOne;endFill=0;startFill=0;" edge="1" source="e_pe" target="e_ie" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- ColorEntity to InventoryEntity -->
+        <mxCell id="e18" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERzeroToOne;endFill=0;startFill=0;" edge="1" source="e_ce" target="e_ie" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- AccountingPostingService → JournalEntryEntity -->
+        <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_aps" target="e_je" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e19b" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_aps" target="r_jer" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Control → DTO -->
+        <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_srs" target="d_srdto" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e21" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_sis" target="d_sidto" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e22" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_is" target="d_iadto" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e23" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_is" target="d_idto" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e24" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="c_ws" target="d_wdto" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e25" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="d_srdto" target="d_sridto" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e26" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="d_sidto" target="d_siidto" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e27" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERmandOne;endFill=0;startFill=0;" edge="1" source="e_pe" target="e_sritem" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e28" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERmandOne;endFill=0;startFill=0;" edge="1" source="e_pe" target="e_siitem" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e29" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERzeroToOne;endFill=0;startFill=0;" edge="1" source="e_ce" target="e_sritem" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e30" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERzeroToOne;endFill=0;startFill=0;" edge="1" source="e_ce" target="e_siitem" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e31" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="e_sre" target="e_iml" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e32" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="e_sie" target="e_iml" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e33" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="r_pr" target="e_pe" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e34" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="r_cr" target="e_ce" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e35" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="r_jer" target="e_je" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e36" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="r_imlr" target="e_iml" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e37" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="r_siir" target="e_siitem" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -37,11 +37,11 @@ public class CommentEntity{
 	private Long rating;
 	
 	@ManyToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	@JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
 	private ProductEntity product;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	private UserEntity user;
 	
 

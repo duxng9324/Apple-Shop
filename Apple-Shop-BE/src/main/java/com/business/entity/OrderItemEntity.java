@@ -36,7 +36,7 @@ public class OrderItemEntity extends BaseEntity {
 	private String color;
 	
 	@ManyToOne
-	@JoinColumn(name = "order_id", referencedColumnName = "id")
+	@JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
 	private OrderEntity order;
 
 	public String getImage() {

@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: store
     ports:
       - "3307:3306"
@@ -46,6 +47,32 @@ services:
       timeout: 3s
       retries: 10
 
+  ollama:
+    image: ollama/ollama
+    container_name: appleshop-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
+
+  ollama-init:
+    image: ollama/ollama
+    container_name: appleshop-ollama-init
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["/bin/sh", "-c", "ollama pull llama3.2"]
+    restart: "no"
+
   chatbot:
     build:
       context: ./chat-bot-be
@@ -56,8 +83,10 @@ services:
         condition: service_healthy
       backend:
         condition: service_started
+      ollama-init:
+        condition: service_completed_successfully
     environment:
-      OLLAMA_URL: http://host.docker.internal:11434/api/generate
+      OLLAMA_URL: http://ollama:11434/api/generate
       OLLAMA_MODEL: llama3.2
       JAVA_BACKEND_BASE: http://backend:8081
       FRONTEND_BASE_URL: http://localhost:3000
@@ -83,3 +112,4 @@ services:
 volumes:
   mysql_data:
   redis_data:
+  ollama_data:

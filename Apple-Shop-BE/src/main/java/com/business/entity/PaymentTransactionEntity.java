@@ -38,7 +38,7 @@ public class PaymentTransactionEntity extends BaseEntity {
     private BigDecimal amount;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private OrderEntity order;
 
     @Column(name = "reference_no", length = 128)

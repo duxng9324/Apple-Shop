@@ -43,10 +43,19 @@ function OrderAd() {
   const handleMarkPaid = async (order) => {
     try {
       await orderService.markPaid({ id: order.id });
+      if (order.status === "Chờ xác nhận") {
+        try {
+          const updated = { ...order, status: "Đã xác nhận", strategy: issueStrategy };
+          await orderService.changeStatus(updated);
+        } catch {
+          // ignore changeStatus error, paymentStatus still updated
+        }
+      }
       message.success("Đơn hàng đã được ghi nhận thanh toán");
-      fetchOrders();
     } catch (error) {
       message.error("Không thể cập nhật trạng thái thanh toán");
+    } finally {
+      await fetchOrders();
     }
   };
 

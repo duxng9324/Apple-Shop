@@ -16,7 +16,7 @@ import com.business.entity.CartEntity;
 public interface CartRepository extends JpaRepository<CartEntity, Long> {
 	List<CartEntity> findByUserId(Long id);
 
-	@Query("select c from CartEntity c where c.user.id = :userId AND c.product.id = :productId AND c.memory = :memory AND c.color = :color")
+	@Query("select c from CartEntity c join c.cartItems ci where c.user.id = :userId AND ci.product.id = :productId AND c.memory = :memory AND c.color = :color")
 	CartEntity findItem(@Param("userId") Long userId, @Param("productId") Long productId, @Param("memory") String memory, @Param("color") String color);
 	
 	@Modifying

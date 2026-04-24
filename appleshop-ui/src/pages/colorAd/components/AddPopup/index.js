@@ -1,5 +1,5 @@
 import { Modal, Form, Input, Button } from "antd";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { ColorService } from "~/service/colorService";
@@ -13,12 +13,16 @@ function AddColorModal({ open, onClose, refresh }) {
   const colorService = new ColorService();
 
   const {
-    register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      color: "",
+      code: "",
+    },
   });
 
   const onSubmit = async (data) => {
@@ -47,7 +51,13 @@ function AddColorModal({ open, onClose, refresh }) {
           validateStatus={errors.color && "error"}
           help={errors.color?.message}
         >
-          <Input placeholder="Nhập tên màu" {...register("color")} />
+          <Controller
+            name="color"
+            control={control}
+            render={({ field }) => (
+              <Input placeholder="Nhập tên màu" {...field} />
+            )}
+          />
         </Form.Item>
 
         <Form.Item
@@ -55,7 +65,13 @@ function AddColorModal({ open, onClose, refresh }) {
           validateStatus={errors.code && "error"}
           help={errors.code?.message}
         >
-          <Input placeholder="#000000" {...register("code")} />
+          <Controller
+            name="code"
+            control={control}
+            render={({ field }) => (
+              <Input placeholder="#000000" {...field} />
+            )}
+          />
         </Form.Item>
 
         <Button type="primary" htmlType="submit" block>

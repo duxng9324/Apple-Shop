@@ -29,6 +29,7 @@ import com.business.repository.MemoryRepository;
 import com.business.repository.ProductMemoryRepository;
 import com.business.repository.ProductRepository;
 import com.business.service.IProductService;
+import com.business.util.MemoryTypeUtils;
 
 @Service
 public class ProductService implements IProductService {
@@ -108,7 +109,7 @@ public class ProductService implements IProductService {
 		} 
 		for (TypeDTO item : list) {
 			String type = normalizeMemoryType(item.getType());
-			MemoryEntity memoryEntity = memoryRepository.findByType(type);
+			MemoryEntity memoryEntity = resolveMemoryEntity(type);
 			if (memoryEntity == null) {
 				throw new NotFoundException("Bộ nhớ không tồn tại: " + type);
 			}
@@ -190,8 +191,9 @@ public class ProductService implements IProductService {
 				continue;
 			}
 
-			boolean hasInventory = inventoryRepository
-					.existsByProductCodeAndMemoryTypeAndQuantityGreaterThan(productCode, memoryType, 0);
+			boolean hasInventory = inventoryRepository.findByProductCodeAndQuantityGreaterThan(productCode, 0)
+					.stream()
+					.anyMatch(inventory -> MemoryTypeUtils.matches(inventory.getMemoryType(), memoryType));
 			if (!hasInventory) {
 				throw new NotFoundException("Chưa có tồn kho cho mã " + productCode + " với bộ nhớ " + memoryType
 						+ ". Vui lòng nhập kho trước rồi mới thêm/sửa ở tab sản phẩm.");
@@ -203,6 +205,16 @@ public class ProductService implements IProductService {
 		if (memoryType == null || memoryType.trim().isEmpty()) {
 			throw new BadRequestException("Bộ nhớ là bắt buộc");
 		}
-		return memoryType.trim().toUpperCase();
+		return MemoryTypeUtils.normalize(memoryType);
+	}
+
+	private MemoryEntity resolveMemoryEntity(String memoryType) {
+		List<MemoryEntity> memoryEntities = memoryRepository.findAll();
+		for (MemoryEntity memoryEntity : memoryEntities) {
+			if (MemoryTypeUtils.matches(memoryEntity.getType(), memoryType)) {
+				return memoryEntity;
+			}
+		}
+		return null;
 	}
 }

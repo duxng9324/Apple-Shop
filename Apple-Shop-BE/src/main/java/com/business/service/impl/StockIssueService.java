@@ -23,6 +23,7 @@ import com.business.repository.ProductRepository;
 import com.business.repository.StockIssueRepository;
 import com.business.repository.WarehouseRepository;
 import com.business.service.IStockIssueService;
+import com.business.util.MemoryTypeUtils;
 
 @Service
 public class StockIssueService implements IStockIssueService {
@@ -75,7 +76,7 @@ public class StockIssueService implements IStockIssueService {
                 throw new RuntimeException("Dòng hàng trong phiếu xuất không hợp lệ");
             }
 
-            String memoryType = itemDTO.getMemoryType() == null ? "DEFAULT" : itemDTO.getMemoryType().trim().toUpperCase();
+            String memoryType = MemoryTypeUtils.normalize(itemDTO.getMemoryType());
             ColorEntity color = null;
             if (itemDTO.getColorId() != null) {
                 color = colorRepository.findById(itemDTO.getColorId()).orElse(null);
@@ -89,12 +90,18 @@ public class StockIssueService implements IStockIssueService {
             InventoryEntity inventory;
             if (color != null) {
                 inventory = inventoryRepository
-                        .findByWarehouseIdAndProductIdAndColorIdAndMemoryType(warehouse.getId(), product.getId(),
-                                color.getId(), memoryType)
+                        .findByWarehouseIdAndProductIdAndColorId(warehouse.getId(), product.getId(), color.getId())
+                        .stream()
+                        .filter(candidate -> MemoryTypeUtils.matches(candidate.getMemoryType(), memoryType))
+                        .findFirst()
                         .orElse(null);
             } else {
                 inventory = inventoryRepository
-                        .findByWarehouseIdAndProductIdAndMemoryType(warehouse.getId(), product.getId(), memoryType)
+                        .findByWarehouseIdAndProductId(warehouse.getId(), product.getId())
+                        .stream()
+                        .filter(candidate -> candidate.getColor() == null)
+                        .filter(candidate -> MemoryTypeUtils.matches(candidate.getMemoryType(), memoryType))
+                        .findFirst()
                         .orElse(null);
             }
 

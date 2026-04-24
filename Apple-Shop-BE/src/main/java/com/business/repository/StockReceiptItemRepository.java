@@ -16,9 +16,21 @@ public interface StockReceiptItemRepository extends JpaRepository<StockReceiptIt
     List<StockReceiptItemEntity> findByProductIdAndColorIdAndMemoryTypeAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateAscIdAsc(
             Long productId, Long colorId, String memoryType, Integer remainingQuantity);
 
+    List<StockReceiptItemEntity> findByProductIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateAscIdAsc(
+            Long productId, Integer remainingQuantity);
+
+    List<StockReceiptItemEntity> findByProductIdAndColorIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateAscIdAsc(
+            Long productId, Long colorId, Integer remainingQuantity);
+
     List<StockReceiptItemEntity> findByProductIdAndMemoryTypeAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
             Long productId, String memoryType, Integer remainingQuantity);
 
     List<StockReceiptItemEntity> findByProductIdAndColorIdAndMemoryTypeAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
             Long productId, Long colorId, String memoryType, Integer remainingQuantity);
+
+    List<StockReceiptItemEntity> findByProductIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
+            Long productId, Integer remainingQuantity);
+
+    List<StockReceiptItemEntity> findByProductIdAndColorIdAndRemainingQuantityGreaterThanOrderByStockReceiptReceiptDateDescIdDesc(
+            Long productId, Long colorId, Integer remainingQuantity);
 }

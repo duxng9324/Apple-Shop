@@ -29,11 +29,11 @@ public class ProductEntity extends BaseEntity {
 	private String description;
 	
 	@ManyToOne
-	@JoinColumn(name = "category_id", referencedColumnName = "id")
+	@JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
 	private CategoryEntity category;
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<CartEntity> cart = new ArrayList<>();
+	private List<CartItemEntity> cartItems = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductMemoryEntity> memories = new ArrayList<>();
@@ -113,12 +113,12 @@ public void setImages(List<ProductImageEntity> images) {
 		this.colors = colors;
 	}
 
-	public List<CartEntity> getCart() {
-		return cart;
+	public List<CartItemEntity> getCartItems() {
+		return cartItems;
 	}
 
-	public void setCart(List<CartEntity> cart) {
-		this.cart = cart;
+	public void setCartItems(List<CartItemEntity> cartItems) {
+		this.cartItems = cartItems;
 	}
 
 	

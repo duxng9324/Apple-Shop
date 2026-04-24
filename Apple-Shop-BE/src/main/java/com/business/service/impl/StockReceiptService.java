@@ -29,6 +29,7 @@ import com.business.repository.ProductRepository;
 import com.business.repository.StockReceiptRepository;
 import com.business.repository.WarehouseRepository;
 import com.business.service.IStockReceiptService;
+import com.business.util.MemoryTypeUtils;
 
 @Service
 public class StockReceiptService implements IStockReceiptService {
@@ -91,7 +92,7 @@ public class StockReceiptService implements IStockReceiptService {
                 throw new RuntimeException("Dòng hàng trong phiếu nhập không hợp lệ");
             }
 
-            String memoryType = itemDTO.getMemoryType() == null ? "DEFAULT" : itemDTO.getMemoryType().trim().toUpperCase();
+            String memoryType = MemoryTypeUtils.normalize(itemDTO.getMemoryType());
             ColorEntity color = resolveColor(itemDTO);
             ProductEntity product = resolveOrCreateProduct(itemDTO);
             ensureProductColor(product, color);
@@ -101,10 +102,23 @@ public class StockReceiptService implements IStockReceiptService {
 
             ensureProductMemory(product, memoryType, unitCost);
 
-            InventoryEntity inventory = inventoryRepository
-                    .findByWarehouseIdAndProductIdAndColorIdAndMemoryType(warehouse.getId(), product.getId(),
-                            color == null ? null : color.getId(), memoryType)
-                    .orElse(null);
+            InventoryEntity inventory;
+            if (color != null) {
+                inventory = inventoryRepository
+                        .findByWarehouseIdAndProductIdAndColorId(warehouse.getId(), product.getId(), color.getId())
+                        .stream()
+                        .filter(candidate -> MemoryTypeUtils.matches(candidate.getMemoryType(), memoryType))
+                        .findFirst()
+                        .orElse(null);
+            } else {
+                inventory = inventoryRepository
+                        .findByWarehouseIdAndProductId(warehouse.getId(), product.getId())
+                        .stream()
+                        .filter(candidate -> candidate.getColor() == null)
+                        .filter(candidate -> MemoryTypeUtils.matches(candidate.getMemoryType(), memoryType))
+                        .findFirst()
+                        .orElse(null);
+            }
             if (inventory == null) {
                 inventory = new InventoryEntity();
                 inventory.setWarehouse(warehouse);
@@ -260,7 +274,10 @@ public class StockReceiptService implements IStockReceiptService {
     }
 
     private void ensureProductMemory(ProductEntity product, String memoryType, BigDecimal unitCost) {
-        MemoryEntity memoryEntity = memoryRepository.findByType(memoryType);
+        MemoryEntity memoryEntity = memoryRepository.findAll().stream()
+                .filter(item -> MemoryTypeUtils.matches(item.getType(), memoryType))
+                .findFirst()
+                .orElse(null);
         if (memoryEntity == null) {
             memoryEntity = new MemoryEntity();
             memoryEntity.setType(memoryType);

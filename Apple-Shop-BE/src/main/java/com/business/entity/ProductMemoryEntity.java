@@ -22,11 +22,11 @@ public class ProductMemoryEntity {
 	private BigDecimal price;
 	
 	@ManyToOne
-	@JoinColumn(name = "memory_id", referencedColumnName = "id")
+	@JoinColumn(name = "memory_id", referencedColumnName = "id", nullable = false)
 	private MemoryEntity memory;
 	
 	@ManyToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	@JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
 	private ProductEntity product;
 
 

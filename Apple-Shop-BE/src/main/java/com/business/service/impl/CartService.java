@@ -32,6 +32,9 @@ public class CartService implements ICartService {
 			CartEntity exCart = cartRepository.findItem(cartDTO.getUserId(), cartDTO.getProductId(), cartDTO.getMemory(), cartDTO.getColor());
 			if(exCart != null) {
 				cartDTO.setQuantity(exCart.getQuantity() + 1);
+				if (exCart.getCartItems() != null && !exCart.getCartItems().isEmpty()) {
+					exCart.getCartItems().get(0).setQuantity(cartDTO.getQuantity());
+				}
 				cartEntity = cartRepository.save(cartCoverter.toEntity(cartDTO, exCart));
 			}
 			else {

@@ -5,20 +5,23 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "cartItem")
+@Table(name = "cart_item", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "cart_id", "product_id" })
+})
 public class CartItemEntity extends BaseEntity {
 	
 	@Column(name = "quantity")
 	private Long quantity;
 	
 	@ManyToOne
-	@JoinColumn(name = "cart_id", referencedColumnName = "id")
+	@JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
 	private CartEntity cart;
 	
 	@ManyToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	@JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
 	private ProductEntity product;
 	
 	public Long getQuantity() {
