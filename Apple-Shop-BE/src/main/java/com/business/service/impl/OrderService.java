@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Sort;
 
 import com.business.converter.OrderConverter;
 import com.business.converter.OrderItemConverter;
@@ -23,6 +25,8 @@ import com.business.entity.ColorEntity;
 import com.business.entity.InventoryEntity;
 import com.business.entity.OrderEntity;
 import com.business.entity.OrderItemEntity;
+import com.business.entity.StockIssueEntity;
+import com.business.entity.StockIssueItemEntity;
 import com.business.entity.ProductEntity;
 import com.business.entity.StockReceiptItemEntity;
 import com.business.repository.ColorRepository;
@@ -31,6 +35,7 @@ import com.business.repository.OrderItemRepository;
 import com.business.repository.OrderRepository;
 import com.business.repository.ProductRepository;
 import com.business.repository.StockReceiptItemRepository;
+import com.business.repository.StockIssueRepository;
 import com.business.service.IOrderService;
 import com.business.util.MemoryTypeUtils;
 
@@ -61,6 +66,9 @@ public class OrderService implements IOrderService {
 	
 	@Autowired
 	private OrderItemRepository orderItemRepository;
+
+	@Autowired
+	private StockIssueRepository stockIssueRepository;
 
 	@Autowired
 	private InventoryRepository inventoryRepository;
@@ -98,7 +106,7 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<OrderDTO> getOrderByUserId(Long userId) {
-		List<OrderEntity> orderEntities = orderRepository.findByUserId(userId);
+		List<OrderEntity> orderEntities = orderRepository.findByUserIdOrderByIdDesc(userId);
 		List<OrderDTO> orderDTOs = new ArrayList<>();
 		for(OrderEntity orderEntity : orderEntities) {
 			OrderDTO orderDTO = orderConverter.toDTO(orderEntity);
@@ -152,7 +160,7 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<OrderDTO> getAllOrder() {
-		List<OrderEntity> orderEntities = orderRepository.findAll();
+		List<OrderEntity> orderEntities = orderRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 		List<OrderDTO> orderDTOs = new ArrayList<>();
 		for(OrderEntity orderEntity : orderEntities) {
 			OrderDTO orderDTO = orderConverter.toDTO(orderEntity);
@@ -276,6 +284,7 @@ public class OrderService implements IOrderService {
 	private void deductInventoryForOrder(OrderEntity orderEntity, String strategy) {
 		List<OrderItemEntity> items = orderItemRepository.findByOrderId(orderEntity.getId());
 		String issueStrategy = normalizeStrategy(strategy);
+		Map<Long, StockIssueEntity> warehouseIssues = new HashMap<>();
 
 		for (OrderItemEntity item : items) {
 			ProductEntity product = resolveProduct(item);
@@ -351,6 +360,33 @@ public class OrderService implements IOrderService {
 						throw new RuntimeException("Tồn kho không đủ cho sản phẩm " + product.getCode() + " - " + memoryType);
 				}
 
+				Long warehouseId = selected.getWarehouse().getId();
+				StockIssueEntity issue = warehouseIssues.get(warehouseId);
+				if (issue == null) {
+					issue = new StockIssueEntity();
+					issue.setWarehouse(selected.getWarehouse());
+					issue.setIssueDate(new Date());
+					issue.setCode("SI-ORD-" + orderEntity.getId() + "-" + warehouseId);
+					issue.setNote("Xuất kho tự động cho đơn hàng " + orderEntity.getSku());
+					issue.setTotalCost(BigDecimal.ZERO);
+					warehouseIssues.put(warehouseId, issue);
+				}
+
+				StockIssueItemEntity issueItem = new StockIssueItemEntity();
+				issueItem.setStockIssue(issue);
+				issueItem.setProduct(product);
+				issueItem.setColor(color);
+				issueItem.setMemoryType(memoryType);
+				issueItem.setQuantity(qty);
+				
+				BigDecimal cost = selected.getUnitCost() == null ? BigDecimal.ZERO : selected.getUnitCost();
+				issueItem.setUnitCost(cost);
+				BigDecimal lineTotal = cost.multiply(BigDecimal.valueOf(qty));
+				issueItem.setLineTotal(lineTotal);
+				
+				issue.getItems().add(issueItem);
+				issue.setTotalCost(issue.getTotalCost().add(lineTotal));
+
 				selected.setQuantity(selected.getQuantity() - qty);
 				inventoryRepository.save(selected);
 				continue;
@@ -388,6 +424,32 @@ public class OrderService implements IOrderService {
 				stockReceiptItemRepository.save(layer);
 
 				Long warehouseId = layer.getStockReceipt().getWarehouse().getId();
+				StockIssueEntity issue = warehouseIssues.get(warehouseId);
+				if (issue == null) {
+					issue = new StockIssueEntity();
+					issue.setWarehouse(layer.getStockReceipt().getWarehouse());
+					issue.setIssueDate(new Date());
+					issue.setCode("SI-ORD-" + orderEntity.getId() + "-" + warehouseId);
+					issue.setNote("Xuất kho tự động cho đơn hàng " + orderEntity.getSku());
+					issue.setTotalCost(BigDecimal.ZERO);
+					warehouseIssues.put(warehouseId, issue);
+				}
+
+				StockIssueItemEntity issueItem = new StockIssueItemEntity();
+				issueItem.setStockIssue(issue);
+				issueItem.setProduct(product);
+				issueItem.setColor(color);
+				issueItem.setMemoryType(memoryType);
+				issueItem.setQuantity(take);
+
+				BigDecimal cost = layer.getUnitCost() == null ? BigDecimal.ZERO : layer.getUnitCost();
+				issueItem.setUnitCost(cost);
+				BigDecimal lineTotal = cost.multiply(BigDecimal.valueOf(take));
+				issueItem.setLineTotal(lineTotal);
+
+				issue.getItems().add(issueItem);
+				issue.setTotalCost(issue.getTotalCost().add(lineTotal));
+
 				InventoryEntity inventory;
 				if (layer.getColor() != null) {
 					inventory = inventoryRepository
@@ -415,6 +477,11 @@ public class OrderService implements IOrderService {
 
 				required -= take;
 			}
+		}
+
+		for (StockIssueEntity issue : warehouseIssues.values()) {
+			StockIssueEntity savedIssue = stockIssueRepository.save(issue);
+			accountingPostingService.postStockIssue(savedIssue);
 		}
 	}
 

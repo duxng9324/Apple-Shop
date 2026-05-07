@@ -65,6 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        .antMatchers("/api/login**", "/api/signup**").permitAll()
 	        .antMatchers(HttpMethod.GET, "/api/vnpay/ipn").permitAll()
 	        .antMatchers(HttpMethod.POST, "/api/vnpay/ipn").permitAll()
+	        .antMatchers(HttpMethod.GET, "/api/vnpay/return").permitAll()
+	        .antMatchers(HttpMethod.POST, "/api/vnpay/return").permitAll()
 	        .antMatchers(HttpMethod.GET, "/api/product", "/api/product/*", "/api/product/code/*").permitAll()
 	        .antMatchers("/api/warehouse/**", "/api/inventory/**", "/api/stock-receipt/**", "/api/stock-issue/**")
 	            .hasAnyAuthority("ROLE_ADMIN", "PERM_WAREHOUSE")

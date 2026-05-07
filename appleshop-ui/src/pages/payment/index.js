@@ -28,10 +28,8 @@ function Payment() {
 
         try {
             setIsSubmitting(true);
-            const returnUrl = `${window.location.origin}/payment-result`;
             const response = await vnpayService.createPaymentUrl({
                 order: paymentPayload,
-                returnUrl,
             });
 
             if (!response?.paymentUrl) {

@@ -623,6 +623,14 @@ public class AccountingService implements IAccountingService {
             summary.setAmount(entry.getValue());
             expenseSummaries.add(summary);
         }
+
+        if (cogs.compareTo(BigDecimal.ZERO) > 0) {
+            ExpenseCategorySummaryDTO cogsSummary = new ExpenseCategorySummaryDTO();
+            cogsSummary.setExpenseCategory("Giá vốn bán hàng");
+            cogsSummary.setAmount(cogs);
+            expenseSummaries.add(cogsSummary);
+        }
+
         dashboard.setExpenseByCategory(expenseSummaries);
 
         List<Map.Entry<String, BigDecimal>> paymentEntries = new ArrayList<>(paymentMethodIndex.entrySet());

@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.business.dto.OrderDTO;
 import com.business.dto.VnpayCreatePaymentRequestDTO;
 import com.business.dto.VnpayCreatePaymentResponseDTO;
+import com.business.dto.VnpayReturnVerifyResponseDTO;
 import com.business.entity.UserEntity;
 import com.business.repository.UserRepository;
+import com.business.service.impl.OrderService;
 import com.business.service.impl.VnpayService;
 
 @CrossOrigin
@@ -33,6 +35,9 @@ public class VnpayAPI {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     private UserEntity getCurrentUserOrThrow() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -81,6 +86,18 @@ public class VnpayAPI {
     public ResponseEntity<?> ipn(@RequestParam Map<String, String> params) {
         try {
             return ResponseEntity.ok(vnpayService.processIpn(params));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/api/vnpay/return", method = { RequestMethod.GET, RequestMethod.POST })
+    public ResponseEntity<?> verifyReturn(@RequestParam Map<String, String> params) {
+        try {
+            // Endpoint này không yêu cầu auth — frontend gọi sau redirect VNPay (không có token)
+            // VnpayService.verifyReturn() đã tự verify chữ ký và mark order paid nếu thành công
+            VnpayReturnVerifyResponseDTO response = vnpayService.verifyReturn(params);
+            return ResponseEntity.ok(response);
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }

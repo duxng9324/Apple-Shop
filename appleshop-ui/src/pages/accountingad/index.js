@@ -138,6 +138,34 @@ function AccountingAd() {
             const data = sheet?.data || [];
             const rows = data.length > 0 ? data : [{ note: 'Không có dữ liệu' }];
             const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            // Auto-size columns
+            if (rows.length > 0) {
+                const keys = Object.keys(rows[0]);
+                const cols = keys.map(key => {
+                    let max = key.length;
+                    rows.forEach(row => {
+                        const val = row[key];
+                        if (val !== undefined && val !== null) {
+                            const len = Array.isArray(val) ? val.length : val.toString().length;
+                            if (len > max) max = len;
+                        }
+                    });
+                    // add some padding, cap at 100
+                    return { wch: Math.min(Math.max(max + 3, 10), 100) };
+                });
+                worksheet['!cols'] = cols;
+            }
+
+            // Format numbers to avoid scientific notation (2,71E+08 -> 271,000,000)
+            for (let cell in worksheet) {
+                if (cell[0] === '!') continue;
+                if (worksheet[cell].t === 'n') {
+                    // standard integer accounting format without decimals unless needed
+                    worksheet[cell].z = '#,##0';
+                }
+            }
+
             XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name);
         });
 

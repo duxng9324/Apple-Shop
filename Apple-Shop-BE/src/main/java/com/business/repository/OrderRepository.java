@@ -10,6 +10,6 @@ import com.business.entity.OrderEntity;
 
 @Repository
 public interface OrderRepository extends JpaRepository<OrderEntity, Long>  {
-	List<OrderEntity> findByUserId(Long id);
+	List<OrderEntity> findByUserIdOrderByIdDesc(Long id);
 	List<OrderEntity> findByOrderTimeBetween(Date fromDate, Date toDate);
 }
