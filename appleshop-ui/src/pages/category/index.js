@@ -25,10 +25,10 @@ function Category(props) {
             device = 'ipad';
             break;
         case 'MAC':
-            device = 'macbook';
+            device = 'mac';
             break;
         case 'Apple Watch':
-            device = 'applewatch';
+            device = 'watch';
             break;
         case 'Phụ kiện':
             device = 'phu-kien';

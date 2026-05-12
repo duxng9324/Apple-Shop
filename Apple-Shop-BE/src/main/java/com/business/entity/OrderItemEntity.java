@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "order_item")
 public class OrderItemEntity extends BaseEntity {
-	@Column(name = "image")
+	@Column(name = "image", columnDefinition = "TEXT")
 	private String image;
 	
 	@Column(name = "name")
