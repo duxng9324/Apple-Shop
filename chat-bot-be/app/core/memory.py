@@ -1,4 +1,5 @@
 import json
+import asyncio
 import redis.asyncio as redis
 from app.config import settings
 
@@ -15,12 +16,16 @@ rds = redis.Redis(
 
 
 async def check_redis():
-    """Fail fast khi startup"""
-    try:
-        await rds.ping()
-        print("✅ Redis connected")
-    except Exception as e:
-        raise RuntimeError(f"❌ Redis connection failed: {e}")
+    """Retry kết nối Redis khi startup"""
+    for i in range(5):
+        try:
+            await rds.ping()
+            print("✅ Redis connected")
+            return
+        except Exception as e:
+            print(f"⚠️ Thử kết nối lại Redis lần {i+1}/5: {e}")
+            await asyncio.sleep(2)
+    raise RuntimeError("❌ Redis connection failed sau nhiều lần thử")
 
 
 DEFAULT_SESSION = {

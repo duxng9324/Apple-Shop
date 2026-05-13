@@ -87,14 +87,14 @@ services:
         condition: service_completed_successfully
     environment:
       OLLAMA_URL: http://ollama:11434/api/generate
-      OLLAMA_MODEL: llama3.2
+      OLLAMA_MODEL: gemma:2b
       JAVA_BACKEND_BASE: http://backend:8081
       FRONTEND_BASE_URL: http://localhost:3000
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
     ports:
-      - "8000:8000"
+      - "8001:8000"
 
   frontend:
     build:

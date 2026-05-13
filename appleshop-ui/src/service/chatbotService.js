@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const CHAT_BOT_BASE_URL = process.env.REACT_APP_CHATBOT_API || 'http://localhost:8000/ai';
+const CHAT_BOT_BASE_URL = process.env.REACT_APP_CHATBOT_API || 'http://localhost:8001/ai';
 
 const chatbotClient = axios.create({
     baseURL: CHAT_BOT_BASE_URL,
