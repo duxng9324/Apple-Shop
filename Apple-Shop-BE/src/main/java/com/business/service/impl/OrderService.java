@@ -85,6 +85,9 @@ public class OrderService implements IOrderService {
 	@Autowired
 	private AccountingPostingService accountingPostingService;
 
+	@Autowired
+	private OrderMailService orderMailService;
+
 	@Override
 	@Transactional
 	public OrderDTO save(OrderDTO orderDTO) {
@@ -127,11 +130,12 @@ public class OrderService implements IOrderService {
 	@Override
 	@Transactional
 	public OrderDTO updateStatusOrder(Long id, String status, String paymentStatus, String strategy) {
-		   OrderEntity orderEntity = orderRepository.findById(id).orElse(null);
+		OrderEntity orderEntity = orderRepository.findById(id).orElse(null);
 		if (orderEntity == null) {
 			throw new RuntimeException("Không tìm thấy đơn hàng");
 		}
 
+		String previousStatus = orderEntity.getStatus();
 		String nextStatus = normalizeStatus(status);
 		validateStatusTransition(orderEntity.getStatus(), nextStatus);
 		String previousPaymentStatus = orderEntity.getPaymentStatus();
@@ -152,10 +156,16 @@ public class OrderService implements IOrderService {
 
 		orderRepository.save(orderEntity);
 		accountingPostingService.postOrderCreated(orderEntity);
+		OrderDTO updatedOrder = orderConverter.toDTO(orderEntity);
+		if (!STATUS_CONFIRMED.equalsIgnoreCase(safeTrim(previousStatus))
+				&& STATUS_CONFIRMED.equalsIgnoreCase(safeTrim(orderEntity.getStatus()))) {
+			orderMailService.sendOrderConfirmedEmail(orderEntity, updatedOrder);
+		}
 		if (!isPaidStatus(previousPaymentStatus) && isPaidStatus(orderEntity.getPaymentStatus())) {
 			accountingPostingService.postOrderPayment(orderEntity);
+			orderMailService.sendPaymentSuccessEmail(orderEntity, updatedOrder);
 		}
-		return orderConverter.toDTO(orderEntity);
+		return updatedOrder;
 	}
 
 	@Override
@@ -205,8 +215,14 @@ public class OrderService implements IOrderService {
 
 		accountingPostingService.postOrderCreated(orderEntity);
 		accountingPostingService.postOrderPayment(orderEntity);
+		OrderDTO updatedOrder = orderConverter.toDTO(orderEntity);
+		orderMailService.sendPaymentSuccessEmail(orderEntity, updatedOrder);
 
-		return orderConverter.toDTO(orderEntity);
+		return updatedOrder;
+	}
+
+	private String safeTrim(String value) {
+		return value == null ? "" : value.trim();
 	}
 
 	private boolean shouldDeductInventory(String status) {

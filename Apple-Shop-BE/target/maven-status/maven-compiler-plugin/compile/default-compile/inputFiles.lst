@@ -9,6 +9,7 @@ C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\conv
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\dto\ExpenseCategorySummaryDTO.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\entity\MemoryEntity.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\repository\MigrationStateRepository.java
+C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\service\impl\OrderMailService.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\service\impl\CategoryService.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\service\impl\ProductService.java
 C:\Users\ongdu\Documents\AppleShop\Apple-Shop-BE\src\main\java\com\business\dto\StockReceiptDTO.java
