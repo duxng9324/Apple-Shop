@@ -403,7 +403,7 @@ function WarehouseAd() {
         <div>
             <Space style={{ width: '100%', justifyContent: 'space-between', marginBottom: 8 }} wrap>
                 <Title level={3} style={{ marginBottom: 0 }}>Vận hành kho & kế toán</Title>
-                <Button onClick={() => navigate('/admin/accounting')}>
+                <Button onClick={() => navigate('/admin')}>
                     Mở Accounting Center
                 </Button>
             </Space>

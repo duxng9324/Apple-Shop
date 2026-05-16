@@ -18,9 +18,13 @@ function Search() {
     useEffect(() => {
         const productService = new ProductService();
         const fetchData = async function () {
-            const res = await productService.view();
-            setProducts(res);
-            return res;
+            try {
+                const res = await productService.view();
+                setProducts(Array.isArray(res) ? res : []);
+            } catch (error) {
+                console.error('Failed to fetch products for search:', error);
+                setProducts([]);
+            }
         };
         fetchData();
     }, []);
@@ -33,15 +37,22 @@ function Search() {
         return () => {
             clearTimeout(timer);
         };
-    }, [searchTerm]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchTerm, products]);
 
     const handleClickSearch = () => {
-        if (searchTerm.trim() === '') {
+        if (!searchTerm || searchTerm.trim() === '') {
+            setSearchResults([]);
+            return;
+        }
+
+        if (!Array.isArray(products)) {
             setSearchResults([]);
             return;
         }
 
         const filteredProducts = products.filter((product) => {
+            if (!product || !product.name) return false;
             return product.name.toLowerCase().includes(searchTerm.toLowerCase());
         });
         setSearchResults(filteredProducts);
@@ -62,13 +73,13 @@ function Search() {
                     >
                         {searchResults.map((product) => {
                             const { name, code, categoryCode, imgLinks } = product;
-                            const imageLinks = imgLinks[0];
-                            const url = `/${encodeURIComponent(categoryCode)}/${encodeURIComponent(code)}`;
+                            const imageLinks = imgLinks && imgLinks.length > 0 ? imgLinks[0] : '';
+                            const url = `/${encodeURIComponent(categoryCode || '')}/${encodeURIComponent(code || '')}`;
 
                             return (
-                                <Link to={token ? url : '/login'} key={product.id} className={cx('result-item')}>
+                                <Link to={token ? url : '/login'} key={product.id || code} className={cx('result-item')}>
                                     <div className={cx('left')}>
-                                        <img src={imageLinks} alt="Hình ảnh của sản phẩm" />
+                                        {imageLinks && <img src={imageLinks} alt={name || "Hình ảnh của sản phẩm"} />}
                                     </div>
                                     <div className={cx('right')}>
                                         <p className={cx('product_name')}>{name}</p>
@@ -84,7 +95,7 @@ function Search() {
                 <div className={cx('search')}>
                     <FaSistrix />
                     <input
-                        onInput={(event) => {
+                        onChange={(event) => {
                             setSearchTerm(event.target.value);
                             setVisible(true);
                         }}

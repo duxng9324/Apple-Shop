@@ -202,6 +202,15 @@
         "documentation": {}
     },
     {
+        "label": "asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
+        "documentation": {}
+    },
+    {
         "label": "redis.asyncio",
         "kind": 6,
         "isExtraImport": true,
@@ -400,7 +409,7 @@
         "kind": 5,
         "importPath": "chat-bot-be.app.core.memory",
         "description": "chat-bot-be.app.core.memory",
-        "peekOfCode": "SESSION_TTL = 60 * 60 * 6  # 6 tiếng\nrds = redis.Redis(\n    host=settings.REDIS_HOST,\n    port=settings.REDIS_PORT,\n    db=settings.REDIS_DB,\n    decode_responses=True,\n    socket_connect_timeout=2,\n)\nasync def check_redis():\n    \"\"\"Fail fast khi startup\"\"\"",
+        "peekOfCode": "SESSION_TTL = 60 * 60 * 6  # 6 tiếng\nrds = redis.Redis(\n    host=settings.REDIS_HOST,\n    port=settings.REDIS_PORT,\n    db=settings.REDIS_DB,\n    decode_responses=True,\n    socket_connect_timeout=2,\n)\nasync def check_redis():\n    \"\"\"Retry kết nối Redis khi startup\"\"\"",
         "detail": "chat-bot-be.app.core.memory",
         "documentation": {}
     },
@@ -409,7 +418,7 @@
         "kind": 5,
         "importPath": "chat-bot-be.app.core.memory",
         "description": "chat-bot-be.app.core.memory",
-        "peekOfCode": "rds = redis.Redis(\n    host=settings.REDIS_HOST,\n    port=settings.REDIS_PORT,\n    db=settings.REDIS_DB,\n    decode_responses=True,\n    socket_connect_timeout=2,\n)\nasync def check_redis():\n    \"\"\"Fail fast khi startup\"\"\"\n    try:",
+        "peekOfCode": "rds = redis.Redis(\n    host=settings.REDIS_HOST,\n    port=settings.REDIS_PORT,\n    db=settings.REDIS_DB,\n    decode_responses=True,\n    socket_connect_timeout=2,\n)\nasync def check_redis():\n    \"\"\"Retry kết nối Redis khi startup\"\"\"\n    for i in range(5):",
         "detail": "chat-bot-be.app.core.memory",
         "documentation": {}
     },
