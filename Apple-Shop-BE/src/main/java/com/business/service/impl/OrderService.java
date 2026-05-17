@@ -104,7 +104,12 @@ public class OrderService implements IOrderService {
 		orderEntity.setInventoryDeducted(true);
 		orderRepository.save(orderEntity);
 		accountingPostingService.postOrderCreated(orderEntity);
-		return orderConverter.toDTO(orderEntity);
+		OrderDTO savedOrder = orderConverter.toDTO(orderEntity);
+		orderMailService.sendOrderStatusChangedEmail(orderEntity, savedOrder, null);
+		if (isPaidStatus(orderEntity.getPaymentStatus())) {
+			orderMailService.sendPaymentSuccessEmail(orderEntity, savedOrder);
+		}
+		return savedOrder;
 	}
 
 	@Override
@@ -157,9 +162,8 @@ public class OrderService implements IOrderService {
 		orderRepository.save(orderEntity);
 		accountingPostingService.postOrderCreated(orderEntity);
 		OrderDTO updatedOrder = orderConverter.toDTO(orderEntity);
-		if (!STATUS_CONFIRMED.equalsIgnoreCase(safeTrim(previousStatus))
-				&& STATUS_CONFIRMED.equalsIgnoreCase(safeTrim(orderEntity.getStatus()))) {
-			orderMailService.sendOrderConfirmedEmail(orderEntity, updatedOrder);
+		if (!safeTrim(previousStatus).equalsIgnoreCase(safeTrim(orderEntity.getStatus()))) {
+			orderMailService.sendOrderStatusChangedEmail(orderEntity, updatedOrder, previousStatus);
 		}
 		if (!isPaidStatus(previousPaymentStatus) && isPaidStatus(orderEntity.getPaymentStatus())) {
 			accountingPostingService.postOrderPayment(orderEntity);

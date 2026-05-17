@@ -35,10 +35,10 @@ public class OrderMailService {
         this.mailSender = mailSender;
     }
 
-    public void sendOrderConfirmedEmail(OrderEntity orderEntity, OrderDTO orderDTO) {
+    public void sendOrderStatusChangedEmail(OrderEntity orderEntity, OrderDTO orderDTO, String previousStatus) {
         sendMail(resolveRecipient(orderEntity, orderDTO),
-                "[Apple Shop] Don hang " + safe(orderEntity.getSku()) + " da duoc xac nhan",
-                buildOrderConfirmedContent(orderEntity, orderDTO));
+                buildOrderStatusSubject(orderEntity),
+                buildOrderStatusChangedContent(orderEntity, orderDTO, previousStatus));
     }
 
     public void sendPaymentSuccessEmail(OrderEntity orderEntity, OrderDTO orderDTO) {
@@ -70,14 +70,27 @@ public class OrderMailService {
         }
     }
 
-    private String buildOrderConfirmedContent(OrderEntity orderEntity, OrderDTO orderDTO) {
+    private String buildOrderStatusChangedContent(OrderEntity orderEntity, OrderDTO orderDTO, String previousStatus) {
         StringBuilder builder = new StringBuilder();
         builder.append("Xin chao ").append(safeName(orderEntity, orderDTO)).append(",\n\n");
-        builder.append("Don hang ").append(safe(orderEntity.getSku())).append(" cua ban da duoc xac nhan thanh cong.\n");
+        builder.append("Trang thai don hang ").append(safe(orderEntity.getSku())).append(" cua ban da duoc cap nhat.\n");
+        if (previousStatus == null || previousStatus.trim().isEmpty()) {
+            builder.append("Trang thai hien tai: ").append(safe(orderEntity.getStatus())).append(".\n");
+        } else {
+            builder.append("Trang thai cu: ").append(safe(previousStatus)).append("\n");
+            builder.append("Trang thai moi: ").append(safe(orderEntity.getStatus())).append("\n");
+        }
         builder.append("Thong tin don hang:\n");
         appendCommonOrderInfo(builder, orderEntity, orderDTO);
+        builder.append("- Trang thai don hang: ").append(safe(orderEntity.getStatus())).append("\n");
+        builder.append("- Trang thai thanh toan: ").append(safe(orderEntity.getPaymentStatus())).append("\n");
         builder.append("\nCam on ban da mua sam tai Apple Shop.");
         return builder.toString();
+    }
+
+    private String buildOrderStatusSubject(OrderEntity orderEntity) {
+        return "[Apple Shop] Cap nhat trang thai don hang " + safe(orderEntity.getSku()) + ": "
+                + safe(orderEntity.getStatus());
     }
 
     private String buildPaymentSuccessContent(OrderEntity orderEntity, OrderDTO orderDTO) {
