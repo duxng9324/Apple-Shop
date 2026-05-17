@@ -1,12 +1,21 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import List, Optional
+
+
+class Message(BaseModel):
+    role: str
+    content: str
+
 
 class ChatRequest(BaseModel):
-    message: str
+    message: Optional[str] = None
     user_id: Optional[str] = None
+    history: Optional[List[Message]] = None
+
 
 class ChatResponse(BaseModel):
     reply: str
+
 
 class IntentData(BaseModel):
     intent: str
@@ -21,9 +30,6 @@ class IntentData(BaseModel):
     order_code: Optional[str] = None
     language: Optional[str] = "vi"
 
-class Message(BaseModel):
-    role: str       # "user" hoặc "ai"
-    content: str    # Nội dung tin nhắn
 
 class HistoryResponse(BaseModel):
     user_id: str

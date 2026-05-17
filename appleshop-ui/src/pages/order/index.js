@@ -24,6 +24,7 @@ function Order() {
     const userId = decode?.id;
     const [orders, setOrders] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const [pendingByOrderId, setPendingByOrderId] = useState({});
     const scrollRef = useRef(null);
 
     const [visibleComment, setVisibleComment] = useState();
@@ -93,6 +94,13 @@ function Order() {
 
     const handleLoading = () => {
         setIsLoading(!isLoading);
+    };
+
+    const setOrderPending = (orderId, isPending) => {
+        setPendingByOrderId((prev) => ({
+            ...prev,
+            [orderId]: isPending,
+        }));
     };
 
     const getPaymentMethodLabel = (method) => {

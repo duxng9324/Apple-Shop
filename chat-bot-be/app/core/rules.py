@@ -46,7 +46,7 @@ MEMORY_PATTERN = re.compile(r"\b(64|128|256|512|1024)\s*(gb|g|tb)?\b", re.IGNORE
 PRODUCT_CODE_PATTERN = re.compile(r"\b[A-Z0-9]{3,}(?:-[A-Z0-9]{2,})?\b")
 ORDER_CODE_PATTERN = re.compile(r"\b(?:ODR|DH)[-_]?[A-Z0-9]{4,}\b", re.IGNORECASE)
 QUANTITY_PATTERN = re.compile(r"\b(\d+)\s*(cai|chiec|sp|san pham)?\b", re.IGNORECASE)
-PRICE_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|nghin|ngan|k)", re.IGNORECASE)
+PRICE_PATTERN = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|nghin|ngan|k)\b", re.IGNORECASE)
 PRICE_VND_PATTERN = re.compile(r"(\d{1,3}(?:[.,]\d{3})+|\d{5,9})\s*(vnd|dong|đ)", re.IGNORECASE)
 PRICE_CONTEXT_PATTERN = re.compile(
     r"(?:gia|tam gia|khoang|khoang gia|budget)\s*(\d{5,9})",
@@ -56,9 +56,18 @@ PRICE_CONTEXT_PATTERN = re.compile(
 KNOWN_COLORS = [
     "black", "white", "blue", "red", "green", "purple", "pink", "yellow", "gold", "silver", "gray", "grey",
     "den", "trang", "xanh", "do", "tim", "vang", "hong", "bac", "xam",
+    "midnight", "starlight", "space black", "space gray", "natural titanium", "titan den", "titan tu nhien",
 ]
 
 AMBIGUOUS_COLORS = {"tim", "do"}
+PRODUCT_NAME_PATTERNS = [
+    re.compile(r"\biphone\s*(1[0-9])\s*(pro\s*max|pro|plus)?\b", re.IGNORECASE),
+    re.compile(r"\bipad\s*(pro|air|mini)?\s*(m[1-4])?\b", re.IGNORECASE),
+    re.compile(r"\bmacbook\s*(air|pro)?\s*(m[1-4])?\b", re.IGNORECASE),
+    re.compile(r"\b(?:apple\s*)?watch\s*(ultra\s*\d+|series\s*\d+|se)?\b", re.IGNORECASE),
+    re.compile(r"\bairpods\s*(pro\s*\d*|max\s*\d*|\d+)?\b", re.IGNORECASE),
+    re.compile(r"\b(?:imac|mac\s*mini|mac\s*studio)\s*(m[1-4])?\b", re.IGNORECASE),
+]
 
 
 def normalize_text(text: str) -> str:
@@ -94,6 +103,9 @@ def extract_memory(msg_norm: str):
 
 def extract_quantity(message: str):
     for match in QUANTITY_PATTERN.finditer(message):
+        unit = (match.group(2) or "").strip().lower()
+        if not unit:
+            continue
         qty = int(match.group(1))
         # Skip numeric values that clearly belong to price expressions like "5 trieu" or "500k".
         tail = message[match.end(): match.end() + 12].lower()
@@ -150,6 +162,8 @@ def extract_product_code(message: str):
         candidate = match.group(0)
         # Product code must contain at least one digit to avoid matching normal words like "XIN" or "CHAO".
         if any(ch.isdigit() for ch in candidate):
+            if MEMORY_PATTERN.fullmatch(normalize_text(candidate)):
+                continue
             return candidate
     return None
 
@@ -178,18 +192,39 @@ def extract_color(msg_norm: str):
 
 
 def extract_product_name(message: str):
-    lower_msg = message.lower()
+    normalized = normalize_text(message)
+
+    for pattern in PRODUCT_NAME_PATTERNS:
+        match = pattern.search(normalized)
+        if not match:
+            continue
+
+        candidate = re.sub(r"\s+", " ", match.group(0)).strip()
+        if not candidate:
+            continue
+
+        if candidate.startswith("iphone"):
+            return " ".join(part.upper() if part.lower() == "iphone" else part.title() for part in candidate.split())
+        if candidate.startswith("ipad"):
+            return " ".join(part.upper() if part.lower() == "ipad" else part.title() for part in candidate.split())
+        if candidate.startswith("airpods"):
+            return " ".join(part.upper() if part.lower() == "airpods" else part.title() for part in candidate.split())
+        if candidate.startswith("watch") or candidate.startswith("apple watch"):
+            words = candidate.split()
+            if words[0].lower() == "watch":
+                words.insert(0, "Apple")
+            return " ".join(word.upper() if word.lower() in {"se"} else word.title() for word in words)
+        return " ".join(word.upper() if word.lower() == "imac" else word.title() for word in candidate.split())
+
     products = [
-        "iphone 15", "iphone 14", "iphone 13", "iphone 16", "iphone",
-        "ipad pro", "ipad air", "ipad mini", "ipad",
+        "iphone", "ipad pro", "ipad air", "ipad mini", "ipad",
         "macbook air", "macbook pro", "imac", "mac mini", "mac studio", "macbook", "mac",
         "apple watch", "watch",
-        "airpods", "airpods pro", "airpods max",
+        "airpods pro", "airpods max", "airpods",
     ]
-
     for name in products:
-        if name in lower_msg:
-            return name.title()
+        if name in normalized:
+            return " ".join(word.upper() if word.lower() in {"iphone", "ipad", "imac"} else word.title() for word in name.split())
 
     return None
 

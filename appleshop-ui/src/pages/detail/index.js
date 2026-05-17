@@ -21,6 +21,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Button } from 'antd';
 import { toast } from 'react-toastify';
+import { resolveProductColor } from '~/utils/productColor';
 
 const cx = classNames.bind(styles);
 
@@ -305,10 +306,10 @@ function Detail() {
                                             setColorSelect(index);
                                         }}
                                     >
-                                        <div className={cx('color')} style={{ backgroundColor: item.code }}>
+                                        <div className={cx('color')} style={resolveProductColor(item)}>
                                             <p> </p>
                                         </div>
-                                        <div className={cx('color_name')} style={{ color: item.code }}>
+                                        <div className={cx('color_name')}>
                                             {item.color}
                                         </div>
                                     </div>

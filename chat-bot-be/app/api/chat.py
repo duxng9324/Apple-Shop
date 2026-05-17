@@ -13,6 +13,28 @@ from app.config import settings
 router = APIRouter()
 
 
+def _normalize_history_items(items):
+    normalized = []
+    for item in items or []:
+        role = str(getattr(item, "role", "") or "").strip().lower()
+        content = str(getattr(item, "content", "") or "").strip()
+        if role not in {"user", "ai"} or not content:
+            continue
+        normalized.append({"role": role, "content": content})
+    return normalized[-20:]
+
+
+def _resolve_message(req: ChatRequest):
+    if req.message and str(req.message).strip():
+        return str(req.message).strip()
+
+    normalized_history = _normalize_history_items(req.history)
+    for item in reversed(normalized_history):
+        if item["role"] == "user":
+            return item["content"]
+    return ""
+
+
 def _build_product_url(product: dict):
     category = str(product.get("categoryCode") or "iphone").strip().strip("/")
     code = str(product.get("code") or "").strip().strip("/")
@@ -317,12 +339,21 @@ def _build_detailed_comparison(products: list, lang: str = "vi", limit: int = 3,
 @router.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(req: ChatRequest):
     user_id = req.user_id or "guest"
+    message = _resolve_message(req)
+    if not message:
+        return ChatResponse(reply="Bạn hãy nhập nội dung cần hỗ trợ, ví dụ: iPhone 256GB màu đen.")
 
-    await add_history(user_id, "user", req.message)
+    provided_history = _normalize_history_items(req.history)
+    if provided_history:
+        await update_session(user_id, {"history": provided_history})
+
+    session = await get_session(user_id)
+    if not session.get("history") or session["history"][-1].get("content") != message or session["history"][-1].get("role") != "user":
+        await add_history(user_id, "user", message)
 
     session = await get_session(user_id)
 
-    intent_data = intent_service.get_smart_intent(session, req.message)
+    intent_data = intent_service.get_smart_intent(session, message)
 
     updates = {}
     if intent_data.category:
@@ -354,7 +385,7 @@ async def chat_endpoint(req: ChatRequest):
         target_price = intent_data.target_price or session.get("target_price")
         query_text = intent_data.product_name or session.get("product_name")
         if not query_text and not any([intent_data.product_code, category_filter]):
-            query_text = req.message
+            query_text = message
 
         products = tour_service.search_products(
             query=query_text,
@@ -374,7 +405,7 @@ async def chat_endpoint(req: ChatRequest):
                 intro_text = f"Mình tìm được {len(products)} sản phẩm gần với mức giá {budget_text} mà bạn yêu cầu."
             else:
                 intro_text = llm_service.call_ollama_intro_fast(
-                    req.message,
+                    message,
                     len(products),
                     lang=current_lang,
                 )
@@ -404,11 +435,11 @@ async def chat_endpoint(req: ChatRequest):
         else:
             intro_text, suggested_products = llm_service.recommend_products_with_ai(
                 products,
-                req.message,
+                message,
                 lang=current_lang,
                 limit=3,
             )
-            if _is_generic_recommend_request(req.message, intent_data):
+            if _is_generic_recommend_request(message, intent_data):
                 suggested_products = _ensure_category_diversity(suggested_products, products, max_items=3)
             products_for_ai = suggested_products[:3] if suggested_products else products[:3]
 
@@ -472,7 +503,7 @@ async def chat_endpoint(req: ChatRequest):
     else:
         reply_text = llm_service.call_ollama_chat_raw(
             session,
-            req.message,
+            message,
             lang=current_lang,
         )
 

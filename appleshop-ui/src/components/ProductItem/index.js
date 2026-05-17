@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './ProductItem.module.scss';
 import { Button } from 'antd';
+import { resolveProductColor } from '~/utils/productColor';
 
 const cx = classNames.bind(styles);
 
@@ -33,7 +34,7 @@ function ProductItem(data) {
             <div className={cx('product__color')}>
                 {colorDTOs.map((color, index) => {
                     return (
-                        <div key={index} className={cx('product__color-item')} style={{ backgroundColor: color.code }}>
+                        <div key={index} className={cx('product__color-item')} style={resolveProductColor(color)}>
                             <span> </span>
                         </div>
                     );

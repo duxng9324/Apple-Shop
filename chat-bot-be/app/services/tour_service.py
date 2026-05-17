@@ -1,5 +1,7 @@
 import requests
 import time
+import re
+from unidecode import unidecode
 from app.config import settings
 
 
@@ -9,10 +11,20 @@ _PRODUCT_CACHE = {
     "expires_at": 0.0,
 }
 _CACHE_TTL_SECONDS = 45
+_QUERY_STOPWORDS = {
+    "tim", "kiem", "mua", "cho", "toi", "minh", "can", "con", "nao", "voi",
+    "mau", "color", "phien", "ban", "bo", "nho", "memory", "gb", "tb",
+    "dien", "thoai", "apple", "shop",
+}
 
 
 def _normalize(value: str):
-    return (value or "").strip().lower()
+    text = unidecode((value or "")).lower().strip()
+    return re.sub(r"\s+", " ", text)
+
+
+def _compact(value: str):
+    return re.sub(r"[^a-z0-9]+", "", _normalize(value))
 
 
 def _to_int(value):
@@ -44,7 +56,47 @@ def _category_candidates(product: dict):
 def _matches_text(text: str, keyword: str):
     if not keyword:
         return True
-    return _normalize(keyword) in _normalize(text)
+
+    normalized_text = _normalize(text)
+    normalized_keyword = _normalize(keyword)
+    if normalized_keyword in normalized_text:
+        return True
+
+    compact_text = _compact(text)
+    compact_keyword = _compact(keyword)
+    return bool(compact_keyword) and compact_keyword in compact_text
+
+
+def _query_tokens(query: str):
+    normalized = _normalize(query)
+    tokens = re.findall(r"[a-z0-9]+", normalized)
+    filtered = [token for token in tokens if len(token) > 1 and token not in _QUERY_STOPWORDS]
+    return filtered[:8]
+
+
+def _matches_query(product: dict, query: str):
+    if not query:
+        return True
+
+    haystack = " ".join([
+        str(product.get("name", "")),
+        str(product.get("description", "")),
+        str(product.get("code", "")),
+        str(product.get("categoryCode", "")),
+    ])
+    if _matches_text(haystack, query):
+        return True
+
+    tokens = _query_tokens(query)
+    if not tokens:
+        return True
+
+    normalized_haystack = _normalize(haystack)
+    compact_haystack = _compact(haystack)
+    return all(
+        token in normalized_haystack or token in compact_haystack
+        for token in tokens
+    )
 
 
 def _extract_memories(product: dict):
@@ -144,11 +196,7 @@ def search_products(
             if product_code and not _matches_text(code, product_code):
                 continue
 
-            if query and not (
-                _matches_text(name, query)
-                or _matches_text(description, query)
-                or _matches_text(code, query)
-            ):
+            if query and not _matches_query(product, query):
                 continue
 
             if category and not any(_matches_text(candidate, category) for candidate in category_values):
@@ -156,7 +204,7 @@ def search_products(
 
             if memory:
                 memories = _extract_memories(product)
-                if not any(_normalize(memory) in _normalize(m) for m in memories):
+                if not any(_matches_text(m, memory) for m in memories):
                     continue
 
             if color:
